@@ -10,8 +10,10 @@
 <script>
 /* Hors Claude : vrai téléchargement de fichiers (exports CSV, sauvegarde) */
 if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')return null;return{save:async function(o){var b=new Blob([o.data],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=o.filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);return true}}}}}
+/* Demande au navigateur de protéger les données contre l'effacement automatique */
+try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-24-v35',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-24-v36',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 </script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>VELUME</title>
@@ -6802,7 +6804,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v35';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v36';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
