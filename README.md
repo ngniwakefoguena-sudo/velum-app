@@ -5,7 +5,7 @@ C'est une application statique : un seul fichier `index.html`, aucun serveur à 
 
 ## Mettre en ligne sur Vercel (méthode GitHub, recommandée)
 
-1. Créez un dépôt GitHub (privé) et envoyez-y le contenu de ce dossier (`index.html`, `vercel.json`, `sw.js`, `manifest.webmanifest`, `icons/`).
+1. Envoyez le contenu de ce dossier dans un dépôt GitHub (`index.html`, `vercel.json`, `sw.js`, `manifest.webmanifest` et les icônes PNG).
 2. Sur vercel.com : **Add New → Project**, choisissez le dépôt.
 3. *Framework Preset* : **Other**. Laissez *Build Command* et *Output Directory* vides. Cliquez **Deploy**.
 4. Vous obtenez une adresse `https://votre-projet.vercel.app`. Chaque envoi sur GitHub redéploie automatiquement.

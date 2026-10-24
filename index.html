@@ -4,8 +4,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VELUME">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/icon-192.png">
 <script>
 /* Hors Claude : vrai téléchargement de fichiers (exports CSV, sauvegarde) */
 if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')return null;return{save:async function(o){var b=new Blob([o.data],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=o.filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);return true}}}}}
