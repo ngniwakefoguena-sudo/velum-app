@@ -1,4 +1,4 @@
-/* ===== VELUME PRO 3 — premier accueil (admin / employé), droits sensibles, invitations, comptes Google/Outlook/Apple pour l'admin ===== */
+/* ===== VELUME PRO 3 — premier accueil (admin / employé), droits sensibles, invitations, comptes Google/Outlook/Facebook pour l'admin ===== */
 (function(){
 const me=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=me();return u?u.group:'admin'};
@@ -87,15 +87,54 @@ A['inv-del']=el=>{ST.set.invites=invs().filter(i=>i.code!==el.dataset.c);save();
   return h}}
 A.who=el=>{UI.who=el.dataset.w||null;UI.wz=null;render()};
 
-/* administrateur : compte Google / Outlook / Apple dans l'assistant */
-const PV={google:['Google','#ea4335',/@(gmail|googlemail)\.com$/i,'nom@gmail.com'],outlook:['Outlook','#0078d4',/@(outlook|hotmail|live|msn)\.[a-z.]+$/i,'nom@outlook.com'],apple:['Apple','#111',/@(icloud|me|mac)\.com$/i,'nom@icloud.com']};
+/* administrateur : compte Google / Outlook / Facebook dans l'assistant */
+const PV={google:['Google','#ea4335',/@(gmail|googlemail)\.com$/i,'nom@gmail.com'],outlook:['Outlook','#0078d4',/@(outlook|hotmail|live|msn)\.[a-z.]+$/i,'nom@outlook.com'],facebook:['Facebook','#1877f2',/^[^@\s]+@[^@\s]+\.[^@\s]+$/,'nom@exemple.com']};
 {const l2=loginHtml;loginHtml=function(){let h=l2();const w=UI.wz;if(!w||w.step!==3||(ST.pro&&ST.pro.setup))return h;
   const pv=w.prov||'own';
-  const btn=['google','outlook','apple','own'].map(k=>'<button type="button" data-a="wz-prov" data-p="'+k+'" aria-pressed="'+(pv===k)+'"><b style="background:'+(k==='own'?'var(--gold)':PV[k][1])+'">'+(k==='own'?'@':PV[k][0][0])+'</b>'+(k==='own'?tr('E-mail','E-mail'):PV[k][0])+'</button>').join('');
+  const btn=['google','own'].map(k=>'<button type="button" data-a="wz-prov" data-p="'+k+'" aria-pressed="'+(pv===k)+'"><b style="background:'+(k==='own'?'var(--gold)':PV[k][1])+'">'+(k==='own'?'@':PV[k][0][0])+'</b>'+(k==='own'?tr('E-mail','E-mail'):PV[k][0])+'</button>').join('');
   h=h.replace(/(<div class="lf"><label>[^<]*<\/label><input data-wz="name")/,'<div class="prov">'+btn+'</div>'+(pv==='own'?'':'<p class="muted" style="font-size:.84rem;margin:0">'+tr('Votre adresse '+PV[pv][0]+' sert d’identifiant. L’adresse n’est pas vérifiée dans cette version (pas de connexion à '+PV[pv][0]+') et vous choisissez un mot de passe VELUME.','Your '+PV[pv][0]+' address is your login. It is not verified in this version (no connection to '+PV[pv][0]+') and you choose a VELUME password.')+'</p>')+'$1');
   if(pv!=='own')h=h.replace(/data-wz="email" value="([^"]*)"/,'data-wz="email" placeholder="'+PV[pv][3]+'" value="$1"');
   return h}}
 A['wz-prov']=el=>{const w=UI.wz;if(!w)return;w.prov=el.dataset.p;w.err='';render()};
 {const nx=A['wz-next'];A['wz-next']=function(){const w=UI.wz;if(w&&w.step===3&&w.prov&&w.prov!=='own'&&!PV[w.prov][2].test((w.email||'').trim())){w.err=tr('Adresse '+PV[w.prov][0]+' invalide.',PV[w.prov][0]+' address is invalid.');return render()}return nx.apply(this,arguments)}}
 {const dn=A['wz-done'];A['wz-done']=function(){const w=UI.wz,prov=w&&w.prov;dn.apply(this,arguments);if(prov&&prov!=='own'){const u=D.all('user').find(x=>x.owner);if(u){D.write('user',u.id,{provider:PV[prov][0]},{silent:true});save()}}}}
+
+/* ---------- adaptation tous écrans ---------- */
+{const c=document.createElement('style');c.textContent=`
+html,body{max-width:100%;overflow-x:hidden}
+.toast{width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box}
+#app{max-width:100vw}
+.lcard input[type=checkbox],.lcard input[type=radio]{width:auto;flex:none;min-height:0;padding:0}
+.lcard .opt{width:100%;box-sizing:border-box}
+.lcard.wz{width:min(540px,100%)}
+.login{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-sizing:border-box}
+.lcard{max-width:100%;box-sizing:border-box;overflow-wrap:anywhere}
+.lcard .foot .btn{width:auto;flex:1}
+.lcard .prov{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lcard .devseg{justify-content:center}
+@media(max-width:480px){.lcard{padding:20px 16px}.lcard .devseg button{flex:1 1 40%}.wz h2{font-size:1.15rem}}
+@media(min-width:1600px){.home .wrap{max-width:1500px;margin-inline:auto}.apps-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+@media(max-width:700px){.dlg{max-width:100vw}.va,.cp{max-width:100vw}table{display:block;overflow-x:auto}.st3cols{padding:12px}}
+`;document.head.appendChild(c)}
+
+/* ---------- déjà un compte : connexion claire, mot de passe oublié, clé de récupération ---------- */
+{const l3=loginHtml;loginHtml=function(){let h=l3();if(!(ST.pro&&ST.pro.setup))return h;
+  h=h.replace('<div class="lf"><label for="lg">','<h2 style="margin:0;font-family:var(--fd);font-size:1.15rem;text-align:center">'+tr('Se connecter','Sign in')+'</h2><p class="muted" style="margin:-6px 0 0;text-align:center;font-size:.88rem">'+tr('Vous avez déjà un compte ? Entrez votre identifiant et votre mot de passe.','Already have an account? Enter your username and password.')+'</p><div class="lf"><label for="lg">');
+  h=h.replace('<button class="btn pri" data-a="login">','<a href="#" data-a="forgot" style="text-align:center;font-size:.88rem;color:var(--teal)">'+tr('Mot de passe oublié ?','Forgot password?')+'</a><button class="btn pri" data-a="login">');
+  return h}}
+const newRK=()=>{const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let k='';for(let i=0;i<12;i++){k+=c[Math.floor(Math.random()*c.length)];if(i%4===3&&i<11)k+='-'}return k};
+MODALS.reckey={title:()=>tr('Clé de récupération','Recovery key'),body:p=>'<p>'+tr('Notez cette clé et gardez-la en lieu sûr (papier, coffre). Elle permet à l’administrateur principal de recréer son mot de passe s’il l’oublie. Elle n’est affichée qu’une fois.','Write this key down and keep it safe (paper, safe). It lets the main administrator reset their password if forgotten. It is shown only once.')+'</p><div class="card" style="text-align:center;font-family:monospace;font-size:1.3rem;letter-spacing:.08em"><b>'+esc(p.key)+'</b></div>',foot:()=>'<button class="btn pri" data-a="mclose">'+tr('J’ai noté la clé','I wrote it down')+'</button>'};
+{const dn=A['wz-done'];A['wz-done']=function(){dn.apply(this,arguments);const k=newRK();ST.pro.rk=window.__hsh(k);saveNow();setTimeout(()=>openModal('reckey',{key:k}),600)}}
+const FG=()=>UI.fg||(UI.fg={key:'',n1:'',err:''});
+MODALS.forgot={title:()=>tr('Mot de passe oublié','Forgot password'),body:()=>{const w=FG();return '<p><b>'+tr('Employé :','Employee:')+'</b> '+tr('demandez à votre administrateur de vous donner un nouveau mot de passe (Paramètres › Utilisateurs).','ask your administrator to give you a new password (Settings › Users).')+'</p><hr><p><b>'+tr('Administrateur principal :','Main administrator:')+'</b> '+tr('entrez votre clé de récupération et un nouveau mot de passe.','enter your recovery key and a new password.')+'</p><div class="lf"><label>'+tr('Clé de récupération','Recovery key')+'</label><input data-fg="key" value="'+esc(w.key)+'" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX"></div><div class="lf"><label>'+tr('Nouveau mot de passe (6 min.)','New password (min. 6)')+'</label><input data-fg="n1" type="password" value="'+esc(w.n1)+'"></div>'+(w.err?'<div class="lerr" role="alert">'+esc(w.err)+'</div>':'')},foot:()=>'<button class="btn pri" data-a="fg-ok">'+tr('Réinitialiser','Reset')+'</button><button class="btn" data-a="mclose">'+tr('Annuler','Cancel')+'</button>'};
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.fg&&UI.fg)UI.fg[el.dataset.fg]=el.value});
+A.forgot=()=>{UI.fg=null;openModal('forgot')};
+A['fg-ok']=()=>{const w=FG();w.err='';const ow=D.all('user').find(u=>u.owner);
+  if(!ST.pro||!ST.pro.rk)w.err=tr('Aucune clé de récupération enregistrée sur cet appareil.','No recovery key stored on this device.');
+  else if(window.__hsh((w.key||'').trim().toUpperCase())!==ST.pro.rk)w.err=tr('Clé incorrecte.','Wrong key.');
+  else if((w.n1||'').length<6)w.err=tr('Mot de passe : 6 caractères minimum.','Password: 6 characters minimum.');
+  if(w.err||!ow)return render();
+  D.write('user',ow.id,{code:window.__hsh(w.n1)},{silent:true});UI.modal=null;UI.fg=null;UI.lglogin=ow.login;saveNow();toast(tr('Mot de passe réinitialisé. Connectez-vous.','Password reset. Please sign in.'));render()};
+{const pb=MODALS.profile.body;MODALS.profile=Object.assign({},MODALS.profile,{body:()=>{let h=pb();const u=me();return h+(u&&u.owner?'<hr><button class="btn sm" data-a="pf-rk">'+tr('Générer une nouvelle clé de récupération','Generate a new recovery key')+'</button>':'')}})}
+A['pf-rk']=()=>{const k=newRK();ST.pro.rk=window.__hsh(k);saveNow();openModal('reckey',{key:k})};
 })();
