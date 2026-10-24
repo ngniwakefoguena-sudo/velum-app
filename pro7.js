@@ -58,7 +58,37 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v38';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v41';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
+
+/* ---------- v40 : anciennes catégories de recettes → nouvelles ---------- */
+{const MAPC={hot:'classic',cold:'iced',food:'froid'};
+function migRecipes(){try{D.all('recipe').forEach(r=>{if(MAPC[r.cat])D.write('recipe',r.id,{cat:MAPC[r.cat]},{silent:true})})}catch(e){}}
+const pb=window.__pro4Boot;window.__pro4Boot=function(){try{migRecipes()}catch(e){}return pb&&pb.apply(this,arguments)};
+setTimeout(()=>{try{migRecipes()}catch(e){}},2500)}
+
+/* ---------- v41 : familles de matières premières + recettes → caisse ---------- */
+{const f=M.stockitem&&M.stockitem.f&&M.stockitem.f.cat;
+if(f)f.opts=[['coffee','Café & thé','Coffee & tea',''],['perish','Denrées périssables','Perishable goods','bad'],['dairy','Boissons','Drinks','info'],['bakery','Pâtisseries et viennoiseries','Pastries & viennoiserie','warn'],['pack','Consommables Coffee','Coffee supplies',''],['studio','Consommables studio','Studio supplies','gold']]}
+{const RC=[['grill','Grillades','Grills'],['pancake','Pancakes et gaufres','Pancakes & waffles'],['pain','Pains et conforts','Breads & comfort food'],['froid','Plats froids','Cold dishes'],['vienn','Viennoiserie','Pastries'],['classic','Café classique','Classic coffee'],['signature','Café signature','Signature coffee'],['iced','Café glacé','Iced coffee'],['fresh','Boissons fresh','Fresh drinks'],['mocktail','Mocktails','Mocktails'],['dessert','Desserts','Desserts']];
+if(M.product&&!M.product.f.rec)M.product.f.rec={k:'rec',t:'int',fr:'Recette liée',en:'Linked recipe',hide:1};
+function pcatFor(key){const c=RC.find(x=>x[0]===key)||RC[5];const i=RC.indexOf(c);
+  let p=D.all('pcat').find(x=>x.rkey===c[0]||x.name===c[1]);
+  if(!p)p=D.create('pcat',{name:T(c[1],c[2]),seq:10+i*5,rkey:c[0]},{silent:true});
+  else if(!p.rkey)D.write('pcat',p.id,{rkey:c[0]},{silent:true});
+  return p.id}
+window.__recipesToPos=function(){try{
+  const rs=D.all('recipe'),ps=D.all('product');const seen={};
+  ps.filter(p=>p.rec).sort((a,b)=>a.id-b.id).forEach(p=>{if(seen[p.rec]){D.unlink('product',p.id)}else seen[p.rec]=p});
+  rs.forEach(r=>{const on=r.active!==false&&!!r.name;const p=seen[r.id];
+    if(!on){if(p&&p.active!==false)D.write('product',p.id,{active:false,pos:false},{silent:true});return}
+    const v={name:r.name,price:+r.price||0,cat:pcatFor(r.cat),reg:'bar',kind:'consu',pos:true,active:true,rec:r.id};
+    if(!p)D.create('product',v,{silent:true});
+    else if(p.name!==v.name||p.price!==v.price||p.cat!==v.cat||p.active===false||p.pos===false)D.write('product',p.id,v,{silent:true})});
+  D.all('product').filter(p=>p.rec&&!seen[p.rec]&&!D.get('recipe',p.rec)).forEach(p=>{});
+  saveNow()}catch(e){try{console.error(e)}catch(x){}}};
+{const ot=openTill;openTill=function(id){try{window.__recipesToPos()}catch(e){}return ot.apply(this,arguments)}}
+{const fs=A.fsave;A.fsave=function(){const isR=FV&&FV.a&&FV.a.model==='recipe';const r=fs.apply(this,arguments);if(isR)try{window.__recipesToPos()}catch(e){}return r}}
+}

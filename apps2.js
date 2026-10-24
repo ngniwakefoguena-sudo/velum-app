@@ -102,9 +102,10 @@ defModel('delivery','Livraisons','Deliveries','name',{
   {status:'state',seqfield:'name',seqname:r=>'LIV/'+p4(r.id)});
 
 defModel('recipe','Recettes & coûts','Recipes & costs','name',{
-  name:['char','Recette','Recipe',{req:1,tx:1}], cat:['sel','Catégorie','Category',{opts:[['hot','Boissons chaudes','Hot drinks','warn'],['cold','Boissons froides','Cold drinks','info'],['food','Plats','Dishes','gold'],['dessert','Desserts','Desserts','']],def:'hot'}],
+  cat:['sel','Catégorie','Category',{opts:[['grill','Grillades','Grills','warn'],['pancake','Pancakes et gaufres','Pancakes & waffles','gold'],['pain','Pains et conforts','Breads & comfort food','gold'],['froid','Plats froids','Cold dishes','info'],['vienn','Viennoiserie','Pastries',''],['classic','Café classique','Classic coffee','warn'],['signature','Café signature','Signature coffee','warn'],['iced','Café glacé','Iced coffee','info'],['fresh','Boissons fresh','Fresh drinks','good'],['mocktail','Mocktails','Mocktails','good'],['dessert','Desserts','Desserts','']],def:'classic'}],
+  name:['char','Nom de la recette','Recipe name',{req:1}],
   price:['money','Prix de vente TTC','Sales price (incl. VAT)',{def:0}],
-  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient',en:'Ingredient',w:240},{k:'qty',t:'float',fr:'Quantité (unité du stock)',en:'Quantity (stock unit)',def:1,w:130},{k:'cost',t:'money',fr:'Coût unitaire',en:'Unit cost',ro:1},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
+  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient (stock)',en:'Ingredient (stock)',w:220},{k:'label',t:'char',fr:'Ou nom libre',en:'Or free name',w:170},{k:'qty',t:'float',fr:'Quantité',en:'Quantity',def:1,w:100},{k:'cost',t:'money',fr:'Coût unitaire (à saisir)',en:'Unit cost (enter it)',w:140},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
   cost:['money','Coût matière','Ingredient cost',{ro:1}], ht:['money','Prix HT','Price (excl.)',{ro:1}], margin:['money','Marge brute','Gross margin',{ro:1}], pct:['int','Taux de marge','Margin rate',{ro:1,unit:'%'}],
   steps:['text','Méthode de préparation','Preparation method'], active:['bool','Active','Active',{def:true}]},
   {compute:r=>{(r.lines||[]).forEach(l=>{l.sub=Math.round((+l.qty||0)*(+l.cost||0))});r.cost=sum(r.lines||[],l=>l.sub);r.ht=Math.round((+r.price||0)/(1+TVA()/100));r.margin=r.ht-r.cost;r.pct=r.ht?Math.round(r.margin/r.ht*100):0},
@@ -178,7 +179,7 @@ act('deliveries',{model:'delivery',l:['Livraisons','Deliveries'],icon:'map',view
 act('recipes',{model:'recipe',l:['Recettes & coûts','Recipes & costs'],icon:'cup',views:['list','kanban','graph'],list:['name','cat','price','cost','margin','pct','active'],search:['name'],groups:['cat'],
   filters:[['low',['Marge < 60 %','Margin < 60%'],r=>r.pct<60]],kanban:{by:'cat',sub:['price','pct'],money:'price'},
   graph:{measure:'pct',by:'name',type:'bar',measures:[['pct',['Taux de marge %','Margin %']],['margin',['Marge brute','Gross margin']],['cost',['Coût matière','Ingredient cost']]],dims:['cat','name']},
-  form:{title:'name',cols:[['cat','price','active'],['cost','ht','margin','pct']],tabs:[{l:['Ingrédients','Ingredients'],lines:'lines'},{l:['Méthode','Method'],fields:['steps']}]},ctx:()=>({})});
+  form:{title:'name',cols:[['cat','name','price','active'],['cost','ht','margin','pct']],tabs:[{l:['Ingrédients','Ingredients'],lines:'lines'},{l:['Méthode','Method'],fields:['steps']}],layout:x=>'<div class="cp gut"><div class="cp-top"><div class="cp-left">'+x.crumbs+x.dirty+'</div><div class="cp-right">'+x.pager+'<button class="ib" data-a="cogs-form" aria-label="actions">'+ic('gear')+'</button></div></div></div><div class="va gut"><div class="fv"><div class="fv-bar"><button class="btn" data-a="new">'+tr('Nouveau','New')+'</button>'+x.btns+'<span class="sp"></span>'+x.status+'</div><div class="fwrap"><div class="fv-main"><div class="sheet"><div class="fgrid">'+x.cols+'</div>'+x.tabBar+x.tabBody+totalsHtml('recipe')+'</div></div>'+x.chatter+'</div></div></div>'},ctx:()=>({})});
 act('hygienes',{model:'hygiene',l:['Contrôles hygiène','Hygiene checks'],icon:'shield',views:['list','kanban','graph'],list:['date','name','kind','zone','temp','by','result'],search:['name','by'],groups:['kind','zone','result'],order:(x,y)=>x.date<y.date?1:-1,
   filters:[['nok',['Non conformes','Non-compliant'],r=>r.result==='nok'],['temp',['Températures','Temperatures'],r=>r.kind==='temp'],['today',['Aujourd’hui','Today'],r=>(r.date||'').slice(0,10)===iso(new Date())]],kanban:{by:'result',sub:['kind','zone'],tags:['kind']},
   graph:{measure:'temp',by:'date',type:'line',measures:[['temp',['Température °C','Temperature °C']],['__count',['Nombre','Count']]],dims:['date','zone','kind']},
@@ -393,11 +394,11 @@ window.__seedApps2=function(){
   // recettes
   const si=n=>D.all('stockitem').find(x=>String(tx(x.name)).toLowerCase().indexOf(n)===0);
   const R=(n,cat,price,ings)=>C('recipe',{name:T(n[0],n[1]),cat:cat,price:price,lines:ings.map(g=>{const it=si(g[0]);return it?{item:it.id,qty:g[1],cost:it.cost}:null}).filter(Boolean),steps:T('Doser, extraire, texturer le lait, servir.','Dose, extract, steam the milk, serve.')});
-  R(['Cappuccino','Cappuccino'],'hot',1500,[['café arabica',0.018],['lait entier',0.15],['gobelets',1],['couvercles',1]]);
-  R(['Latte vanille','Vanilla latte'],'hot',2000,[['café arabica',0.018],['lait entier',0.2],['sirop vanille',0.03],['gobelets',1],['couvercles',1]]);
-  R(['Espresso','Espresso'],'hot',1000,[['café arabica',0.009],['gobelets',1]]);
-  R(['Latte glacé avoine','Iced oat latte'],'cold',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
-  R(['Croissant','Croissant'],'dessert',800,[['croissants',1]]);
+  R(['Cappuccino','Cappuccino'],'classic',1500,[['café arabica',0.018],['lait entier',0.15],['gobelets',1],['couvercles',1]]);
+  R(['Latte vanille','Vanilla latte'],'classic',2000,[['café arabica',0.018],['lait entier',0.2],['sirop vanille',0.03],['gobelets',1],['couvercles',1]]);
+  R(['Espresso','Espresso'],'classic',1000,[['café arabica',0.009],['gobelets',1]]);
+  R(['Latte glacé avoine','Iced oat latte'],'iced',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
+  R(['Croissant','Croissant'],'vienn',800,[['croissants',1]]);
   // hygiène
   [['Ouverture du bar','open','bar',null,'ok',0,8],['Température frigo principal','temp','fridge',4,'ok',0,9],['Température congélateur','temp','fridge',-14,'nok',1,9],['Nettoyage machine espresso','clean','bar',null,'ok',1,19],['Fermeture du bar','close','bar',null,'ok',1,21],['Sanitaires','clean','wc',null,'ok',0,12]].forEach(h=>
     C('hygiene',{name:T(h[0],h[0]),kind:h[1],zone:h[2],temp:h[3],result:h[4],date:agoT(h[5],h[6],0),by:[eP,e1,e3][h[6]%3],action:h[4]==='nok'?T('Vérifier le joint et la température, contrôle à nouveau dans 2 h.','Check the seal and temperature, re-check in 2 h.'):''}));

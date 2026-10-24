@@ -13,7 +13,7 @@ if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')retur
 /* Demande au navigateur de protéger les données contre l'effacement automatique */
 try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-24-v39',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-24-v41',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 </script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>VELUME</title>
@@ -1258,8 +1258,8 @@ const PRODUCTS=[
  {id:'gau',reg:'bar',cat:'snk',fr:'Gaufre',en:'Waffle',p:2500},
  {id:'pan',reg:'bar',cat:'snk',fr:'Panini',en:'Panini',p:3500},
  {id:'bre',reg:'bar',cat:'snk',fr:'Brunch (week-end)',en:'Brunch (weekend)',p:5000},
- {id:'blend',reg:'bar',cat:'shop',fr:'Café en grains Velume blend',en:'Velume blend beans',p:6000},
- {id:'mug',reg:'bar',cat:'shop',fr:'Tasse Velume',en:'Velume mug',p:8000},
+ {id:'blend',reg:'bar',cat:'shop',fr:'Café en grains Vélume blend',en:'Vélume blend beans',p:6000},
+ {id:'mug',reg:'bar',cat:'shop',fr:'Tasse Vélume',en:'Vélume mug',p:8000},
  {id:'pod1',reg:'podcast',fr:'Podcast « Brut » · 1 h',en:'Podcast “Raw” · 1 h',p:25000},
  {id:'pod2',reg:'podcast',fr:'Podcast « Prêt à publier » · 1 h',en:'Podcast “Ready to publish” · 1 h',p:50000},
  {id:'dry',reg:'shooting',fr:'Location studio photo (dry hire) · 1 h',en:'Photo studio dry hire · 1 h',p:15000},
@@ -1268,7 +1268,7 @@ const PRODUCTS=[
  {id:'evt',reg:'shooting',fr:'Shooting événement',en:'Event shoot',p:65000},
  {id:'prod',reg:'shooting',fr:'Shooting produits (10 produits)',en:'Product shoot (10 items)',p:40000},
  {id:'vid',reg:'shooting',fr:'Studio vidéo créateurs · 1 h',en:'Creator video studio · 1 h',p:20000},
- {id:'club',reg:'shooting',fr:'Abonnement Velume Club · 1 mois',en:'Velume Club membership · 1 month',p:50000}];
+ {id:'club',reg:'shooting',fr:'Abonnement Vélume Club · 1 mois',en:'Vélume Club membership · 1 month',p:50000}];
 const prod=id=>PRODUCTS.find(p=>p.id===id);
 const FORM=[{id:'dry',studio:'photo',unit:'h',dur:1},{id:'ess',studio:'photo',unit:'f',dur:.5},{id:'sig',studio:'photo',unit:'f',dur:1},
  {id:'evt',studio:'photo',unit:'f',dur:1.5},{id:'prod',studio:'photo',unit:'f',dur:1},{id:'pod1',studio:'podcast',unit:'f',dur:1},
@@ -1281,15 +1281,15 @@ const TPL={
   bodyFr:['Réservation confirmée après versement d’un acompte de 50 %.','Annulation gratuite jusqu’à 24 h avant la séance, acompte conservé ensuite.','Le matériel est utilisé sur place et restitué en bon état ; toute dégradation est facturée.','Le créneau inclut l’installation et le rangement.'],
   bodyEn:['Booking is confirmed once a 50% deposit is paid.','Free cancellation up to 24 h before the session; deposit kept afterwards.','Equipment is used on site and returned in good condition; damage is charged.','The slot includes setup and tidy-up.']},
  image:{fr:'Droit à l’image',en:'Image release',
-  bodyFr:['Le client autorise Velume à publier les photos et vidéos de sa séance sur ses réseaux sociaux et son site.','L’autorisation peut être retirée par écrit, pour les publications futures.','Les mineurs doivent être représentés par un parent ou tuteur.'],
-  bodyEn:['The client allows Velume to publish photos and videos from the session on its social media and website.','The release can be withdrawn in writing for future posts.','Minors must be represented by a parent or guardian.']},
- club:{fr:'Contrat Velume Club',en:'Velume Club agreement',
+  bodyFr:['Le client autorise Vélume à publier les photos et vidéos de sa séance sur ses réseaux sociaux et son site.','L’autorisation peut être retirée par écrit, pour les publications futures.','Les mineurs doivent être représentés par un parent ou tuteur.'],
+  bodyEn:['The client allows Vélume to publish photos and videos from the session on its social media and website.','The release can be withdrawn in writing for future posts.','Minors must be represented by a parent or guardian.']},
+ club:{fr:'Contrat Vélume Club',en:'Vélume Club agreement',
   bodyFr:['Abonnement mensuel de 50 000 FCFA : 4 h de studio par mois, 10 % sur le café, réservation prioritaire.','Les heures non utilisées ne sont pas reportées.','Résiliation possible à chaque échéance mensuelle.'],
   bodyEn:['Monthly membership of 50,000 FCFA: 4 studio hours a month, 10% off coffee, priority booking.','Unused hours do not roll over.','Cancellation possible at each monthly renewal.']}};
 const PLAN={
  act:[['coffee',()=>tr('Coffee shop','Coffee shop'),[43833962,64754717,76981132]],['photo',()=>tr('Studio photo','Photo studio'),[11622642,17388679,20477987]],
   ['podcast',()=>'Podcast',[4981132,7798742,9660377]],['video',()=>tr('Studio vidéo','Video studio'),[4649057,7245283,8935849]],
-  ['events',()=>tr('Événements','Events'),[4150943,7547170,7849057]],['club',()=>'Velume Club',[2075472,5031447,7547170]]],
+  ['events',()=>tr('Événements','Events'),[4150943,7547170,7849057]],['club',()=>'Vélume Club',[2075472,5031447,7547170]]],
  tot:[71313208,109766038,131451572],ebe:[14624000,41776000,55628000],net:[-7611000,16238000,27449000],ramp:[45,55,65,75,80,85,90,95,100,100,100,100]};
 
 /* =========================================================
@@ -1944,7 +1944,7 @@ function chatterHtml(m,id){
     (UI.chNote!=null?'<div class="ch-compose"><textarea id="chtxt" data-fk="chtxt" rows="3" placeholder="'+(UI.chNote==='msg'?tr('Envoyer un message aux abonnés...','Send a message to followers...'):tr('Consigner une note interne...','Log an internal note...'))+'"></textarea><div style="display:flex;gap:6px"><button class="btn sm pri" data-a="ch-send">'+(UI.chNote==='msg'?tr('Envoyer','Send'):tr('Consigner','Log'))+'</button><button class="btn sm ghost" data-a="ch-cancel">'+tr('Annuler','Cancel')+'</button></div></div>':'')+
     (acts.length?'<h4 style="margin:12px 0 4px;font-size:.9rem">'+tr('Activités planifiées','Planned activities')+' ('+acts.length+')</h4>'+acts.map(x=>'<div class="msg"><span class="badge '+(x.due<today?'bad':x.due===today?'warn':'good')+'">'+esc(fmtShort(x.due))+'</span><div class="mb"><b>'+esc(L(ATYPES[x.type]||ATYPES.todo))+'</b> — '+esc(x.summary)+'<div><button class="btn sm" data-a="actdone" data-id="'+x.id+'">'+ic('check')+tr('Fait','Done')+'</button></div></div></div>').join(''):'')+
     '<h4 style="margin:12px 0 2px;font-size:.9rem" class="muted">'+(msgs.length?tr('Historique','History'):'')+'</h4>'+
-    msgs.slice(0,25).map(x=>{const who=x.who?D.name('employee',x.who)||'Velume':'Velume Bot';return '<div class="msg">'+avatar(who,'sm')+'<div class="mb"><div class="mh"><b>'+esc(who)+'</b> <span class="muted">· '+esc(fmtDT(x.t))+(x.kind==='note'?' · '+tr('note','note'):'')+'</span></div><div'+(x.kind==='note'||x.kind==='msg'?' class="note"':' class="muted"')+'>'+esc(x.text)+'</div></div></div>'}).join('')+'</div>';
+    msgs.slice(0,25).map(x=>{const who=x.who?D.name('employee',x.who)||'Vélume':'Vélume Bot';return '<div class="msg">'+avatar(who,'sm')+'<div class="mb"><div class="mh"><b>'+esc(who)+'</b> <span class="muted">· '+esc(fmtDT(x.t))+(x.kind==='note'?' · '+tr('note','note'):'')+'</span></div><div'+(x.kind==='note'||x.kind==='msg'?' class="note"':' class="muted"')+'>'+esc(x.text)+'</div></div></div>'}).join('')+'</div>';
 }
 
 /* =========================================================
@@ -2049,11 +2049,11 @@ function navbar(ap){
     (ap?'<a class="ib appsbtn" href="#home" data-a="home" aria-label="'+tr('Toutes les applications','All apps')+'" title="'+tr('Toutes les applications','All apps')+'">'+ic('appsgrid')+'</a>':'<a class="brand" href="#home" data-a="home" aria-label="VELUME"><i class="brand-mark"></i><span class="brandtx">VELUME</span></a>')+
     (ap?'<span class="appname">'+esc(L(ap.l))+'</span><nav class="menus" aria-label="menus">'+menus+moreDd+'</nav>':'<span style="flex:1"></span>')+
     '<div class="systray">'+
-      '<button class="ib'+(UI.ai?' on':'')+'" data-a="ai" aria-label="Velume AI" title="Velume AI">'+ic('bolt')+'</button>'+
+      '<button class="ib'+(UI.ai?' on':'')+'" data-a="ai" aria-label="Vélume AI" title="Vélume AI">'+ic('bolt')+'</button>'+
       '<button class="ib'+(UI.pop==='chat'?' on':'')+'" data-a="pop" data-p="chat" aria-label="Messages" title="Messages">'+ic('chat')+(nMsg?'<span class="cnt">'+nMsg+'</span>':'')+'</button>'+
       '<button class="ib'+(UI.pop==='act'?' on':'')+'" data-a="pop" data-p="act" aria-label="'+tr('Activités','Activities')+'" title="'+tr('Activités','Activities')+'">'+ic('clock')+(nAct?'<span class="cnt">'+nAct+'</span>':'')+'</button>'+
       (ST.dev?'<button class="ib" data-a="menu" data-id="st_aut" data-app="config" aria-label="debug" title="'+tr('Mode développeur','Developer mode')+'">'+ic('bug')+'</button>':'')+
-      '<span class="co">Velume Coffee &amp; Studio</span>'+
+      '<span class="co">Vélume Coffee &amp; Studios</span>'+
       '<div class="seg" role="group" aria-label="language"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">FR</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">EN</button></div>'+
       '<span style="position:relative"><button class="ib'+(UI.pop==='user'?' on':'')+'" data-a="pop" data-p="user" aria-label="'+tr('Compte','Account')+'">'+avatar(user?user.name:'U','sm')+'</button></span>'+
     '</div></div></header>';
@@ -2108,9 +2108,9 @@ function cogsMenu(a){
 /* ---------- AI panel (local, rule-based assistant over the app data) ---------- */
 function aiPanelHtml(){
   if(!UI.ai)return '';
-  const msgs=ST.ai.length?ST.ai:[{r:'bot',t:tr('Bonjour ! Je suis Velume AI. Posez-moi une question sur vos ventes, vos factures, vos studios ou votre équipe.','Hi! I’m Velume AI. Ask me about your sales, invoices, studios or team.')}];
+  const msgs=ST.ai.length?ST.ai:[{r:'bot',t:tr('Bonjour ! Je suis Vélume AI. Posez-moi une question sur vos ventes, vos factures, vos studios ou votre équipe.','Hi! I’m Vélume AI. Ask me about your sales, invoices, studios or team.')}];
   const sugg=[tr('Ventes du jour','Today’s sales'),tr('Factures en retard','Overdue invoices'),tr('Créneaux libres demain','Free slots tomorrow'),tr('Tâches en retard','Late tasks'),tr('Ouvrir la caisse','Open the till')];
-  return '<aside class="pop chatwin'+(UI.aiBig?' big':'')+'" data-keep aria-label="Velume AI"><div class="cwh">'+ic('bolt')+'<span style="flex:1">Velume AI</span><button class="ib" data-a="aibig" aria-label="expand">'+ic(UI.aiBig?'mini':'expand')+'</button><button class="ib" data-a="aiclear" aria-label="clear" title="'+tr('Nouvelle conversation','New conversation')+'">'+ic('refresh')+'</button><button class="ib" data-a="ai" aria-label="close">'+ic('x')+'</button></div>'+
+  return '<aside class="pop chatwin'+(UI.aiBig?' big':'')+'" data-keep aria-label="Vélume AI"><div class="cwh">'+ic('bolt')+'<span style="flex:1">Vélume AI</span><button class="ib" data-a="aibig" aria-label="expand">'+ic(UI.aiBig?'mini':'expand')+'</button><button class="ib" data-a="aiclear" aria-label="clear" title="'+tr('Nouvelle conversation','New conversation')+'">'+ic('refresh')+'</button><button class="ib" data-a="ai" aria-label="close">'+ic('x')+'</button></div>'+
     '<div class="cwb" id="aiBody">'+msgs.map(m=>'<div class="bub'+(m.r==='me'?' me':'')+'">'+(m.r==='bot'?m.t:esc(m.t))+'</div>').join('')+
     (ST.ai.length?'':'<div class="sugg">'+sugg.map(s=>'<button data-a="aiq" data-q="'+esc(s)+'">'+esc(s)+'</button>').join('')+'</div>')+'</div>'+
     '<div class="cwf"><input id="aiq" data-fk="aiq" placeholder="'+tr('Posez votre question...','Ask your question...')+'" autocomplete="off"><button class="ib bd" data-a="aisend" aria-label="send">'+ic('send')+'</button></div></aside>';
@@ -2412,7 +2412,7 @@ A['import-go']=()=>{
 };
 
 /* ---------- Studio: custom fields (editable interface) ---------- */
-MODALS.studio={title:p=>tr('Velume Studio — ','Velume Studio — ')+mlabel(p.model),
+MODALS.studio={title:p=>tr('Vélume Studios — ','Vélume Studios — ')+mlabel(p.model),
   body:p=>{
     const cus=ST.custom[p.model]||[];
     return '<p class="muted" style="margin-bottom:10px">'+tr('Ajoutez un champ à ce modèle : il apparaît automatiquement dans les listes, les formulaires et l’export, sans programmation.','Add a field to this model: it automatically appears in lists, forms and exports, no coding required.')+'</p>'+
@@ -2458,7 +2458,7 @@ function captureUI(){
     st.sel=ae.id?'#'+ae.id:(ae.dataset.fld?'[data-fld="'+ae.dataset.fld+'"]':ae.dataset.ln?'[data-ln="'+ae.dataset.ln+'"]':ae.dataset.fk?'[data-fk="'+ae.dataset.fk+'"]':'[data-m="'+ae.dataset.m+'"]');
     try{st.s=ae.selectionStart;st.e=ae.selectionEnd}catch(e){}
   }
-  st.scroll={};['#main .va','.calscroll','.gv','.cwb','.kv','.dlg','.kbody','.thread .cwb','.dsc .list','.posr .pcat','.ord .ol','.kn .ksb'].forEach(s=>{const e=$(s);if(e)st.scroll[s]=[e.scrollTop,e.scrollLeft]});
+  st.scroll={};['#main .va','.st3main','.st3nav','.calscroll','.gv','.cwb','.kv','.dlg','.kbody','.thread .cwb','.dsc .list','.posr .pcat','.ord .ol','.kn .ksb'].forEach(s=>{const e=$(s);if(e)st.scroll[s]=[e.scrollTop,e.scrollLeft]});
   st.win=[window.scrollX,window.scrollY];
   return st;
 }
@@ -2585,7 +2585,7 @@ defModel('dept','Départements','Departments','name',{
 defModel('employee','Employés','Employees','name',{
   name:['char','Nom','Name',{req:1}], job:['char','Poste','Job title',{tx:1}], dept:['m2o','Département','Department',{rel:'dept'}],
   mgr:['m2o','Responsable','Manager',{rel:'employee'}], phone:['char','Téléphone','Phone'], email:['char','E-mail professionnel','Work e-mail'],
-  loc:['char','Lieu de travail','Work location',{def:'Velume · Douala'}], since:['date','Date d’entrée','Hire date'],
+  loc:['char','Lieu de travail','Work location',{def:'Vélume · Douala'}], since:['date','Date d’entrée','Hire date'],
   online:['bool','En ligne','Online',{def:true}], note:['text','Notes','Notes']},{chatter:true});
 defModel('user','Utilisateurs','Users','name',{
   name:['char','Nom','Name',{req:1}], login:['char','Identifiant (e-mail)','Login (e-mail)',{req:1}],
@@ -2602,7 +2602,7 @@ defModel('pcat','Catégories de produits','Product categories','name',{name:['ch
 defModel('product','Produits','Products','name',{
   name:['char','Nom du produit','Product name',{req:1,tx:1}],
   cat:['m2o','Catégorie','Category',{rel:'pcat'}],
-  reg:['sel','Point de vente','Point of sale',{opts:[['bar','Velume Bar','Velume Bar'],['podcast','Studio Podcast','Podcast studio'],['shoot','Shooting & studios','Shoots & studios']],def:'bar'}],
+  reg:['sel','Point de vente','Point of sale',{opts:[['bar','Vélume Bar','Vélume Bar'],['podcast','Studio Podcast','Podcast studio'],['shoot','Shooting & studios','Shoots & studios']],def:'bar'}],
   kind:['sel','Type','Type',{opts:[['consu','Consommable','Consumable'],['service','Service','Service'],['rental','Location','Rental','info']],def:'consu'}],
   price:['money','Prix de vente (TTC)','Sales price (incl. VAT)',{def:0}],
   unit:['sel','Facturation','Billing',{opts:[['f','Forfait','Flat fee'],['h','À l’heure','Per hour']],def:'f'}],
@@ -2614,7 +2614,7 @@ defModel('product','Produits','Products','name',{
   {rname:r=>tx(r.name)});
 defModel('rentcat','Catégories de location','Rental categories','name',{name:['char','Nom','Name',{req:1,tx:1}],note:['text','Description','Description']},{chatter:false});
 defModel('poscfg','Points de vente','Points of sale','name',{
-  name:['char','Nom','Name',{req:1}], reg:['sel','Catalogue','Catalog',{opts:[['bar','Velume Bar','Velume Bar'],['studios','Podcast & studios','Podcast & studios']],def:'bar'}],
+  name:['char','Nom','Name',{req:1}], reg:['sel','Catalogue','Catalog',{opts:[['bar','Vélume Bar','Vélume Bar'],['studios','Podcast & studios','Podcast & studios']],def:'bar'}],
   tip:['bool','Pourboires','Tips',{def:false}], kitchen:['bool','Envoyer à l’écran de cuisine','Send to kitchen display',{def:true}],
   drawer:['sel','Tiroir-caisse','Cash drawer',{opts:[['sim','Simulé (démonstration)','Simulated (demo)'],['serial','Branché au navigateur (USB / série ESC/POS)','Browser-connected (USB / serial ESC/POS)'],['none','Aucun tiroir','No drawer']],def:'sim'}],
   float:['money','Fond de caisse standard','Standard opening float',{def:25000}], maxcash:['money','Seuil d’alerte espèces (retrait conseillé)','Cash alert threshold (suggest pick-up)',{def:150000}]},{chatter:false});
@@ -2690,7 +2690,7 @@ defModel('rental','Locations','Rentals','ref',{
 defModel('apptype','Types de rendez-vous','Appointment types','name',{
   name:['char','Nom','Name',{req:1,tx:1}], dur:['float','Durée (h)','Duration (h)',{def:1}], studio:['sel','Studio','Studio',{opts:[['photo','Photo','Photo'],['podcast','Podcast','Podcast'],['video','Vidéo','Video']],def:'photo'}],
   product:['m2o','Formule liée','Linked package',{rel:'product'}], slug:['char','Lien de réservation','Booking link'], staff:['m2m','Collaborateurs','Staff',{rel:'employee'}],
-  loc:['char','Lieu','Location',{def:'Velume Coffee & Studio, Douala'}], active:['bool','Publié','Published',{def:true}], desc:['text','Message de confirmation','Confirmation message']});
+  loc:['char','Lieu','Location',{def:'Vélume Coffee & Studios, Douala'}], active:['bool','Publié','Published',{def:true}], desc:['text','Message de confirmation','Confirmation message']});
 defModel('event','Réunions','Meetings','name',{
   name:['char','Sujet','Subject',{req:1,tx:1}], start:['datetime','Début','Start',{req:1,def:()=>{const d=new Date();d.setMinutes(0);d.setHours(d.getHours()+1);return isoDT(d)}}],
   stop:['datetime','Fin','End',{req:1,def:()=>{const d=new Date();d.setMinutes(0);d.setHours(d.getHours()+2);return isoDT(d)}}],
@@ -2756,7 +2756,7 @@ defModel('autom','Actions automatisées','Automated actions','name',{
   model:['sel','Modèle','Model',{opts:[['invoice','Facture','Invoice'],['rental','Location','Rental'],['posorder','Commande POS','POS order'],['task','Tâche','Task'],['sigdoc','Document à signer','Document to sign'],['event','Réunion','Meeting'],['surveyans','Participation','Participation']],def:'invoice'}],
   trigger:['sel','Déclencheur','Trigger',{opts:[['create','À la création','On creation'],['write','À la modification','On update'],['both','Création et modification','Create & update']],def:'write'}],
   field:['char','Champ surveillé','Watched field'], op:['sel','Opérateur','Operator',{opts:[['=','est égal à','equals'],['!=','est différent de','differs from'],['set','est renseigné','is set']],def:'='}], val:['char','Valeur','Value'],
-  a_type:['sel','Action à exécuter','Action to run',{opts:[['notify','Notifier (message Velume Bot)','Notify (Velume Bot message)'],['activity','Planifier une activité','Schedule an activity'],['email','Envoyer un e-mail (simulé)','Send e-mail (simulated)'],['write','Modifier un champ','Update a field'],['create','Créer un enregistrement','Create a record']],def:'notify'}],
+  a_type:['sel','Action à exécuter','Action to run',{opts:[['notify','Notifier (message Vélume Bot)','Notify (Vélume Bot message)'],['activity','Planifier une activité','Schedule an activity'],['email','Envoyer un e-mail (simulé)','Send e-mail (simulated)'],['write','Modifier un champ','Update a field'],['create','Créer un enregistrement','Create a record']],def:'notify'}],
   a_text:['text','Texte / modèle ({name})','Text / template ({name})'], a_days:['int','Délai (jours)','Delay (days)',{def:1}],
   a_field:['char','Champ à modifier','Field to update'], a_val:['char','Nouvelle valeur','New value'],
   active:['bool','Active','Active',{def:true}], runs:['int','Exécutions','Runs',{ro:1,def:0}]},
@@ -2801,7 +2801,7 @@ function seedAll(){
       price:p.p,unit:f?f.unit:'f',dur:f?f.dur:1,studio:f?(f.studio):'',rcat:f?rc[f.studio]:null,pos:true}).id;
   });
   /* pos config */
-  const cBar=C('poscfg',{name:'Velume Bar',reg:'bar'}).id,cStu=C('poscfg',{name:T('Velume Podcast & Studios','Velume Podcast & Studios'),reg:'studios',kitchen:false}).id;
+  const cBar=C('poscfg',{name:'Vélume Bar',reg:'bar'}).id,cStu=C('poscfg',{name:T('Vélume Studios','Vélume Studios'),reg:'studios',kitchen:false}).id;
   [['Espèces','cash','Espèces'],['Orange Money','mobile','Orange Money'],['MTN MoMo','mobile','MTN MoMo'],['Carte bancaire','bank','Banque']].forEach(x=>C('paymeth',{name:x[0],kind:x[1],journal:x[2]}));
   const ses1=C('possession',{cfg:cBar,user:eS,open:nowM(300),cash0:20000,state:'open'}).id;
   /* seed POS orders */
@@ -2829,8 +2829,8 @@ function seedAll(){
   INV(pB,['Shooting produits','Product shoot'],40000,1,'posted');
   INV(pX,['Privatisation · lancement produit','Private hire · product launch'],250000,40,'posted');
   INV(pN,['Shooting événement','Event shoot'],65000,3,'paid');
-  INV(pSE,['Velume Club · 1 mois','Velume Club · 1 month'],50000,10,'paid');
-  INV(pMC,['Velume Club · 1 mois','Velume Club · 1 month'],50000,0,'draft');
+  INV(pSE,['Vélume Club · 1 mois','Vélume Club · 1 month'],50000,10,'paid');
+  INV(pMC,['Vélume Club · 1 mois','Vélume Club · 1 month'],50000,0,'draft');
   INV(sBail,['Loyer du local (mois en cours)','Premises rent (current month)'],300000,12,'posted','in_invoice',jA);
   INV(sTor,['Café en grains (commande)','Coffee beans (order)'],180000,8,'paid','in_invoice',jA);
   INV(pA,['Avoir · séance annulée','Credit note · cancelled session'],15000,4,'posted','out_refund');
@@ -2847,17 +2847,17 @@ function seedAll(){
     const st=dayAt(b[4],Math.floor(b[5]),(b[5]%1)*60),en=isoDT(addMin(pd(st),b[6]*60));
     const price=f.unit==='h'?pr.p*b[6]:pr.p;
     C('rental',{partner:b[3],start:st,stop:en,studio:b[1],state:b[8],deposit:b[7],staff:staffFor[b[1]],lines:[{product:prodId[b[2]],qty:f.unit==='h'?b[6]:1,price:pr.p}]});
-    C('event',{name:T(pr.fr,pr.en)+' — '+D.name('partner',b[3]),start:st,stop:en,kind:'appt',apptype:apt[b[1]],partners:[b[3]],emps:[staffFor[b[1]]],loc:'Velume Coffee & Studio'});
+    C('event',{name:T(pr.fr,pr.en)+' — '+D.name('partner',b[3]),start:st,stop:en,kind:'appt',apptype:apt[b[1]],partners:[b[3]],emps:[staffFor[b[1]]],loc:'Vélume Coffee & Studios'});
   });
-  C('event',{name:T('Point d’équipe hebdomadaire','Weekly team meeting'),start:dayAt(0,8,0),stop:dayAt(0,9,0),kind:'meet',emps:[eP,eB,eY,eL,eM,eS,eE],loc:'Velume Coffee'});
+  C('event',{name:T('Point d’équipe hebdomadaire','Weekly team meeting'),start:dayAt(0,8,0),stop:dayAt(0,9,0),kind:'meet',emps:[eP,eB,eY,eL,eM,eS,eE],loc:'Vélume Coffee'});
   C('event',{name:T('Visite d’un local à Bonapriso','Premises visit in Bonapriso'),start:dayAt(2,16,0),stop:dayAt(2,17,30),kind:'meet',emps:[eP]});
   C('event',{name:T('Atelier créateurs (test des studios)','Creators workshop (studio test)'),start:dayAt(3,10,0),stop:dayAt(3,12,0),kind:'meet',emps:[eP,eB,eY]});
   /* projects / tasks */
   const stg={};[['Backlog','Backlog',0],['À faire','To do',0],['En cours','In progress',0],['En revue','In review',0],['Terminé','Done',1]].forEach((s,i)=>stg[i]=C('taskstage',{name:T(s[0],s[1]),seq:i*10,done:!!s[2]}).id);
   const tg=[['Urgent','Urgent'],['Achat','Purchase'],['Marketing','Marketing'],['Juridique','Legal']].map(t=>C('tag',{name:T(t[0],t[1])}).id);
-  const pr1=C('project',{name:T('Ouverture Velume (avril 2027)','Velume opening (April 2027)'),mgr:eP,start:ago(10),end:ahead(170),fav:true,color:3,state:'track',desc:'Local, travaux, équipement, recrutement, lancement.'}).id;
+  const pr1=C('project',{name:T('Ouverture Vélume (avril 2027)','Vélume opening (April 2027)'),mgr:eP,start:ago(10),end:ahead(170),fav:true,color:3,state:'track',desc:'Local, travaux, équipement, recrutement, lancement.'}).id;
   const pr2=C('project',{name:T('Aménagement des studios','Studios fit-out'),mgr:eB,start:ago(5),end:ahead(120),color:0,state:'risk'}).id;
-  const pr3=C('project',{name:T('Lancement Velume Club','Velume Club launch'),mgr:eP,start:ahead(30),end:ahead(200),color:4,state:'track'}).id;
+  const pr3=C('project',{name:T('Lancement Vélume Club','Vélume Club launch'),mgr:eP,start:ahead(30),end:ahead(200),color:4,state:'track'}).id;
   const TK=(t,p,s,as,pri,d0,d1,tags,h)=>C('task',{name:T(t[0],t[1]),project:p,stage:stg[s],assignee:as,prio:pri,start:ago(-d0),deadline:ago(-d1),tags:tags||[],hours:h||0});
   TK(['Demander 3 devis pour le matériel des studios','Get 3 quotes for studio equipment'],pr2,1,eB,2,0,7,[tg[1]],6);
   TK(['Visiter 2 locaux à Bonapriso','Visit 2 premises in Bonapriso'],pr1,2,eP,3,0,2,[tg[0]],5);
@@ -2878,11 +2878,11 @@ function seedAll(){
   [['Demander 3 devis pour le matériel des studios','Get 3 quotes for studio equipment','inbox',0],['Visiter 2 locaux à Bonapriso','Visit 2 premises in Bonapriso','today',3],['Lister les 30 créateurs invités à tester les studios','List the 30 creators invited to test the studios','week',0],
    ['Choisir le groupe électrogène 15 kVA','Choose the 15 kVA generator','month',0],['Préparer la soirée d’ouverture (avril 2027)','Plan the opening night (April 2027)','later',0],['Rédiger le business plan','Write the business plan','done',0]].forEach(t=>C('todo',{name:T(t[0],t[1]),stage:t[2],prio:t[3],user:eP,deadline:t[2]==='today'?ago(0):''}));
   /* surveys */
-  const sv=C('survey',{title:T('Satisfaction client — café & studios','Customer satisfaction — coffee & studios'),state:'open',desc:'Quelques questions pour améliorer Velume.',questions:[
+  const sv=C('survey',{title:T('Satisfaction client — café & studios','Customer satisfaction — coffee & studios'),state:'open',desc:'Quelques questions pour améliorer Vélume.',questions:[
     {q:T('Comment notez-vous l’accueil ?','How do you rate our welcome?'),type:'rating',choices:''},{q:T('Comment notez-vous la qualité du café ?','How do you rate the coffee quality?'),type:'rating',choices:''},
     {q:T('Avez-vous réservé un studio ?','Did you book a studio?'),type:'yesno',choices:''},{q:T('Par quel canal nous avez-vous connus ?','How did you hear about us?'),type:'choice',choices:'Instagram, WhatsApp, Bouche-à-oreille, Passage'},
     {q:T('Une suggestion ?','Any suggestion?'),type:'text',choices:''}]}).id;
-  C('survey',{title:T('Intérêt pour Velume Club','Interest in Velume Club'),state:'draft',questions:[{q:T('Combien d’heures de studio par mois ?','How many studio hours a month?'),type:'choice',choices:'1-2, 3-4, 5+'}]});
+  C('survey',{title:T('Intérêt pour Vélume Club','Interest in Vélume Club'),state:'draft',questions:[{q:T('Combien d’heures de studio par mois ?','How many studio hours a month?'),type:'choice',choices:'1-2, 3-4, 5+'}]});
   [['Aïcha Mbarga',5],['Kevin Tchoua',4],['Marie-Claire Fotso',5],['Anonyme',4],['Sandrine Eko',5]].forEach(a=>C('surveyans',{survey:sv,who:a[0],score:a[1],date:nowM(Math.round(Math.random()*2000)+60),answers:'{}'}));
   D.write('survey',sv,{},{silent:true});
   /* signature */
@@ -2890,7 +2890,7 @@ function seedAll(){
   [['image',pA,'signed',6],['location',pK,'signed',5],['location',pB,'sent',1],['club',pMC,'sent',0],['image',pN,'signed',3],['location',pX,'expired',25]].forEach(d=>C('sigdoc',{name:T(TPL[d[0]].fr,TPL[d[0]].en)+' — '+D.name('partner',d[1]),tpl:tp[d[0]],partner:d[1],state:d[2],date:ago(d[3]),expire:ago(d[3]-30),signedat:d[2]==='signed'?isoDT(addDays(today,-d[3])):''}));
   /* knowledge */
   const A=(n,ic_,sec,body,parent,fav)=>C('article',{name:T(n[0],n[1]),icon:ic_,section:sec,body:body,parent:parent||null,fav:!!fav});
-  const a1=A(['Bienvenue chez Velume','Welcome to Velume'],'☕','workspace','<h2>Notre promesse</h2><p>Velume réunit un café de spécialité, un studio photo, un studio podcast et un studio vidéo pour créateurs à Douala.</p><h2>Les 3 règles</h2><ul><li>Accueillir chaque client comme un invité.</li><li>Garder les studios impeccables entre deux séances.</li><li>Tout noter dans VELUME : réservations, caisse, factures.</li></ul>',null,true);
+  const a1=A(['Bienvenue chez Vélume','Welcome to Vélume'],'☕','workspace','<h2>Notre promesse</h2><p>Vélume réunit un café de spécialité, un studio photo, un studio podcast et un studio vidéo pour créateurs à Douala.</p><h2>Les 3 règles</h2><ul><li>Accueillir chaque client comme un invité.</li><li>Garder les studios impeccables entre deux séances.</li><li>Tout noter dans VELUME : réservations, caisse, factures.</li></ul>',null,true);
   A(['Procédure d’ouverture du café','Café opening checklist'],'🔑','workspace','<h2>Avant l’ouverture</h2><p>Allumer la machine, vérifier la mouture, compter le fond de caisse.</p><div class="cb"><input type="checkbox"> Machine à espresso allumée</div><div class="cb"><input type="checkbox"> Fond de caisse compté</div><div class="cb"><input type="checkbox"> Écran de cuisine connecté</div>',a1);
   A(['Guide du studio photo','Photo studio guide'],'📸','workspace','<h2>Avant une séance</h2><p>Fond installé, lumières testées, batteries chargées. Le créneau inclut l’installation et le rangement.</p>',a1);
   A(['Tarifs et TVA','Prices and VAT'],'💰','shared','<h2>TVA</h2><p>Les prix affichés sont TTC. TVA appliquée : 19,25 % (HT = TTC ÷ 1,1925).</p><h2>Moyens de paiement</h2><p>Espèces, Orange Money, MTN MoMo, carte.</p>',null,true);
@@ -2901,10 +2901,10 @@ function seedAll(){
   const chG=C('channel',{name:'général',kind:'channel',members:[eP,eB,eY,eL,eM,eS,eE],desc:'Annonces et vie de l’équipe',fav:true}).id;
   const chS=C('channel',{name:'studios',kind:'channel',members:[eP,eB,eY],desc:'Planning et matériel des studios'}).id;
   const chC=C('channel',{name:'café',kind:'channel',members:[eP,eL,eM,eS],desc:'Service, stocks, menu'}).id;
-  const chBot=C('channel',{name:'Velume Bot',kind:'chat',bot:true,members:[eP]}).id;
+  const chBot=C('channel',{name:'Vélume Bot',kind:'chat',bot:true,members:[eP]}).id;
   const chB=C('channel',{name:'Brice',kind:'chat',members:[eP,eB]}).id;
   [[chG,eP,'Bienvenue sur VELUME ! Tout se passe ici : caisse, studios, factures, planning.',600],[chG,eB,'Le planning de la semaine est publié.',300],[chS,eY,'Les micros du studio podcast sont testés.',200],[chS,eB,'Pensez à confirmer l’acompte 50 % avant chaque séance.',120],[chC,eL,'Le café du Cameroun arrive jeudi.',90],[chB,eB,'Je passe voir le local demain à 10 h.',45]].forEach(m=>C('message',{channel:m[0],author:m[1],text:T(m[2],m[2]),date:nowM(m[3])}));
-  C('message',{channel:chBot,author:0,text:'Bonjour ! Je suis Velume Bot. Je vous préviens ici des factures en retard, des locations confirmées et des nouvelles réponses aux sondages.',date:nowM(500)});
+  C('message',{channel:chBot,author:0,text:'Bonjour ! Je suis Vélume Bot. Je vous préviens ici des factures en retard, des locations confirmées et des nouvelles réponses aux sondages.',date:nowM(500)});
   C('message',{channel:chBot,author:0,text:'Facture AGENCE PIXEL WOURI en retard : 250 000 FCFA.',date:nowM(60)});
   /* automations */
   C('autom',{name:T('Facture en retard → activité de relance','Overdue invoice → follow-up activity'),model:'invoice',trigger:'write',field:'late',op:'=',val:'true',a_type:'activity',a_text:'Relancer {partner} pour la facture {number}',a_days:1,active:true});
@@ -3000,7 +3000,7 @@ act('pos_report',Object.assign({},ACT.posorders,{id:'pos_report',l:['Analyse des
 act('possessions',{model:'possession',l:['Sessions','Sessions'],icon:'clock',views:['list'],list:['name','cfg','user','open','close','state','total','cash0','cash_cnt','cash_diff'],sum:['total','cash_diff'],search:['name'],create:false,
   form:{status:'state',title:'name',cols:[['cfg','user','cash0'],['open','close','total'],['cash_exp','cash_cnt','cash_diff']],btns:[{l:['Clôturer la session (compter le tiroir)','Close session (count the drawer)'],when:b=>b.state==='open',pri:1,fn:b=>openModal('closecount',{ses:b.id,exp:drawerBal(b.id)})}]}});
 act('pos_products',{model:'product',l:['Produits','Products'],icon:'cup',views:['kanban','list'],dom:r=>r.pos&&r.kind!=='rental'||r.kind==='rental'&&r.pos,list:['name','cat','reg','kind','price'],search:['name'],groups:['cat','reg','kind'],
-  filters:[['bar',['Velume Bar','Velume Bar'],r=>r.reg==='bar'],['studios',['Podcast & studios','Podcast & studios'],r=>r.reg!=='bar']],
+  filters:[['bar',['Vélume Bar','Vélume Bar'],r=>r.reg==='bar'],['studios',['Podcast & studios','Podcast & studios'],r=>r.reg!=='bar']],
   kanban:{by:'cat',card:r=>'<b>'+esc(rn('product',r))+'</b><b class="num" style="color:var(--gold-ink)">'+money(r.price)+'</b><span class="muted" style="font-size:.82rem">HT '+money(htOf(r.price))+'</span>'},
   form:{title:'name',cols:[['cat','reg','kind','price'],['unit','dur','pos','active']]}});
 act('pcats',{model:'pcat',l:['Catégories de produits','Product categories'],icon:'tag',views:['list'],list:['name','seq'],form:{title:'name',cols:[['seq']]}});
@@ -3169,7 +3169,7 @@ app('config',{l:['Paramètres','Settings'],icon:'gear',color:'var(--ink-2)',core
    Apps catalogue, Settings, technical pages, reports, signature, surveys
    ========================================================= */
 const pageHead=(title,right)=>'<div class="cp gut"><div class="cp-top"><div class="cp-left"><span class="cp-title">'+esc(title)+'</span></div><div class="cp-right">'+(right||'')+'</div></div></div>';
-const company=()=>ST.set.company||'Velume Coffee & Studio';
+const company=()=>ST.set.company||'Vélume Coffee & Studios';
 
 /* ---------- Discuss ---------- */
 CUSTOM.discuss=function(){
@@ -3182,17 +3182,17 @@ CUSTOM.discuss=function(){
   const bots=D.all('message').filter(m=>m.author===0);
   let list='';
   if(tab==='inbox'){
-    list=bots.slice().reverse().map(m=>'<button class="conv" data-a="dsc-bot" data-id="'+m.id+'">'+avatar('Velume Bot')+'<span class="cm"><b>Velume Bot</b><span class="muted">'+esc(m.text)+'</span></span></button>').join('')||'<p class="muted">'+tr('Boîte de réception vide.','Inbox empty.')+'</p>';
+    list=bots.slice().reverse().map(m=>'<button class="conv" data-a="dsc-bot" data-id="'+m.id+'">'+avatar('Vélume Bot')+'<span class="cm"><b>Vélume Bot</b><span class="muted">'+esc(m.text)+'</span></span></button>').join('')||'<p class="muted">'+tr('Boîte de réception vide.','Inbox empty.')+'</p>';
   }else{
     list=chans.filter(c=>(tab==='chats'?c.kind==='chat':c.kind==='channel')&&(!q||c.name.toLowerCase().includes(q))).map(c=>{const m=lastMsg(c.id);return '<button class="conv'+(c.id===sel?' on':'')+'" data-a="dsc-sel" data-id="'+c.id+'">'+avatar(c.name,'',c.kind==='chat')+'<span class="cm"><b>'+(c.kind==='channel'?'# ':'')+esc(c.name)+'</b><span class="muted">'+esc(m.text?String(m.text).slice(0,50):(c.desc||'—'))+'</span></span></button>'}).join('');
   }
   const msgs=D.all('message').filter(m=>m.channel===sel).sort((a,b)=>a.date>b.date?1:-1);
   const thread='<div class="kdh"><button class="ib dsc-back" data-a="dsc-back" aria-label="back">'+ic('chevL')+'</button><b>'+(cur.kind==='channel'?'# ':'')+esc(cur.name)+'</b><span class="muted" style="font-size:.86rem">'+esc(cur.desc||'')+'</span><span class="sp"></span><span class="badge">'+(cur.members||[]).length+' '+tr('membres','members')+'</span></div>'+
-    '<div class="cwb">'+(msgs.length?msgs.map(m=>{const who=m.author?D.name('employee',m.author):'Velume Bot';return '<div class="msg">'+avatar(who)+'<div class="mb"><div class="mh"><b>'+esc(who)+'</b> <span class="muted">'+esc(fmtDT(m.date))+'</span></div><div>'+esc(m.text)+'</div>'+(m.link?'<a data-a="aigo" data-n="billing:i_inv">'+tr('Voir','View')+'</a>':'')+'</div></div>'}).join(''):'<div class="emp">'+ic('chat','big')+'<h3>'+tr('Aucun message','No messages')+'</h3><p class="muted">'+tr('Écrivez le premier message.','Write the first message.')+'</p></div>')+'</div>'+
-    (cur.bot?'<div class="cwf"><span class="muted">'+tr('Velume Bot envoie des alertes automatiques (voir Paramètres › Actions automatisées).','Velume Bot sends automatic alerts (see Settings › Automated actions).')+'</span></div>':'<div class="cwf"><input id="chin" data-fk="chin" placeholder="'+tr('Écrire dans #'+cur.name+'...','Message #'+cur.name+'...')+'" autocomplete="off"><button class="btn pri" data-a="dsc-send">'+ic('send')+'</button></div>');
+    '<div class="cwb">'+(msgs.length?msgs.map(m=>{const who=m.author?D.name('employee',m.author):'Vélume Bot';return '<div class="msg">'+avatar(who)+'<div class="mb"><div class="mh"><b>'+esc(who)+'</b> <span class="muted">'+esc(fmtDT(m.date))+'</span></div><div>'+esc(m.text)+'</div>'+(m.link?'<a data-a="aigo" data-n="billing:i_inv">'+tr('Voir','View')+'</a>':'')+'</div></div>'}).join(''):'<div class="emp">'+ic('chat','big')+'<h3>'+tr('Aucun message','No messages')+'</h3><p class="muted">'+tr('Écrivez le premier message.','Write the first message.')+'</p></div>')+'</div>'+
+    (cur.bot?'<div class="cwf"><span class="muted">'+tr('Vélume Bot envoie des alertes automatiques (voir Paramètres › Actions automatisées).','Vélume Bot sends automatic alerts (see Settings › Automated actions).')+'</span></div>':'<div class="cwf"><input id="chin" data-fk="chin" placeholder="'+tr('Écrire dans #'+cur.name+'...','Message #'+cur.name+'...')+'" autocomplete="off"><button class="btn pri" data-a="dsc-send">'+ic('send')+'</button></div>');
   const rail=[['inbox','chat2',tr('Boîte de réception','Inbox'),bots.length],['chats','user',tr('Chats','Chats')],['channels','team',tr('Canaux','Channels')]];
   return '<div class="va gut" style="padding-top:12px"><div class="dsc'+(UI.dthread?' openthread':'')+'"><div class="rail">'+rail.map(r=>'<button data-a="dsc-tab" data-t="'+r[0]+'" aria-pressed="'+(tab===r[0])+'">'+ic(r[1])+'<span>'+r[2]+'</span></button>').join('')+'</div>'+
-    '<div class="list"><div class="promo">'+ic('bolt')+'<div class="pt"><b>'+tr('Velume Bot est actif','Velume Bot is on')+'</b><div style="font-size:.84rem">'+tr('Alertes factures, locations, sondages.','Invoice, rental and survey alerts.')+'</div></div></div>'+
+    '<div class="list"><div class="promo">'+ic('bolt')+'<div class="pt"><b>'+tr('Vélume Bot est actif','Vélume Bot is on')+'</b><div style="font-size:.84rem">'+tr('Alertes factures, locations, sondages.','Invoice, rental and survey alerts.')+'</div></div></div>'+
     '<div class="sbox" style="margin:2px 0"><input id="dq" data-fk="dq" placeholder="'+tr('Trouver ou démarrer une conversation','Find or start a conversation')+'" value="'+esc(UI.dq||'')+'"></div>'+
     '<button class="btn sm" data-a="dsc-new" style="align-self:flex-start">'+ic('plus')+tr('Nouveau canal','New channel')+'</button>'+list+'</div><div class="thread">'+thread+'</div></div></div>';
 };
@@ -3338,7 +3338,7 @@ function bookingHtml(){
   const days=Array.from({length:7},(_,i)=>addDays(sod(new Date()),i+(new Date().getHours()>=18?1:0)));
   if(!bk.date)bk.date=iso(days[0]);
   const slots=type?slotsFor(type,bk.date):[];
-  return '<div style="max-width:720px;margin:0 auto;display:grid;gap:14px"><div class="card"><h2>'+tr('Réserver chez Velume','Book at Velume')+'</h2><p class="muted">'+tr('Choisissez un service, un jour et un créneau.','Choose a service, a day and a slot.')+'</p></div>'+
+  return '<div style="max-width:720px;margin:0 auto;display:grid;gap:14px"><div class="card"><h2>'+tr('Réserver chez Vélume','Book at Vélume')+'</h2><p class="muted">'+tr('Choisissez un service, un jour et un créneau.','Choose a service, a day and a slot.')+'</p></div>'+
     '<div class="card"><h3>1. '+tr('Service','Service')+'</h3><div class="seg" role="group" style="margin-top:8px">'+types.map(t=>'<button data-a="bk-type" data-id="'+t.id+'" aria-pressed="'+(bk.type===t.id)+'">'+esc(tx(t.name))+' · '+fmt2(t.dur)+' h</button>').join('')+'</div>'+(type&&type.product?'<p class="muted" style="margin-top:8px">'+tr('Tarif : ','Price: ')+'<b>'+money((D.get('product',type.product)||{}).price||0)+'</b> TTC</p>':'')+'</div>'+
     '<div class="card"><h3>2. '+tr('Jour','Day')+'</h3><div class="seg" role="group" style="margin-top:8px">'+days.map(d=>'<button data-a="bk-date" data-d="'+iso(d)+'" aria-pressed="'+(bk.date===iso(d))+'">'+dayName(d)+' '+d.getDate()+'</button>').join('')+'</div></div>'+
     '<div class="card"><h3>3. '+tr('Créneau','Slot')+'</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'+slots.map(s=>'<button class="btn'+(bk.slot===s.h?' pri':'')+'" '+(s.busy?'disabled':'')+' data-a="bk-slot" data-h="'+s.h+'">'+s.label+'</button>').join('')+'</div></div>'+
@@ -3562,7 +3562,7 @@ MODALS.report={title:p=>({invoice:tr('Facture','Invoice'),rental:tr('Devis de lo
       const o=D.get('posorder',p.id);
       h+='<div style="text-align:center"><h2 style="margin:10px 0 2px">'+esc(o.ref)+'</h2><p class="muted">'+esc(fmtDT(o.date))+'</p></div>'+
         docTable((o.lines||[]).map(l=>'<tr><td>'+esc(D.name('product',l.product))+'</td><td class="num">'+l.qty+'</td><td class="num">'+money(l.sub)+'</td></tr>').join(''),[tr('Article','Item'),tr('Qté','Qty'),'TTC'])+
-        '<div class="totals"><div><span>HT</span><b class="num">'+money(htOf(o.total))+'</b></div><div><span>TVA '+fmt2(TVA())+' %</span><b class="num">'+money(o.total-htOf(o.total))+'</b></div><div class="big"><span>Total</span><b class="num">'+money(o.total)+'</b></div></div><p class="muted" style="text-align:center;margin-top:10px">'+tr('Payé par ','Paid by ')+esc(selLabel(M.posorder.f.pay,o.pay))+'<br>'+esc(ST.set.pos_footer||tr('Merci et à bientôt chez Velume !','Thank you, see you soon at Velume!'))+'</p>';
+        '<div class="totals"><div><span>HT</span><b class="num">'+money(htOf(o.total))+'</b></div><div><span>TVA '+fmt2(TVA())+' %</span><b class="num">'+money(o.total-htOf(o.total))+'</b></div><div class="big"><span>Total</span><b class="num">'+money(o.total)+'</b></div></div><p class="muted" style="text-align:center;margin-top:10px">'+tr('Payé par ','Paid by ')+esc(selLabel(M.posorder.f.pay,o.pay))+'<br>'+esc(ST.set.pos_footer||tr('Merci et à bientôt chez Vélume !','Thank you, see you soon at Vélume!'))+'</p>';
     }else{
       const d=D.get('sigdoc',p.id);const tp=D.get('sigtpl',d.tpl);
       h+='<h2 style="margin:14px 0 2px">'+esc(tx(d.name))+'</h2><p class="muted">'+esc(D.name('partner',d.partner))+' · '+esc(selLabel(M.sigdoc.f.state,d.state))+'</p><ol style="line-height:1.7">'+String(tp?tp.body:'').split('\n').filter(Boolean).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+
@@ -3600,7 +3600,7 @@ A['sv-send']=()=>{
 };
 
 /* ---------- Apps catalogue ---------- */
-const EXTRA_APPS=[['CRM','CRM','Pipeline commercial et opportunités','Sales pipeline and opportunities','Ventes','Sales','target'],['Ventes','Sales','Devis et commandes clients','Quotations and sales orders','Ventes','Sales','cart'],['Achats','Purchase','Commandes fournisseurs','Purchase orders','Ventes','Sales','box'],['Inventaire','Inventory','Stocks de café et consommables','Coffee and supplies stock','Chaîne logistique','Supply chain','box'],['Comptabilité','Accounting','Plan comptable SYSCOHADA, banque, TVA','SYSCOHADA chart of accounts, bank, VAT','Finance','Finance','dollar'],['Site web','Website','Site vitrine Velume','Velume showcase site','Sites web','Websites','globe'],['E-commerce','eCommerce','Vente en ligne de café en grains','Online coffee beans shop','Sites web','Websites','shop'],['Congés','Time Off','Demandes de congés','Leave requests','Ressources humaines','Human resources','calendar'],['Recrutement','Recruitment','Offres d’emploi et candidatures','Job offers and applicants','Ressources humaines','Human resources','team'],['Notes de frais','Expenses','Frais et remboursements','Expenses and reimbursements','Finance','Finance','receipt'],['Événements','Events','Soirée d’ouverture, ateliers créateurs','Opening night, creator workshops','Marketing','Marketing','calendar'],['E-mail marketing','Email Marketing','Newsletters et campagnes','Newsletters and campaigns','Marketing','Marketing','mail'],['Live chat','Live Chat','Chat avec les visiteurs du site','Chat with website visitors','Sites web','Websites','chat'],['Maintenance','Maintenance','Entretien du matériel des studios','Studio equipment upkeep','Chaîne logistique','Supply chain','gear']];
+const EXTRA_APPS=[['CRM','CRM','Pipeline commercial et opportunités','Sales pipeline and opportunities','Ventes','Sales','target'],['Ventes','Sales','Devis et commandes clients','Quotations and sales orders','Ventes','Sales','cart'],['Achats','Purchase','Commandes fournisseurs','Purchase orders','Ventes','Sales','box'],['Inventaire','Inventory','Stocks de café et consommables','Coffee and supplies stock','Chaîne logistique','Supply chain','box'],['Comptabilité','Accounting','Plan comptable SYSCOHADA, banque, TVA','SYSCOHADA chart of accounts, bank, VAT','Finance','Finance','dollar'],['Site web','Website','Site vitrine Vélume','Vélume showcase site','Sites web','Websites','globe'],['E-commerce','eCommerce','Vente en ligne de café en grains','Online coffee beans shop','Sites web','Websites','shop'],['Congés','Time Off','Demandes de congés','Leave requests','Ressources humaines','Human resources','calendar'],['Recrutement','Recruitment','Offres d’emploi et candidatures','Job offers and applicants','Ressources humaines','Human resources','team'],['Notes de frais','Expenses','Frais et remboursements','Expenses and reimbursements','Finance','Finance','receipt'],['Événements','Events','Soirée d’ouverture, ateliers créateurs','Opening night, creator workshops','Marketing','Marketing','calendar'],['E-mail marketing','Email Marketing','Newsletters et campagnes','Newsletters and campaigns','Marketing','Marketing','mail'],['Live chat','Live Chat','Chat avec les visiteurs du site','Chat with website visitors','Sites web','Websites','chat'],['Maintenance','Maintenance','Entretien du matériel des studios','Studio equipment upkeep','Chaîne logistique','Supply chain','gear']];
 CUSTOM.apps=function(){
   const cat=UI.acat||'all';const q=(UI.aq||'').toLowerCase();
   const own=APPS.filter(a=>!a.core).map(a=>({id:a.id,fr:a.l[0],en:a.l[1],dfr:APPDESC[a.id][0],den:APPDESC[a.id][1],cfr:APPDESC[a.id][2],cen:APPDESC[a.id][3],icon:a.icon,color:a.color,real:true}));
@@ -3624,7 +3624,7 @@ document.addEventListener('input',e=>{if(e.target.id==='aq'){UI.aq=e.target.valu
 const SET=[
  {id:'general',l:['Paramètres généraux','General settings'],icon:'gear',blocks:[
   {t:['Société','Company'],o:[
-   {k:'company',st:'text',l:['Nom de la société','Company name'],d:['Affiché sur les documents et l’en-tête.','Shown on documents and header.'],def:'Velume Coffee & Studio'},
+   {k:'company',st:'text',l:['Nom de la société','Company name'],d:['Affiché sur les documents et l’en-tête.','Shown on documents and header.'],def:'Vélume Coffee & Studios'},
    {k:'address',st:'text',l:['Adresse','Address'],d:['Ville, quartier.','City, neighbourhood.'],def:'Douala, Cameroun'},
    {k:'niu',st:'text',l:['NIU (n° contribuable)','Tax ID (NIU)'],d:['À renseigner avant l’ouverture.','To fill in before opening.'],def:''},
    {k:'tva',st:'num',l:['Taux de TVA (%)','VAT rate (%)'],d:['19,25 % au Cameroun (HT = TTC ÷ 1,1925). Utilisé en caisse, factures, devis.','19.25% in Cameroon (excl. = incl. ÷ 1.1925). Used in POS, invoices, quotes.'],def:19.25},
@@ -3639,16 +3639,16 @@ const SET=[
    {k:'int_momo',st:'bool',l:['MTN MoMo','MTN MoMo'],d:['Idem : suivi manuel des paiements pour l’instant.','Same: manual payment tracking for now.'],def:false},
    {k:'int_wa',st:'bool',l:['WhatsApp Business','WhatsApp Business'],d:['Rappels de rendez-vous (à brancher).','Appointment reminders (to be connected).'],def:false}]},
   {t:['Données','Data'],o:[{k:'reset',st:'btn',l:['Réinitialiser les données de démonstration','Reset demo data'],d:['Efface vos modifications dans ce navigateur et recharge les exemples.','Erases your changes in this browser and reloads the samples.'],btn:['Réinitialiser','Reset']}]}]},
- {id:'discuss',app:'discuss',l:['Discussion','Discuss'],icon:'chat',blocks:[{t:['Messagerie','Messaging'],o:[{k:'ds_bot',st:'bool',l:['Velume Bot','Velume Bot'],d:['Alertes automatiques dans la discussion.','Automatic alerts in chat.'],def:true},{k:'ds_sound',st:'bool',l:['Sons de notification','Notification sounds'],d:['Prévu pour l’application mobile.','Planned for the mobile app.'],def:false}]}]},
+ {id:'discuss',app:'discuss',l:['Discussion','Discuss'],icon:'chat',blocks:[{t:['Messagerie','Messaging'],o:[{k:'ds_bot',st:'bool',l:['Vélume Bot','Vélume Bot'],d:['Alertes automatiques dans la discussion.','Automatic alerts in chat.'],def:true},{k:'ds_sound',st:'bool',l:['Sons de notification','Notification sounds'],d:['Prévu pour l’application mobile.','Planned for the mobile app.'],def:false}]}]},
  {id:'calendar',app:'calendar',l:['Calendrier','Calendar'],icon:'calendar',blocks:[{t:['Agenda','Agenda'],o:[{k:'cal_we',st:'bool',l:['Afficher les week-ends','Show weekends'],d:['Toujours visibles dans cette version.','Always visible in this version.'],def:true}]}]},
  {id:'appointments',app:'appointments',l:['Rendez-vous','Appointments'],icon:'appt',blocks:[{t:['Réservation en ligne','Online booking'],o:[{k:'deposit_pct',st:'num',l:['Acompte à la réservation (%)','Booking deposit (%)'],d:['Affiché sur les devis et la page publique.','Shown on quotes and the public page.'],def:50}]}]},
  {id:'todo',app:'todo',l:['To-do','To-do'],icon:'todo',blocks:[{t:['To-do','To-do'],o:[{k:'td_x',st:'bool',l:['Rappels par e-mail','E-mail reminders'],d:['Préférence uniquement.','Preference only.'],def:false}]}]},
  {id:'knowledge',app:'knowledge',l:['Connaissances','Knowledge'],icon:'book',blocks:[{t:['Articles','Articles'],o:[{k:'kn_x',st:'bool',l:['Modèles d’articles','Article templates'],d:['Procédures d’ouverture, fiche studio…','Opening checklists, studio sheet…'],def:true}]}]},
  {id:'rental',app:'rental',l:['Location','Rental'],icon:'key',blocks:[{t:['Location','Rental'],o:[{k:'rent_min',st:'num',l:['Durée minimale (h)','Minimum duration (h)'],d:['Pour la location sèche du studio photo.','For dry hire of the photo studio.'],def:1},{k:'rent_dep',st:'bool',l:['Exiger l’acompte avant confirmation','Require deposit before confirming'],d:['Préférence de gestion.','Management preference.'],def:true}]}]},
- {id:'pos',app:'pos',l:['Point de Vente','Point of Sale'],icon:'pos',blocks:[{t:['Ticket de caisse','Receipt'],o:[{k:'pos_footer',st:'text',l:['Pied de ticket','Receipt footer'],d:['Texte imprimé en bas du ticket.','Text printed at the bottom of the receipt.'],def:'Merci et à bientôt chez Velume !'}]},{t:['Caisse','Register'],o:[{k:'pos_tip',st:'bool',l:['Pourboires','Tips'],d:['À activer plus tard.','To enable later.'],def:false}]}]},
+ {id:'pos',app:'pos',l:['Point de Vente','Point of Sale'],icon:'pos',blocks:[{t:['Ticket de caisse','Receipt'],o:[{k:'pos_footer',st:'text',l:['Pied de ticket','Receipt footer'],d:['Texte imprimé en bas du ticket.','Text printed at the bottom of the receipt.'],def:'Merci et à bientôt chez Vélume !'}]},{t:['Caisse','Register'],o:[{k:'pos_tip',st:'bool',l:['Pourboires','Tips'],d:['À activer plus tard.','To enable later.'],def:false}]}]},
  {id:'billing',app:'billing',l:['Facturation','Invoicing'],icon:'receipt',blocks:[{t:['Factures','Invoices'],o:[{k:'inv_note',st:'text',l:['Mention en pied de facture','Invoice footer note'],d:['Conditions de paiement affichées sur les factures.','Payment terms shown on invoices.'],def:'Paiement par espèces, Orange Money ou MTN MoMo. Merci de votre confiance.'}]}]},
  {id:'project',app:'project',l:['Projet','Project'],icon:'puzzle',blocks:[{t:['Tâches','Tasks'],o:[{k:'pj_x',st:'bool',l:['Suivi du temps','Time tracking'],d:['Heures prévues par tâche.','Planned hours per task.'],def:true}]}]},
- {id:'planning',app:'planning',l:['Planning','Planning'],icon:'plan',blocks:[{t:['Publication','Publishing'],o:[{k:'pl_x',st:'bool',l:['Notifier les employés à la publication','Notify employees on publish'],d:['Message Velume Bot à chaque publication.','Velume Bot message on each publication.'],def:true}]}]},
+ {id:'planning',app:'planning',l:['Planning','Planning'],icon:'plan',blocks:[{t:['Publication','Publishing'],o:[{k:'pl_x',st:'bool',l:['Notifier les employés à la publication','Notify employees on publish'],d:['Message Vélume Bot à chaque publication.','Vélume Bot message on each publication.'],def:true}]}]},
  {id:'survey',app:'survey',l:['Sondages','Surveys'],icon:'poll',blocks:[{t:['Sondages','Surveys'],o:[{k:'sv_x',st:'bool',l:['Réponses anonymes par défaut','Anonymous answers by default'],d:['Préférence.','Preference.'],def:true}]}]},
  {id:'sign',app:'sign',l:['Signature','Sign'],icon:'sign',blocks:[{t:['Documents','Documents'],o:[{k:'sign_days',st:'num',l:['Validité d’un document envoyé (jours)','Sent document validity (days)'],d:['Avant expiration.','Before it expires.'],def:30}]}]},
  {id:'employees',app:'employees',l:['Employés','Employees'],icon:'team',blocks:[{t:['Employés','Employees'],o:[{k:'em_x',st:'bool',l:['Afficher le statut en ligne','Show online status'],d:['Pastille verte sur les avatars.','Green dot on avatars.'],def:true}]}]}];
@@ -3809,7 +3809,7 @@ defModel('post','Publications','Posts','name',{
   state:['sel','Statut','Status',{opts:[['idea','Idée','Idea',''],['prep','En préparation','In progress','warn'],['ready','Prêt','Ready','info'],['pub','Publié','Published','good']],def:'idea'}],
   text:['text','Légende','Caption']},{status:'state'});
 
-defModel('member','Membres Velume Club','Velume Club members','name',{
+defModel('member','Membres Vélume Club','Vélume Club members','name',{
   name:['char','Nom','Name',{req:1}], phone:['char','Téléphone / WhatsApp','Phone / WhatsApp'], partner:['m2o','Contact lié','Linked contact',{rel:'partner'}],
   points:['int','Points de fidélité','Loyalty points',{def:0}], wallet:['money','Solde prépayé','Prepaid balance',{def:0}],
   tier:['sel','Niveau','Tier',{opts:[['classic','Classique','Classic',''],['silver','Argent','Silver','info'],['gold','Or','Gold','gold']],def:'classic',ro:1}],
@@ -3997,7 +3997,7 @@ const NEWAPPS=[
  ['expenses',{l:['Notes de frais','Expenses'],icon:'receipt',color:'var(--s4)',menus:[M_('ex_my',['Mes notes de frais','My expenses'],'expenses'),MC('ex_man',['Gestion','Management'],[M_('ex_ap',['À approuver','To approve'],'expenses',{view:'list'})]),MC('ex_rep',['Rapports','Reporting'],[M_('ex_an',['Analyse des frais','Expense analysis'],'expenses',{view:'graph'})]),MC('ex_conf',['Configuration','Configuration'],[M_('ex_set',['Paramètres','Settings'],null,{cus:'appset',app:'expenses'})])]}],
  ['maintenance',{l:['Maintenance','Maintenance'],icon:'gear',color:'var(--s6)',menus:[M_('mn_req',['Demandes de maintenance','Maintenance requests'],'maints'),M_('mn_eq',['Équipements','Equipment'],'equips'),MC('mn_rep',['Rapports','Reporting'],[M_('mn_an',['Analyse des coûts','Cost analysis'],'maints',{view:'graph'})]),MC('mn_conf',['Configuration','Configuration'],[M_('mn_set',['Paramètres','Settings'],null,{cus:'appset',app:'maintenance'})])]}],
  ['marketing',{l:['Marketing','Marketing'],icon:'bell',color:'var(--s1)',menus:[M_('mk_camp',['Campagnes','Campaigns'],'campaigns'),M_('mk_post',['Calendrier éditorial','Editorial calendar'],'posts'),MC('mk_rep',['Rapports','Reporting'],[M_('mk_an',['Analyse des campagnes','Campaign analysis'],'campaigns',{view:'graph'})]),MC('mk_conf',['Configuration','Configuration'],[M_('mk_set',['Paramètres','Settings'],null,{cus:'appset',app:'marketing'})])]}],
- ['loyalty',{l:['Fidélité','Loyalty'],icon:'heart',color:'var(--gold)',menus:[M_('ly_mem',['Membres Velume Club','Velume Club members'],'members'),M_('ly_sub',['Abonnements','Subscriptions'],'subs'),M_('ly_gc',['Cartes cadeaux','Gift cards'],'giftcards'),MC('ly_rep',['Rapports','Reporting'],[M_('ly_an',['Analyse des membres','Member analysis'],'members',{view:'graph'}),M_('ly_as',['Revenus récurrents','Recurring revenue'],'subs',{view:'graph'})]),MC('ly_conf',['Configuration','Configuration'],[M_('ly_set',['Paramètres','Settings'],null,{cus:'appset',app:'loyalty'})])]}],
+ ['loyalty',{l:['Fidélité','Loyalty'],icon:'heart',color:'var(--gold)',menus:[M_('ly_mem',['Membres Vélume Club','Vélume Club members'],'members'),M_('ly_sub',['Abonnements','Subscriptions'],'subs'),M_('ly_gc',['Cartes cadeaux','Gift cards'],'giftcards'),MC('ly_rep',['Rapports','Reporting'],[M_('ly_an',['Analyse des membres','Member analysis'],'members',{view:'graph'}),M_('ly_as',['Revenus récurrents','Recurring revenue'],'subs',{view:'graph'})]),MC('ly_conf',['Configuration','Configuration'],[M_('ly_set',['Paramètres','Settings'],null,{cus:'appset',app:'loyalty'})])]}],
  ['cashbook',{l:['Caisse & Mobile Money','Cash & Mobile Money'],icon:'dollar',color:'var(--s2)',menus:[M_('cb_dash',['Vue d’ensemble','Overview'],null,{cus:'cashdash'}),M_('cb_close',['Clôtures de caisse','Cash closings'],'cashcloses'),M_('cb_momo',['Transactions Mobile Money','Mobile Money transactions'],'momotxs'),MC('cb_rep',['Rapports','Reporting'],[M_('cb_an',['Analyse Mobile Money','Mobile Money analysis'],'momotxs',{view:'graph'}),M_('cb_ag',['Écarts de caisse','Cash gaps'],'cashcloses',{view:'graph'})]),MC('cb_conf',['Configuration','Configuration'],[M_('cb_pm',['Méthodes de paiement','Payment methods'],'paymeths'),M_('cb_set',['Paramètres','Settings'],null,{cus:'appset',app:'cashbook'})])]}]
 ];
 (function(){
@@ -4023,7 +4023,7 @@ const NEWAPPS=[
   // catalogue : ces apps ne sont plus « bientôt disponibles »
   const gone=['CRM','Achats','Inventaire','Notes de frais','Maintenance'];
   for(let i=EXTRA_APPS.length-1;i>=0;i--)if(gone.includes(EXTRA_APPS[i][0]))EXTRA_APPS.splice(i,1);
-  Object.assign(APPDESC,{whatsapp:['Recevoir et discuter avec les clients sur WhatsApp','Receive and chat with customers on WhatsApp','Ventes','Sales'],crm:['Pipeline des demandes (shootings, podcasts, événements)','Pipeline of requests (shoots, podcasts, events)','Ventes','Sales'],purchase:['Commandes fournisseurs et réception','Vendor orders and receipts','Ventes','Sales'],inventory:['Stocks de café, lait, emballages et consommables','Stock of coffee, milk, packaging and supplies','Chaîne logistique','Supply chain'],expenses:['Frais, approbation et remboursement','Expenses, approval and reimbursement','Finance','Finance'],maintenance:['Entretien du matériel photo, audio et du bar','Upkeep of photo, audio and bar equipment','Chaîne logistique','Supply chain'],marketing:['Campagnes, calendrier éditorial Instagram / WhatsApp','Campaigns, Instagram / WhatsApp editorial calendar','Marketing','Marketing'],loyalty:['Velume Club : points, abonnements, cartes cadeaux','Velume Club: points, subscriptions, gift cards','Ventes','Sales'],cashbook:['Clôture de caisse et rapprochement Orange Money / MTN MoMo','Cash closing and Orange Money / MTN MoMo matching','Finance','Finance']});
+  Object.assign(APPDESC,{whatsapp:['Recevoir et discuter avec les clients sur WhatsApp','Receive and chat with customers on WhatsApp','Ventes','Sales'],crm:['Pipeline des demandes (shootings, podcasts, événements)','Pipeline of requests (shoots, podcasts, events)','Ventes','Sales'],purchase:['Commandes fournisseurs et réception','Vendor orders and receipts','Ventes','Sales'],inventory:['Stocks de café, lait, emballages et consommables','Stock of coffee, milk, packaging and supplies','Chaîne logistique','Supply chain'],expenses:['Frais, approbation et remboursement','Expenses, approval and reimbursement','Finance','Finance'],maintenance:['Entretien du matériel photo, audio et du bar','Upkeep of photo, audio and bar equipment','Chaîne logistique','Supply chain'],marketing:['Campagnes, calendrier éditorial Instagram / WhatsApp','Campaigns, Instagram / WhatsApp editorial calendar','Marketing','Marketing'],loyalty:['Vélume Club : points, abonnements, cartes cadeaux','Vélume Club: points, subscriptions, gift cards','Ventes','Sales'],cashbook:['Clôture de caisse et rapprochement Orange Money / MTN MoMo','Cash closing and Orange Money / MTN MoMo matching','Finance','Finance']});
 })();
 
 /* ---------- pages spéciales ---------- */
@@ -4072,7 +4072,7 @@ function seedExtra(){
     q7=C('equip',{name:'Groupe électrogène 15 kVA',cat:'furn',serial:'GE-15-09',buy:ago(130),price:4100000,place:'store',state:'ok',next:ahead(25),owner:eP});
   C('maint',{name:'Mise à jour firmware + nettoyage',equip:q3.id,kind:'prev',stage:'prog',date:ago(1),tech:eY,cost:0,prio:1});C('maint',{name:'Détartrage machine espresso',equip:q5.id,kind:'prev',stage:'new',date:ahead(12),tech:eL,cost:25000,prio:1});
   C('maint',{name:'Vidange et contrôle du groupe électrogène',equip:q7.id,kind:'prev',stage:'new',date:ahead(25),tech:eP,cost:60000,prio:2});C('maint',{name:'Remplacement du joint du moulin',equip:q6.id,kind:'corr',stage:'done',date:ago(14),tech:eL,cost:18000,prio:0});
-  const cp1=C('campaign',{name:'Ouverture — Velume Coffee & Studio',channel:'insta',start:ahead(-12),end:ahead(18),budget:300000,spent:140000,reach:18400,leads:96,bookings:14,state:'run',goal:'Faire connaître le lieu et remplir les 3 premiers mois de réservations studio.'});
+  const cp1=C('campaign',{name:'Ouverture — Vélume Coffee & Studios',channel:'insta',start:ahead(-12),end:ahead(18),budget:300000,spent:140000,reach:18400,leads:96,bookings:14,state:'run',goal:'Faire connaître le lieu et remplir les 3 premiers mois de réservations studio.'});
   const cp2=C('campaign',{name:'Liste de diffusion WhatsApp — Créateurs',channel:'wa',start:ago(30),end:ago(5),budget:50000,spent:32000,reach:1200,leads:41,bookings:9,state:'done',goal:'Annoncer les offres podcast et shooting aux créateurs.'});C('campaign',{name:'Affiches Akwa & Bonamoussadi',channel:'print',start:ahead(5),end:ahead(40),budget:180000,spent:0,reach:0,leads:0,bookings:0,state:'draft'});
   [['Teaser : le studio podcast',2,'reel','prep',cp1],['Portrait de l’équipe',4,'photo','idea',cp1],['Menu signature du mois',6,'story','ready',cp1],['Offre créateurs : -10 % le mardi',8,'text','idea',cp2],['Coulisses du premier shooting',-3,'reel','pub',cp1],['Merci à nos premiers clients',-6,'photo','pub',cp1]].forEach(p=>{const d=addDays(today,p[1]);d.setHours(18,0,0,0);C('post',{name:p[0],date:isoDT(d),channel:p[1]%2?'insta':'wa',kind:p[2],state:p[3],campaign:p[4].id,owner:eL})});
   const mem=(n,ph,pts,w,bd,pid)=>C('member',{name:n,phone:ph,points:pts,wallet:w,bday:bd,partner:pid,since:ago(Math.floor(pts/2)+10)});
@@ -4134,18 +4134,18 @@ act('droles',{model:'drole',l:['Rôles','Roles'],icon:'shield',views:['list'],li
       MC('d_user',['Paramètres utilisateur','User settings'],[M_('d_notif',['Notifications','Notifications'],null,{cus:'appset',app:'dnotif'}),M_('d_voice',['Voix & Vidéo','Voice & Video'],null,{cus:'appset',app:'dvoice'})])])];
   const i=SET.findIndex(s=>s.id==='discuss');const sec={id:'discuss',app:'discuss',l:['Discussion','Discuss'],icon:'chat',blocks:[
     {t:['Messagerie','Messaging'],o:[
-      {k:'ds_bot',st:'bool',l:['Velume Bot','Velume Bot'],d:['Alertes automatiques (factures, locations, stock, sondages) dans la discussion.','Automatic alerts (invoices, rentals, stock, surveys) in chat.'],def:true},
+      {k:'ds_bot',st:'bool',l:['Vélume Bot','Vélume Bot'],d:['Alertes automatiques (factures, locations, stock, sondages) dans la discussion.','Automatic alerts (invoices, rentals, stock, surveys) in chat.'],def:true},
       {k:'ds_adminch',st:'bool',l:['Canal « administrateurs » privé','Private “administrators” channel'],d:['Seuls les administrateurs voient et lisent ce canal. Les autres membres n’y ont pas accès.','Only administrators can see and read this channel. Other members have no access.'],def:true}]},
     {t:['WhatsApp clients','WhatsApp customers'],o:[
       {k:'wa_num',st:'text',l:['Numéro WhatsApp Business','WhatsApp Business number'],d:['Numéro affiché aux clients (ex. +237 6 00 00 00 00).','Number shown to customers (e.g. +237 6 00 00 00 00).'],def:'+237 6 00 00 00 10'},
       {k:'wa_auto',st:'bool',l:['Réponse automatique au premier message','Auto-reply to first message'],d:['Envoie le message d’accueil ci-dessous quand un client écrit.','Sends the welcome message below when a customer writes.'],def:true},
-      {k:'wa_welcome',st:'text',l:['Message d’accueil','Welcome message'],d:['Texte envoyé automatiquement.','Text sent automatically.'],def:'Bonjour et bienvenue chez Velume Coffee & Studio ! Un membre de l’équipe vous répond très vite.'},
+      {k:'wa_welcome',st:'text',l:['Message d’accueil','Welcome message'],d:['Texte envoyé automatiquement.','Text sent automatically.'],def:'Bonjour et bienvenue chez Vélume Coffee & Studios ! Un membre de l’équipe vous répond très vite.'},
       {k:'wa_read',st:'bool',l:['Accusés de lecture','Read receipts'],d:['Affiche les doubles coches.','Shows double ticks.'],def:true}]},
     {t:['Connexion réelle','Real connection'],o:[{k:'wa_conn',st:'btn2',l:['API WhatsApp Business (Meta Cloud)','WhatsApp Business API (Meta Cloud)'],d:['Non connectée dans cette démo : les messages clients sont simulés. Pour recevoir de vrais messages il faut un compte Meta Business et un serveur qui relaie les messages vers VELUME.','Not connected in this demo: customer messages are simulated. To receive real messages you need a Meta Business account and a server relaying messages to VELUME.']}]}]};
   if(i>=0)SET[i]=sec;else SET.push(sec);
   SET.push({id:'dnotif',app:'dnotif',l:['Notifications','Notifications'],icon:'bell',blocks:[{t:['Me prévenir','Notify me'],o:[
     {k:'nt_mode',st:'sel',l:['Pour les canaux','For channels'],d:['Choisissez ce qui vous alerte.','Choose what alerts you.'],opts:[['all','Tous les messages','All messages'],['mention','Mentions seulement','Mentions only'],['none','Rien','Nothing']],def:'all'},
-    {k:'nt_wa',st:'bool',l:['Nouveaux messages WhatsApp clients','New WhatsApp customer messages'],d:['Pastille rouge et message Velume Bot.','Red badge and Velume Bot message.'],def:true},
+    {k:'nt_wa',st:'bool',l:['Nouveaux messages WhatsApp clients','New WhatsApp customer messages'],d:['Pastille rouge et message Vélume Bot.','Red badge and Vélume Bot message.'],def:true},
     {k:'nt_calls',st:'bool',l:['Appels et réunions','Calls and meetings'],d:['Prévenir quand une réunion d’équipe démarre.','Alert when a team meeting starts.'],def:true},
     {k:'nt_sound',st:'bool',l:['Son de notification','Notification sound'],d:['Préférence enregistrée.','Preference saved.'],def:true},
     {k:'nt_desktop',st:'bool',l:['Notifications du navigateur','Browser notifications'],d:['Préférence enregistrée (autorisation du navigateur requise).','Preference saved (browser permission required).'],def:false}]}]});
@@ -4174,7 +4174,7 @@ function msgHtml(m,c,prevDay){
     const inb=m.dir==='in';const tick=m.dir==='out'?'<span class="tk '+(m.ack==='read'?'rd':'')+'">'+(m.ack==='sent'?'✓':'✓✓')+'</span>':'';
     return sep+'<div class="wam '+(inb?'in':'out')+'"><div class="wab">'+(inb?'<div class="wan">'+esc(m.from||c.name)+'</div>':'')+(m.file?'<div class="wafile">📎 '+esc(m.file)+'</div>':'')+'<div>'+esc(m.text)+'</div><div class="wat">'+esc(fmtHM(pd(m.date)))+' '+tick+'</div></div></div>';
   }
-  const who=m.author?D.name('employee',m.author):'Velume Bot';
+  const who=m.author?D.name('employee',m.author):'Vélume Bot';
   return sep+'<div class="msg">'+avatar(who)+'<div class="mb"><div class="mh"><b>'+esc(who)+'</b> <span class="muted">'+esc(fmtDT(m.date))+'</span></div><div>'+esc(m.text)+'</div>'+(m.file?'<div class="wafile">📎 '+esc(m.file)+'</div>':'')+(m.link?'<a data-a="aigo" data-n="billing:i_inv">'+tr('Voir','View')+'</a>':'')+'</div></div>';
 }
 function discussPage(mode){
@@ -4201,7 +4201,7 @@ function discussPage(mode){
   let main='';
   if(view==='inbox'){
     const unreadWA=D.all('channel').filter(c=>c.kind==='wa'&&unreadOf(c)).map(c=>'<button class="conv" data-a="dsc-sel" data-id="'+c.id+'">'+avatar(c.name,'',true)+'<span class="cm"><b>WhatsApp · '+esc(c.name)+'</b><span class="muted">'+esc(String(lastMsg(c.id).text||'').slice(0,70))+'</span></span><span class="cnt2">'+unreadOf(c)+'</span></button>').join('');
-    main='<div class="kdh"><b>'+tr('Boîte de réception','Inbox')+'</b></div><div class="cwb" style="padding:10px">'+unreadWA+(bots.slice().reverse().map(m=>'<div class="msg">'+avatar('Velume Bot')+'<div class="mb"><div class="mh"><b>Velume Bot</b> <span class="muted">'+esc(fmtDT(m.date))+'</span></div><div>'+esc(m.text)+'</div></div></div>').join('')||'<div class="emp">'+ic('check','big')+'<h3>'+tr('Tout est lu','All caught up')+'</h3></div>')+'</div>';
+    main='<div class="kdh"><b>'+tr('Boîte de réception','Inbox')+'</b></div><div class="cwb" style="padding:10px">'+unreadWA+(bots.slice().reverse().map(m=>'<div class="msg">'+avatar('Vélume Bot')+'<div class="mb"><div class="mh"><b>Vélume Bot</b> <span class="muted">'+esc(fmtDT(m.date))+'</span></div><div>'+esc(m.text)+'</div></div></div>').join('')||'<div class="emp">'+ic('check','big')+'<h3>'+tr('Tout est lu','All caught up')+'</h3></div>')+'</div>';
   }else if(view==='fav'&&!cur){
     main='<div class="emp">'+ic('star','big')+'<h3>'+tr('Vos favoris','Your starred conversations')+'</h3><p class="muted">'+tr('Ouvrez une conversation et cliquez sur l’étoile.','Open a conversation and click the star.')+'</p></div>';
   }else if(cur){
@@ -4216,7 +4216,7 @@ function discussPage(mode){
       (cur.bot?'':'<button class="ib" data-a="dsc-members" aria-label="'+tr('Membres','Members')+'" title="'+tr('Membres','Members')+'">'+ic('user')+'<span class="muted" style="font-size:.78rem;margin-left:2px">'+(isWA?'':mem.length)+'</span></button>')+'</div>';
     const emoji=UI.dpop==='emoji'?'<div class="pop up" data-keep><div class="emj">'+['😀','😂','😍','🙏','👍','👏','🔥','🎉','☕','📸','🎙️','✅','❤️','😊','🙌','💪'].map(e=>'<button data-a="dsc-ins" data-t="'+e+'">'+e+'</button>').join('')+'</div></div>':'';
     const cans=UI.dpop==='canned'?'<div class="pop up" data-keep style="min-width:260px;max-height:260px;overflow:auto">'+D.all('canned').filter(c=>c.scope==='all'||isWA).map(c=>'<button class="cn" data-a="dsc-ins" data-t="'+esc(String(c.text).replace('{client}',(cur.name||'').split(' ')[0]))+'"><b>'+esc(c.shortcut)+'</b><span class="muted">'+esc(String(c.text).slice(0,60))+'</span></button>').join('')+'</div>':'';
-    const comp=cur.bot?'<div class="cwf"><span class="muted">'+tr('Velume Bot envoie des alertes automatiques (voir Paramètres › Actions automatisées).','Velume Bot sends automatic alerts (see Settings › Automated actions).')+'</span></div>':
+    const comp=cur.bot?'<div class="cwf"><span class="muted">'+tr('Vélume Bot envoie des alertes automatiques (voir Paramètres › Actions automatisées).','Vélume Bot sends automatic alerts (see Settings › Automated actions).')+'</span></div>':
       '<div class="cwf2"><div class="cbar" style="position:relative"><button class="ib" data-a="dsc-pop" data-p="emoji" aria-label="emoji" title="Emoji">😊</button><button class="ib" data-a="dsc-pop" data-p="canned" aria-label="'+tr('Réponses enregistrées','Canned responses')+'" title="'+tr('Réponses enregistrées','Canned responses')+'">'+ic('bolt')+'</button><button class="ib" data-a="dsc-attach" aria-label="'+tr('Joindre un fichier','Attach file')+'" title="'+tr('Joindre un fichier','Attach file')+'">'+ic('clip')+'</button><input type="file" id="dfile" style="display:none">'+
       (isWA?'<span class="sp"></span><button class="btn sm" data-a="dsc-sim" title="'+tr('Démo : simule un message entrant du client','Demo: simulate an incoming customer message')+'">'+ic('refresh')+tr('Simuler un message du client','Simulate customer message')+'</button>':'')+emoji+cans+'</div>'+
       '<div class="crow"><input id="chin" data-fk="chin" placeholder="'+(isWA?tr('Répondre sur WhatsApp à ','Reply on WhatsApp to ')+esc(cur.name)+'...':tr('Écrire dans ','Message ')+(cur.kind==='channel'?'#':'')+esc(cur.name)+'...')+'" autocomplete="off" value="'+esc(UI.draft||'')+'"><button class="btn pri" data-a="dsc-send">'+ic('send')+tr('Envoyer','Send')+'</button></div></div>';
@@ -4256,7 +4256,7 @@ A['dsc-sim']=()=>{
   const c=D.get('channel',UI.ch);if(!c||c.kind!=='wa')return;
   const first=!D.all('message').some(m=>m.channel===c.id&&dayKey(m.date)===iso(new Date()));
   D.create('message',{channel:c.id,author:-1,from:c.name,text:WA_IN[Math.floor(Math.random()*WA_IN.length)],date:isoDT(new Date()),dir:'in',read:true},{silent:true});
-  if(first&&ST.set.wa_auto!==false)D.create('message',{channel:c.id,author:ST.me,text:ST.set.wa_welcome||'Bonjour et bienvenue chez Velume Coffee & Studio !',date:isoDT(addMin(new Date(),0)),dir:'out',ack:'delivered',read:true},{silent:true});
+  if(first&&ST.set.wa_auto!==false)D.create('message',{channel:c.id,author:ST.me,text:ST.set.wa_welcome||'Bonjour et bienvenue chez Vélume Coffee & Studios !',date:isoDT(addMin(new Date(),0)),dir:'out',ack:'delivered',read:true},{silent:true});
   save();render();scrollThread();toast(tr('Message WhatsApp reçu (simulation).','WhatsApp message received (simulation).'));
 };
 A['dsc-lead']=()=>{
@@ -4302,7 +4302,7 @@ function audienceIds(a){
   if(a==='admins')return D.all('user').filter(u=>u.group==='admin'&&u.emp).map(u=>u.emp);
   const dept=D.all('dept').find(d=>d.name===(a==='cafe'?'Café':'Studios'));return emps.filter(e=>dept&&e.dept===dept.id).map(e=>e.id);
 }
-function jitsiUrl(room,kind){return 'https://meet.jit.si/'+room+'#userInfo.displayName=%22'+encodeURIComponent(D.name('employee',ST.me)||'Velume')+'%22&config.startWithVideoMuted='+(kind==='audio'?'true':'false')+'&config.prejoinPageEnabled=true'}
+function jitsiUrl(room,kind){return 'https://meet.jit.si/'+room+'#userInfo.displayName=%22'+encodeURIComponent(D.name('employee',ST.me)||'Vélume')+'%22&config.startWithVideoMuted='+(kind==='audio'?'true':'false')+'&config.prejoinPageEnabled=true'}
 function genRoom(){return 'Velume-'+Math.random().toString(36).slice(2,8)}
 function startMeet(o){
   if(UI.meet){toast(tr('Une réunion est déjà en cours.','A meeting is already running.'));return}
@@ -4436,7 +4436,7 @@ function seedDiscuss(){
   W('Kevin Tchoua','+237 6 00 00 00 02',P('Kevin'),[[0,'Bonjour ! Le studio vidéo est dispo mardi après-midi ?',200],[1,'Bonjour Kevin, oui de 14 h à 18 h. Je vous envoie le devis.',190],[0,'Parfait, je confirme avec l’acompte.',60],[0,'Vous pouvez m’envoyer le Orange Money ?',20,false]]);
   W('Aïcha Mbarga','+237 6 00 00 00 01',P('Aïcha'),[[0,'Bonsoir, vous faites des gâteaux d’anniversaire ?',900,true],[1,'Bonsoir Aïcha ! Oui, sur commande 48 h à l’avance.',880]]);
   W('Sandrine Eko','+237 6 00 00 00 08',P('Sandrine'),[[0,'Merci pour la séance podcast, super ambiance !',40,false]]);
-  [['bonjour','Bonjour {client} ! Merci de contacter Velume Coffee & Studio. Comment puis-je vous aider ?'],['horaires','Nous sommes ouverts du lundi au samedi de 7 h à 22 h, et le dimanche de 9 h à 20 h.'],['tarifs','Studio photo : 15 000 FCFA/h · Podcast : 25 000 FCFA/h · Vidéo : 35 000 FCFA/h (TTC). Dites-moi la date souhaitée !'],['acompte','Pour confirmer, merci d’envoyer un acompte de 50 % par Orange Money ou MTN MoMo. Je vous donne le numéro.'],['adresse','Nous sommes à Douala. Je vous envoie la localisation sur WhatsApp.'],['merci','Merci {client}, à très bientôt chez Velume ! ☕']].forEach(c=>C('canned',{shortcut:c[0],text:c[1]}));
+  [['bonjour','Bonjour {client} ! Merci de contacter Vélume Coffee & Studios. Comment puis-je vous aider ?'],['horaires','Nous sommes ouverts du lundi au samedi de 7 h à 22 h, et le dimanche de 9 h à 20 h.'],['tarifs','Studio photo : 15 000 FCFA/h · Podcast : 25 000 FCFA/h · Vidéo : 35 000 FCFA/h (TTC). Dites-moi la date souhaitée !'],['acompte','Pour confirmer, merci d’envoyer un acompte de 50 % par Orange Money ou MTN MoMo. Je vous donne le numéro.'],['adresse','Nous sommes à Douala. Je vous envoie la localisation sur WhatsApp.'],['merci','Merci {client}, à très bientôt chez Vélume ! ☕']].forEach(c=>C('canned',{shortcut:c[0],text:c[1]}));
   [['Administrateur','Voit tous les canaux, gère les membres et les paramètres.',[eP]],['Animateur WhatsApp','Répond aux clients sur WhatsApp et crée les opportunités.',[eL].filter(Boolean)],['Modérateur','Peut épingler et supprimer des messages dans les canaux.',[eB].filter(Boolean)]].forEach(r=>C('drole',{name:r[0],note:r[1],members:r[2]}));
   const gen=D.all('channel').find(c=>c.all);
   const call=(conv,kind,host,d,h,mins,parts,state,title)=>{const t=addDays(new Date(),-d);t.setHours(h,0,0,0);return C('call',{conv:conv,kind:kind,host:host,start:isoDT(t),mins:mins,parts:parts,state:state,title:title||''})};
@@ -4460,7 +4460,7 @@ IC.wa=IC.whatsapp;
 })();
 const WA_STEPS=[
  [['Avoir un compte Facebook / Meta et un compte développeur','Have a Facebook / Meta account and a developer account'],['Allez sur developers.facebook.com, connectez-vous et acceptez les conditions développeur. Gardez un téléphone avec WhatsApp pour les tests.','Go to developers.facebook.com, sign in and accept the developer terms. Keep a phone with WhatsApp for testing.']],
- [['Créer une application « WhatsApp » dans Meta for Developers','Create a “WhatsApp” app in Meta for Developers'],['Dans le tableau de bord, créez une app avec le cas d’usage WhatsApp, puis choisissez ou créez le portefeuille d’entreprise « Velume Coffee & Studio ».','In the dashboard, create an app with the WhatsApp use case, then pick or create the “Velume Coffee & Studio” business portfolio.']],
+ [['Créer une application « WhatsApp » dans Meta for Developers','Create a “WhatsApp” app in Meta for Developers'],['Dans le tableau de bord, créez une app avec le cas d’usage WhatsApp, puis choisissez ou créez le portefeuille d’entreprise « Vélume Coffee & Studios ».','In the dashboard, create an app with the WhatsApp use case, then pick or create the “Vélume Coffee & Studios” business portfolio.']],
  [['Relier un compte WhatsApp Business','Link a WhatsApp Business account'],['Dans « API Setup », liez un compte WhatsApp Business et notez son identifiant (WABA ID).','In “API Setup”, link a WhatsApp Business account and note its ID (WABA ID).']],
  [['Ajouter le numéro du café','Add the café’s phone number'],['Ajoutez le numéro d’envoi (celui que vos clients verront) et notez son « Phone number ID ». Ajoutez aussi un numéro de test destinataire.','Add the sending number (the one customers will see) and note its “Phone number ID”. Also add a test recipient number.']],
  [['Envoyer un premier message de test','Send a first test message'],['Générez un jeton temporaire et envoyez le message modèle d’essai. Ce jeton expire vite : il ne sert qu’à tester.','Generate a temporary token and send the sample template message. This token expires quickly: use it for testing only.']],
@@ -4470,7 +4470,7 @@ const WA_STEPS=[
 CUSTOM.waguide=function(){
   const done=ST.set.wa_steps||[];const pct=Math.round(done.length/WA_STEPS.length*100);
   const num=(UI.wanum==null?(ST.set.wa_num||'+237 6 00 00 00 10'):UI.wanum);const digits=String(num).replace(/\D/g,'');
-  const text=encodeURIComponent('Bonjour Velume Coffee & Studio ! ');const link='https://wa.me/'+digits+'?text='+text;
+  const text=encodeURIComponent('Bonjour Vélume Coffee & Studios ! ');const link='https://wa.me/'+digits+'?text='+text;
   const steps=WA_STEPS.map((s,i)=>'<label class="wastep'+(done.includes(i)?' ok':'')+'"><input type="checkbox" data-a="wa-step" data-i="'+i+'" '+(done.includes(i)?'checked':'')+'><span class="wn">'+(i+1)+'</span><span><b>'+esc(L(s[0]))+'</b><span class="muted" style="display:block">'+esc(L(s[1]))+'</span></span></label>').join('');
   return pageHead(tr('Connecter WhatsApp','Connect WhatsApp'),'<span class="badge warn">'+tr('Démo : non connecté','Demo: not connected')+'</span>')+'<div class="va gut"><div class="grid2">'+
    '<div class="card wacard"><h3>'+ic('wa')+' '+tr('Option 1 — utilisable tout de suite','Option 1 — usable right now')+'</h3><p class="muted">'+tr('Sans programmation : avec l’application WhatsApp Business sur le téléphone du café. VELUME sert à suivre les demandes (CRM) et à garder vos réponses types.','No coding: with the WhatsApp Business app on the café’s phone. VELUME is used to track requests (CRM) and keep your canned replies.')+'</p>'+
@@ -4483,7 +4483,7 @@ CUSTOM.waguide=function(){
    '<p class="muted" style="margin-top:12px">'+tr('Une fois ces étapes faites, il reste à relier le webhook à VELUME. Cette page ne peut pas héberger de serveur : demandez-moi de préparer le code du serveur relais.','Once these steps are done, the webhook must be linked to VELUME. This page cannot host a server: ask me to prepare the relay server code.')+'</p></div></div>';
 };
 A['wa-step']=el=>{const i=+el.dataset.i;const a=(ST.set.wa_steps||[]).slice();const k=a.indexOf(i);if(k>=0)a.splice(k,1);else a.push(i);ST.set.wa_steps=a;save();render()};
-document.addEventListener('input',e=>{if(e.target&&e.target.id==='wanum'){UI.wanum=e.target.value;ST.set.wa_num=e.target.value;const c=$('.walink code');if(c){const d=String(e.target.value).replace(/\D/g,'');const l='https://wa.me/'+d+'?text='+encodeURIComponent('Bonjour Velume Coffee & Studio ! ');c.textContent=l;const b=$('.walink [data-a=copylink]');if(b)b.dataset.t=l;const a=$('.walink a');if(a)a.href=l}}});
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='wanum'){UI.wanum=e.target.value;ST.set.wa_num=e.target.value;const c=$('.walink code');if(c){const d=String(e.target.value).replace(/\D/g,'');const l='https://wa.me/'+d+'?text='+encodeURIComponent('Bonjour Vélume Coffee & Studios ! ');c.textContent=l;const b=$('.walink [data-a=copylink]');if(b)b.dataset.t=l;const a=$('.walink a');if(a)a.href=l}}});
 
 /* =====================================================================
    VELUME — Tiroir-caisse (cash drawer) pour le Point de Vente
@@ -5326,7 +5326,7 @@ SA.form={titleStyle:'padding-right:120px;margin-top:16px',title:'title',titlePh:
   return '<div class="cp gut"><div class="cp-top svtop"><div class="cp-left"><button class="btn" data-a="new">'+tr('Nouveau','New')+'</button><div class="crumbs stk"><button class="cl" data-a="crumb-root">'+tr('Sondages','Surveys')+'</button><span class="cur">'+(FV.isNew?tr('Nouveau','New'):esc(b.title||tr('Sans titre','Untitled')))+'</span></div>'+x.dirty+'</div><div class="svsm">'+x.smart+'</div><div class="cp-right">'+x.pager+'<button class="ib" data-a="cogs-form" aria-label="actions">'+ic('gear')+'</button></div></div></div>'+
    '<div class="va gut"><div class="fv"><div class="fwrap"><div class="fv-main"><div class="fv-bar">'+x.btns+'</div><div class="sheet" style="position:relative"><div style="position:relative"><div style="display:flex;gap:6px;flex-wrap:wrap;padding-right:120px">'+pills+'</div>'+img+'</div>'+x.titleIn+
    '<div class="fgrid fg2"><div>'+mgrRow+bg+'</div><div>'+fr_(tr('Partagé avec','Shared with'),'<input data-fld="shared" id="f_shared" value="'+esc(b.shared||'')+'"'+(lk?' disabled':'')+'>')+lg+'</div></div>'+x.tabBar+x.tabBody+'</div></div>'+
-   (FV.isNew?'<aside class="fv-side"><div class="chatter"><div class="ch-bar"><button class="btn sm pri" disabled>'+tr('Envoyer un message','Send message')+'</button><button class="btn sm" disabled>'+tr('Note','Log note')+'</button><button class="btn sm" disabled>'+tr('Activité','Activity')+'</button></div><div class="chday"><span>'+tr('Aujourd’hui','Today')+'</span></div><div class="msg">'+avatar(D.name('employee',ST.me)||'Velume','sm')+'<div class="mb"><div class="mh"><b>'+esc(D.name('employee',ST.me)||'Velume')+'</b></div><div>'+tr('Création d’un nouvel enregistrement…','Creating a new record…')+'</div></div></div></div></aside>':x.chatter)+'</div></div></div>'}};
+   (FV.isNew?'<aside class="fv-side"><div class="chatter"><div class="ch-bar"><button class="btn sm pri" disabled>'+tr('Envoyer un message','Send message')+'</button><button class="btn sm" disabled>'+tr('Note','Log note')+'</button><button class="btn sm" disabled>'+tr('Activité','Activity')+'</button></div><div class="chday"><span>'+tr('Aujourd’hui','Today')+'</span></div><div class="msg">'+avatar(D.name('employee',ST.me)||'Vélume','sm')+'<div class="mb"><div class="mh"><b>'+esc(D.name('employee',ST.me)||'Vélume')+'</b></div><div>'+tr('Création d’un nouvel enregistrement…','Creating a new record…')+'</div></div></div></div></aside>':x.chatter)+'</div></div></div>'}};
 SF.bgfile={k:'bgfile',t:'char',fr:'Arrière-plan',en:'Background'};
 SF.shared={k:'shared',t:'char',fr:'Partagé avec',en:'Shared with'};
 act('svqs',{model:'svq',l:['Questions & Réponses','Questions & Answers'],icon:'help',views:['list'],list:['name','survey','type','choices'],search:['name','survey'],groups:['survey','type'],form:{title:'name',cols:[['survey','type','choices','correct']]}});
@@ -5472,7 +5472,7 @@ function seedEmp(){
   C('empplan',{name:T('Intégration barista','Barista onboarding'),kind:'on',steps:T('Visite des locaux\nFormation hygiène\nFormation machine espresso\nRemise de la tenue','Premises tour\nHygiene training\nEspresso machine training\nUniform handover')});
   C('empplan',{name:T('Départ d’un employé','Employee offboarding'),kind:'off',steps:T('Restitution des clés\nRemise du matériel\nSolde de tout compte','Return keys\nReturn equipment\nFinal settlement')});
   ['Employé|Employee','Étudiant|Student','Apprenti|Apprentice','Freelance|Freelance','Prestataire indépendant|Independent contractor'].forEach(x=>{const p=x.split('|');C('emptype',{name:T(p[0],p[1])})});
-  C('worklocation',{name:'Velume · Douala',addr:'Douala, Cameroun',kind:'office'});C('worklocation',{name:T('Domicile','Home'),addr:'',kind:'home'});C('worklocation',{name:T('Studio extérieur','Outdoor studio'),addr:'Douala',kind:'other'});
+  C('worklocation',{name:'Vélume · Douala',addr:'Douala, Cameroun',kind:'office'});C('worklocation',{name:T('Domicile','Home'),addr:'',kind:'home'});C('worklocation',{name:T('Studio extérieur','Outdoor studio'),addr:'Douala',kind:'other'});
   ['Démission|Resignation','Licenciement|Dismissal','Fin de contrat|End of contract','Retraite|Retirement','Fin de période d’essai|End of probation'].forEach(x=>{const p=x.split('|');C('leavereason',{name:T(p[0],p[1])})});
   C('skilltype',{name:T('Langues','Languages'),levels:T('Débutant, Intermédiaire, Courant, Bilingue','Beginner, Intermediate, Fluent, Bilingual')});
   C('skilltype',{name:T('Métiers du café','Coffee skills'),levels:T('Initié, Confirmé, Expert','Novice, Skilled, Expert')});
@@ -5522,7 +5522,7 @@ const sec=t=>'<div class="osec">'+t+'</div>';
 const suffix=(h,suf)=>h.replace('class="fr"','class="fr sfx"').replace(/<\/div><\/div>$/,'<span class="muted" style="white-space:nowrap">'+suf+'</span></div></div>');
 function ofLayout(x,o){
   const b=x.b;
-  const chat=FV.isNew?'<aside class="fv-side"><div class="chatter"><div class="ch-bar"><button class="btn sm pri" disabled>'+tr('Envoyer message','Send message')+'</button><button class="btn sm" disabled>Note</button><button class="btn sm" disabled>'+tr('Activité','Activity')+'</button></div><div class="chday"><span>'+tr('Aujourd’hui','Today')+'</span></div><div class="msg">'+avatar(D.name('employee',ST.me)||'Velume','sm')+'<div class="mb"><div class="mh"><b>'+esc(D.name('employee',ST.me)||'Velume')+'</b></div><div>'+tr('Création d’un nouvel enregistrement…','Creating a new record…')+'</div></div></div></div></aside>':x.chatter;
+  const chat=FV.isNew?'<aside class="fv-side"><div class="chatter"><div class="ch-bar"><button class="btn sm pri" disabled>'+tr('Envoyer message','Send message')+'</button><button class="btn sm" disabled>Note</button><button class="btn sm" disabled>'+tr('Activité','Activity')+'</button></div><div class="chday"><span>'+tr('Aujourd’hui','Today')+'</span></div><div class="msg">'+avatar(D.name('employee',ST.me)||'Vélume','sm')+'<div class="mb"><div class="mh"><b>'+esc(D.name('employee',ST.me)||'Vélume')+'</b></div><div>'+tr('Création d’un nouvel enregistrement…','Creating a new record…')+'</div></div></div></div></aside>':x.chatter;
   return '<div class="cp gut"><div class="cp-top svtop"><div class="cp-left"><button class="btn" data-a="new">'+tr('Nouveau','New')+'</button><div class="crumbs stk"><button class="cl" data-a="crumb-root">'+esc(L(o.parent))+'</button><span class="cur">'+(FV.isNew?tr('Nouveau','New'):esc(b.name||tr('Sans titre','Untitled')))+'</span></div>'+x.dirty+'</div><div class="svsm">'+(o.smart||'')+'</div><div class="cp-right">'+x.pager+'<button class="ib" data-a="cogs-form" aria-label="actions">'+ic('gear')+'</button></div></div></div>'+
    '<div class="va gut"><div class="fv"><div class="fwrap"><div class="fv-main"><div class="fv-bar">'+(o.btns||'')+'<span class="sp"></span>'+(o.status||'')+'</div><div class="sheet">'+o.sheet+'</div></div>'+chat+'</div></div></div>'}
 const fr2=(x,a,c)=>{const f=k=>(k==='hr'||k==='mgr')?avRow(x,k):fieldRow(x.a.model,k,x.locked);return '<div class="fgrid fg2"><div>'+a.map(f).join('')+'</div><div>'+c.map(f).join('')+'</div></div>'};
@@ -5647,7 +5647,7 @@ defModel('attend','Présences','Attendance','name',{
   name:['char','Référence','Reference',{ro:1}], emp:['m2o','Employé','Employee',{rel:'employee',def:()=>ST.me,req:1}],
   cin:['datetime','Arrivée','Check in',{def:()=>isoDT(new Date())}], cout:['datetime','Départ','Check out'],
   hours:['float','Heures travaillées','Worked hours',{ro:1,unit:'h'}],
-  place:['sel','Lieu','Place',{opts:[['bar','Velume Bar',' Velume Bar'],['studio','Studios','Studios'],['out','Extérieur (shooting)','On location']],def:'bar'}],
+  place:['sel','Lieu','Place',{opts:[['bar','Vélume Bar',' Vélume Bar'],['studio','Studios','Studios'],['out','Extérieur (shooting)','On location']],def:'bar'}],
   note:['text','Note','Note']},
   {chatter:false,seqfield:'name',seqname:r=>'PR/'+p4(r.id),compute:r=>{const a=pd(r.cin),b=pd(r.cout);r.hours=a&&b?Math.max(0,Math.round((b-a)/36e5*100)/100):0}});
 
@@ -5684,16 +5684,17 @@ defModel('gallery','Galeries clients','Client galleries','name',{
 defModel('delivery','Livraisons','Deliveries','name',{
   name:['char','Référence','Reference',{ro:1}], client:['m2o','Client','Customer',{rel:'partner'}], phone:['char','Téléphone','Phone'], addr:['char','Adresse / quartier','Address / area'],
   amount:['money','Montant de la commande','Order amount',{def:0}], fee:['money','Frais de livraison','Delivery fee',{def:1000}],
-  via:['sel','Livré par','Delivered by',{opts:[['own','Livreur Velume','Velume rider'],['moto','Moto-taxi','Moto-taxi'],['glovo','Glovo','Glovo'],['yango','Yango','Yango']],def:'own'}],
+  via:['sel','Livré par','Delivered by',{opts:[['own','Livreur Vélume','Vélume rider'],['moto','Moto-taxi','Moto-taxi'],['glovo','Glovo','Glovo'],['yango','Yango','Yango']],def:'own'}],
   rider:['m2o','Livreur','Rider',{rel:'employee'}], when:['datetime','Heure prévue','Planned time',{def:()=>isoDT(new Date())}],
   state:['sel','Statut','Status',{opts:[['new','Nouvelle','New',''],['prep','En préparation','Preparing','warn'],['way','En route','On the way','info'],['done','Livrée','Delivered','good'],['fail','Échec','Failed','bad']],def:'new'}],
   pay:['sel','Paiement','Payment',{opts:[['cash','Espèces à la livraison','Cash on delivery'],['om','Orange Money','Orange Money'],['momo','MTN MoMo','MTN MoMo']],def:'cash'}], note:['text','Instructions','Instructions']},
   {status:'state',seqfield:'name',seqname:r=>'LIV/'+p4(r.id)});
 
 defModel('recipe','Recettes & coûts','Recipes & costs','name',{
-  name:['char','Recette','Recipe',{req:1,tx:1}], cat:['sel','Catégorie','Category',{opts:[['hot','Boissons chaudes','Hot drinks','warn'],['cold','Boissons froides','Cold drinks','info'],['food','Plats','Dishes','gold'],['dessert','Desserts','Desserts','']],def:'hot'}],
+  cat:['sel','Catégorie','Category',{opts:[['grill','Grillades','Grills','warn'],['pancake','Pancakes et gaufres','Pancakes & waffles','gold'],['pain','Pains et conforts','Breads & comfort food','gold'],['froid','Plats froids','Cold dishes','info'],['vienn','Viennoiserie','Pastries',''],['classic','Café classique','Classic coffee','warn'],['signature','Café signature','Signature coffee','warn'],['iced','Café glacé','Iced coffee','info'],['fresh','Boissons fresh','Fresh drinks','good'],['mocktail','Mocktails','Mocktails','good'],['dessert','Desserts','Desserts','']],def:'classic'}],
+  name:['char','Nom de la recette','Recipe name',{req:1}],
   price:['money','Prix de vente TTC','Sales price (incl. VAT)',{def:0}],
-  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient',en:'Ingredient',w:240},{k:'qty',t:'float',fr:'Quantité (unité du stock)',en:'Quantity (stock unit)',def:1,w:130},{k:'cost',t:'money',fr:'Coût unitaire',en:'Unit cost',ro:1},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
+  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient (stock)',en:'Ingredient (stock)',w:220},{k:'label',t:'char',fr:'Ou nom libre',en:'Or free name',w:170},{k:'qty',t:'float',fr:'Quantité',en:'Quantity',def:1,w:100},{k:'cost',t:'money',fr:'Coût unitaire (à saisir)',en:'Unit cost (enter it)',w:140},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
   cost:['money','Coût matière','Ingredient cost',{ro:1}], ht:['money','Prix HT','Price (excl.)',{ro:1}], margin:['money','Marge brute','Gross margin',{ro:1}], pct:['int','Taux de marge','Margin rate',{ro:1,unit:'%'}],
   steps:['text','Méthode de préparation','Preparation method'], active:['bool','Active','Active',{def:true}]},
   {compute:r=>{(r.lines||[]).forEach(l=>{l.sub=Math.round((+l.qty||0)*(+l.cost||0))});r.cost=sum(r.lines||[],l=>l.sub);r.ht=Math.round((+r.price||0)/(1+TVA()/100));r.margin=r.ht-r.cost;r.pct=r.ht?Math.round(r.margin/r.ht*100):0},
@@ -5754,7 +5755,7 @@ act('galleries',{model:'gallery',l:['Galeries clients','Client galleries'],icon:
   kanban:{by:'state',sub:['client','date'],tags:['studio'],avatar:'editor'},calendar:{start:'date',title:r=>rn('gallery',r),color:'studio'},
   form:{status:'state',title:'name',cols:[['client','studio','date','editor'],['count','link','expire']],tabs:[{l:['Consignes','Brief'],fields:['note']}],
     btns:[{l:['Marquer comme prête','Mark as ready'],pri:1,when:b=>b.state==='shoot'||b.state==='edit',set:{state:'ready'}},
-     {l:['Envoyer par WhatsApp','Send by WhatsApp'],icon:'send',pri:1,when:b=>b.state==='ready',fn:b=>{const p=D.get('partner',b.client)||{};const ph=String(p.phone||'').replace(/\D/g,'');const msg=tr('Bonjour ! Vos fichiers Velume sont prêts : ','Hello! Your Velume files are ready: ')+(b.link||'');
+     {l:['Envoyer par WhatsApp','Send by WhatsApp'],icon:'send',pri:1,when:b=>b.state==='ready',fn:b=>{const p=D.get('partner',b.client)||{};const ph=String(p.phone||'').replace(/\D/g,'');const msg=tr('Bonjour ! Vos fichiers Vélume sont prêts : ','Hello! Your Vélume files are ready: ')+(b.link||'');
        D.write('gallery',b.id,{state:'sent'});if(FV&&FV.id===b.id)FV.buf=clone(D.get('gallery',b.id));try{window.open('https://wa.me/'+ph+'?text='+encodeURIComponent(msg),'_blank')}catch(e){}toast(tr('Statut : envoyée au client','Status: sent to customer'));render()}},
      {l:['Archiver','Archive'],when:b=>b.state==='sent',set:{state:'arch'}}]},ctx:()=>({expire:iso(addDays(new Date(),30))})});
 act('deliveries',{model:'delivery',l:['Livraisons','Deliveries'],icon:'map',views:['kanban','list','graph'],list:['name','client','addr','via','amount','fee','state','when'],sum:['amount','fee'],search:['name','client','addr'],groups:['state','via','rider'],order:(x,y)=>x.when<y.when?1:-1,
@@ -5767,7 +5768,7 @@ act('deliveries',{model:'delivery',l:['Livraisons','Deliveries'],icon:'map',view
 act('recipes',{model:'recipe',l:['Recettes & coûts','Recipes & costs'],icon:'cup',views:['list','kanban','graph'],list:['name','cat','price','cost','margin','pct','active'],search:['name'],groups:['cat'],
   filters:[['low',['Marge < 60 %','Margin < 60%'],r=>r.pct<60]],kanban:{by:'cat',sub:['price','pct'],money:'price'},
   graph:{measure:'pct',by:'name',type:'bar',measures:[['pct',['Taux de marge %','Margin %']],['margin',['Marge brute','Gross margin']],['cost',['Coût matière','Ingredient cost']]],dims:['cat','name']},
-  form:{title:'name',cols:[['cat','price','active'],['cost','ht','margin','pct']],tabs:[{l:['Ingrédients','Ingredients'],lines:'lines'},{l:['Méthode','Method'],fields:['steps']}]},ctx:()=>({})});
+  form:{title:'name',cols:[['cat','name','price','active'],['cost','ht','margin','pct']],tabs:[{l:['Ingrédients','Ingredients'],lines:'lines'},{l:['Méthode','Method'],fields:['steps']}],layout:x=>'<div class="cp gut"><div class="cp-top"><div class="cp-left">'+x.crumbs+x.dirty+'</div><div class="cp-right">'+x.pager+'<button class="ib" data-a="cogs-form" aria-label="actions">'+ic('gear')+'</button></div></div></div><div class="va gut"><div class="fv"><div class="fv-bar"><button class="btn" data-a="new">'+tr('Nouveau','New')+'</button>'+x.btns+'<span class="sp"></span>'+x.status+'</div><div class="fwrap"><div class="fv-main"><div class="sheet"><div class="fgrid">'+x.cols+'</div>'+x.tabBar+x.tabBody+totalsHtml('recipe')+'</div></div>'+x.chatter+'</div></div></div>'},ctx:()=>({})});
 act('hygienes',{model:'hygiene',l:['Contrôles hygiène','Hygiene checks'],icon:'shield',views:['list','kanban','graph'],list:['date','name','kind','zone','temp','by','result'],search:['name','by'],groups:['kind','zone','result'],order:(x,y)=>x.date<y.date?1:-1,
   filters:[['nok',['Non conformes','Non-compliant'],r=>r.result==='nok'],['temp',['Températures','Temperatures'],r=>r.kind==='temp'],['today',['Aujourd’hui','Today'],r=>(r.date||'').slice(0,10)===iso(new Date())]],kanban:{by:'result',sub:['kind','zone'],tags:['kind']},
   graph:{measure:'temp',by:'date',type:'line',measures:[['temp',['Température °C','Temperature °C']],['__count',['Nombre','Count']]],dims:['date','zone','kind']},
@@ -5795,7 +5796,7 @@ const NEW2=[
 })();
 
 /* ---------- catalogue ---------- */
-// [clé, fr, en, description fr, description en, catégorie, icône, couleur, app réelle, menu, nouveauté Velume, secteur]
+// [clé, fr, en, description fr, description en, catégorie, icône, couleur, app réelle, menu, nouveauté Vélume, secteur]
 const CATS={sales:['Ventes','Sales'],web:['Site Web','Website'],serv:['Services','Services'],acct:['Comptabilité','Accounting'],supply:['Chaîne d’approvisionnement','Supply Chain'],prod:['Productivité','Productivity'],mkt:['Marketing','Marketing'],hr:['Ressources humaines','Human Resources'],ship:['Connecteurs d’expédition','Shipping Connectors'],esg:['ESG','ESG'],cust:['Personnalisations','Customizations'],adm:['Administration','Administration'],inv:['Inventory','Inventory']};
 const C_=(k,fr,en,dfr,den,cat,icon,col,real,menu,nv,sec)=>({k:k,fr:fr,en:en,dfr:dfr,den:den,cat:cat,icon:icon,col:col,real:real||null,menu:menu||null,nv:!!nv,sec:!!sec});
 const CAT=[
@@ -5880,7 +5881,7 @@ const CAT=[
  C_('tiktok','TikTok Shop Connector','TikTok Shop Connector','Importez les commandes TikTok Shop et synchronisez les livraisons','Import TikTok Shop orders and sync deliveries','sales','shop',6),
  C_('bpost','bpost Shipping','bpost Shipping','Envoyez vos colis avec bpost','Send your shippings through bpost','ship','box',7),
  /* ---- ajouts VELUME : café + studios ---- */
- C_('club','Velume Club','Velume Club','Points, niveaux, solde prépayé et cartes cadeaux','Points, tiers, prepaid balance and gift cards','sales','heart',2,'loyalty','ly_mem',1,1),
+ C_('club','Vélume Club','Vélume Club','Points, niveaux, solde prépayé et cartes cadeaux','Points, tiers, prepaid balance and gift cards','sales','heart',2,'loyalty','ly_mem',1,1),
  C_('delivery','Livraison','Delivery','Livraisons à domicile, livreurs, Glovo / Yango','Home deliveries, riders, Glovo / Yango','sales','map',3,'delivery',null,1,1),
  C_('cashbook','Caisse & Mobile Money','Cash & Mobile Money','Clôtures de caisse et rapprochement Orange Money / MTN MoMo','Cash closings and Orange Money / MTN MoMo matching','acct','dollar',5,'cashbook',null,1,1),
  C_('dashboards','Tableaux de bord','Dashboards','Indicateurs clés du café et des studios','Key figures for the café and the studios','prod','bars',2,'dashboards',null,1),
@@ -5921,7 +5922,7 @@ CUSTOM.apps=function(){
   const head='<div class="cp gut"><div class="cp-top"><div class="cp-left"><span class="cp-title">Apps</span></div>'+
     '<div class="cp-search"><div class="sbox"><span class="facet"><span class="fi">'+ic('filter')+'</span><span class="ft">Apps</span></span><input id="aq" data-fk="aq" placeholder="'+tr('Rechercher...','Search...')+'" value="'+esc(UI.aq||'')+'" autocomplete="off"></div></div>'+
     '<div class="cp-right"><span class="pager num">'+(n?'1-'+n:'0')+' / '+n+'</span><div class="viewsw"><button class="ib '+(view==='k'?'on':'')+'" data-a="ap-view" data-v="k" aria-label="kanban">'+ic('kanban')+'</button><button class="ib '+(view==='l'?'on':'')+'" data-a="ap-view" data-v="l" aria-label="list">'+ic('list')+'</button></div></div></div>'+
-    '<div class="cp-bottom"><div class="seg" role="group">'+fl('all','Toutes','All')+fl('inst','Installées','Installed')+fl('avail','À installer','To install')+fl('nv','Nouveautés Velume','Velume additions')+'</div><span class="muted" style="font-size:.84rem">'+tr('Les applications « Pas encore développées » enregistrent votre demande.','Apps not built yet will register your request.')+'</span></div></div>';
+    '<div class="cp-bottom"><div class="seg" role="group">'+fl('all','Toutes','All')+fl('inst','Installées','Installed')+fl('avail','À installer','To install')+fl('nv','Nouveautés Vélume','Vélume additions')+'</div><span class="muted" style="font-size:.84rem">'+tr('Les applications « Pas encore développées » enregistrent votre demande.','Apps not built yet will register your request.')+'</span></div></div>';
   return head+'<div class="va gut"><div class="appcat">'+side+'<div>'+(n?(view==='k'?grid:tbl):empty)+'</div></div></div>';
 };
 A['ap-sec']=el=>{UI.asec=el.dataset.s;UI.acat2='all';render()};
@@ -5982,15 +5983,15 @@ window.__seedApps2=function(){
   // recettes
   const si=n=>D.all('stockitem').find(x=>String(tx(x.name)).toLowerCase().indexOf(n)===0);
   const R=(n,cat,price,ings)=>C('recipe',{name:T(n[0],n[1]),cat:cat,price:price,lines:ings.map(g=>{const it=si(g[0]);return it?{item:it.id,qty:g[1],cost:it.cost}:null}).filter(Boolean),steps:T('Doser, extraire, texturer le lait, servir.','Dose, extract, steam the milk, serve.')});
-  R(['Cappuccino','Cappuccino'],'hot',1500,[['café arabica',0.018],['lait entier',0.15],['gobelets',1],['couvercles',1]]);
-  R(['Latte vanille','Vanilla latte'],'hot',2000,[['café arabica',0.018],['lait entier',0.2],['sirop vanille',0.03],['gobelets',1],['couvercles',1]]);
-  R(['Espresso','Espresso'],'hot',1000,[['café arabica',0.009],['gobelets',1]]);
-  R(['Latte glacé avoine','Iced oat latte'],'cold',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
-  R(['Croissant','Croissant'],'dessert',800,[['croissants',1]]);
+  R(['Cappuccino','Cappuccino'],'classic',1500,[['café arabica',0.018],['lait entier',0.15],['gobelets',1],['couvercles',1]]);
+  R(['Latte vanille','Vanilla latte'],'classic',2000,[['café arabica',0.018],['lait entier',0.2],['sirop vanille',0.03],['gobelets',1],['couvercles',1]]);
+  R(['Espresso','Espresso'],'classic',1000,[['café arabica',0.009],['gobelets',1]]);
+  R(['Latte glacé avoine','Iced oat latte'],'iced',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
+  R(['Croissant','Croissant'],'vienn',800,[['croissants',1]]);
   // hygiène
   [['Ouverture du bar','open','bar',null,'ok',0,8],['Température frigo principal','temp','fridge',4,'ok',0,9],['Température congélateur','temp','fridge',-14,'nok',1,9],['Nettoyage machine espresso','clean','bar',null,'ok',1,19],['Fermeture du bar','close','bar',null,'ok',1,21],['Sanitaires','clean','wc',null,'ok',0,12]].forEach(h=>
     C('hygiene',{name:T(h[0],h[0]),kind:h[1],zone:h[2],temp:h[3],result:h[4],date:agoT(h[5],h[6],0),by:[eP,e1,e3][h[6]%3],action:h[4]==='nok'?T('Vérifier le joint et la température, contrôle à nouveau dans 2 h.','Check the seal and temperature, re-check in 2 h.'):''}));
-  // visibilité : les clones Odoo sont à installer ; les ajouts Velume sont déjà installés
+  // visibilité : les clones Odoo sont à installer ; les ajouts Vélume sont déjà installés
   ST.installed=ST.installed||{};
   ['sales','contacts','timeoff','attendance','timesheets','recruitment','payroll'].forEach(k=>{if(ST.installed[k]===undefined)ST.installed[k]=false});
   ['gallery','delivery','recipes','hygiene'].forEach(k=>{if(ST.installed[k]===undefined)ST.installed[k]=true});
@@ -6047,7 +6048,7 @@ const GEN=[
    B('ds_translate','Traduire les messages','Translate messages','Traduisez les messages des clients à l’aide de l’API Google Translate','Translate customer messages using the Google Translate API',false)],
   [B('ds_gif','Envoyer des GIF','Send GIFs','Partager des GIF dans vos conversations','Share GIFs in your conversations',false),
    B('ds_calls','Serveurs d’appel personnalisés','Custom call servers','Utilisez vos propres serveurs SFU ou ICE pour les appels vidéo','Use your own SFU or ICE servers for video calls',false),
-   B('ds_bot','Velume Bot','Velume Bot','Alertes automatiques (factures, locations, stock, sondages) dans la discussion.','Automatic alerts (invoices, rentals, stock, surveys) in chat.',true)]]},
+   B('ds_bot','Vélume Bot','Vélume Bot','Alertes automatiques (factures, locations, stock, sondages) dans la discussion.','Automatic alerts (invoices, rentals, stock, surveys) in chat.',true)]]},
  {t:['Contacts','Contacts'],c:[
   [LK('Envoyer un SMS','Send SMS','Envoyer des SMS à vos contacts','Send SMS to your contacts',[['Gérer les services et acheter des crédits','Manage services and buy credits','toastx']]),
    LK('Achat intégré VELUME','VELUME in-app purchase','Consulter vos services et recharger vos crédits','Check your services and top up credits',[['Voir mes services','View my services','toastx']])],
@@ -6083,8 +6084,8 @@ const GEN=[
 const SETX=(id,fr,en,icon,blocks)=>{const i=SET.findIndex(s=>s.id===id);const e={id:id,app:id,l:[fr,en],icon:icon,blocks:blocks};if(i>=0)SET[i]=e;else SET.push(e)};
 {const bl=SET.find(s=>s.id==='billing');if(bl&&!bl.blocks.some(b=>b.o.some(o=>o.k==='tva')))bl.blocks.unshift({t:['Taxes','Taxes'],o:[{k:'tva',st:'num',l:['Taux de TVA (%)','VAT rate (%)'],d:['19,25 % au Cameroun (HT = TTC ÷ 1,1925). Appliqué en caisse, factures, devis, achats et déclaration de TVA.','19.25% in Cameroon (excl. = incl. ÷ 1.1925). Applied in POS, invoices, quotes, purchases and the VAT return.'],def:19.25}]});
  const sg=SET.find(s=>s.id==='sign');if(sg){sg.blocks=[{t:['Documents','Documents'],o:[{k:'sign_days',st:'num',l:['Validité d’un document envoyé (jours)','Sent document validity (days)'],d:['Date d’expiration calculée automatiquement à l’envoi.','Expiry date computed automatically on sending.'],def:30},{k:'sg_terms',st:'bool',l:['Conditions générales par défaut','Default terms and conditions'],d:['Ajouter des termes et conditions à l’e-mail de demande de signature','Add terms and conditions to the signature request email'],def:false},{k:'sg_access',st:'bool',l:['Gérer les accès aux modèles','Manage template access'],d:['Autoriser les utilisateurs à définir qui a accès au modèle','Allow users to define who can access the template'],def:false}]}]}}
-SETX('inventory','Inventaire','Inventory','box',[{t:['Stocks','Stock'],o:[{k:'iv_alert',st:'bool',l:['Alertes de stock bas dans Discussion','Low-stock alerts in Discuss'],d:['Velume Bot prévient quand un article passe sous son seuil.','Velume Bot warns when an item falls below its level.'],def:true}]}]);
-SETX('loyalty','Fidélité','Loyalty','heart',[{t:['Velume Club','Velume Club'],o:[{k:'ly_on',st:'bool',l:['Points à chaque vente en caisse','Points on every POS sale'],d:['Si le client de la commande est un membre du Club, ses points augmentent automatiquement.','If the order’s customer is a Club member, their points go up automatically.'],def:true},{k:'ly_rate',st:'num',l:['Points par tranche de 1 000 FCFA','Points per 1,000 FCFA'],d:['Calcul : total TTC ÷ 1 000 × ce taux.','Computed as total incl. VAT ÷ 1,000 × this rate.'],def:1}]}]);
+SETX('inventory','Inventaire','Inventory','box',[{t:['Stocks','Stock'],o:[{k:'iv_alert',st:'bool',l:['Alertes de stock bas dans Discussion','Low-stock alerts in Discuss'],d:['Vélume Bot prévient quand un article passe sous son seuil.','Vélume Bot warns when an item falls below its level.'],def:true}]}]);
+SETX('loyalty','Fidélité','Loyalty','heart',[{t:['Vélume Club','Vélume Club'],o:[{k:'ly_on',st:'bool',l:['Points à chaque vente en caisse','Points on every POS sale'],d:['Si le client de la commande est un membre du Club, ses points augmentent automatiquement.','If the order’s customer is a Club member, their points go up automatically.'],def:true},{k:'ly_rate',st:'num',l:['Points par tranche de 1 000 FCFA','Points per 1,000 FCFA'],d:['Calcul : total TTC ÷ 1 000 × ce taux.','Computed as total incl. VAT ÷ 1,000 × this rate.'],def:1}]}]);
 SETX('payroll','Paie','Payroll','receipt',[{t:['Cotisations (calcul simplifié)','Contributions (simplified)'],o:[{k:'pay_cnps',st:'num',l:['Taux CNPS salarié (%)','Employee CNPS rate (%)'],d:['Utilisé dans les bulletins de paie. À valider avec votre comptable.','Used in payslips. Validate with your accountant.'],def:2.8},{k:'pay_cap',st:'num',l:['Plafond mensuel de cotisation (FCFA)','Monthly contribution ceiling (FCFA)'],d:['Salaire maximal retenu pour le calcul.','Maximum salary used in the calculation.'],def:750000}]}]);
 SETX('delivery','Livraison','Delivery','map',[{t:['Livraisons','Deliveries'],o:[{k:'dl_fee',st:'num',l:['Frais de livraison par défaut (FCFA)','Default delivery fee (FCFA)'],d:['Pré-rempli sur chaque nouvelle livraison.','Pre-filled on every new delivery.'],def:1000}]}]);
 
@@ -6188,7 +6189,7 @@ A['st3-go']=el=>{
 };
 MODALS.companyinfo={title:()=>tr('Informations de la société','Company information'),
   body:()=>{const d=UI.modal.data;const v=(k,def)=>d[k]!=null?d[k]:(ST.set[k]!=null?ST.set[k]:def);const f=(k,l,def)=>'<div class="fld"><label>'+l+'</label><input data-m="'+k+'" value="'+esc(v(k,def))+'"></div>';
-    return f('company',tr('Nom de la société','Company name'),'Velume Coffee & Studio')+f('address',tr('Adresse','Address'),'Douala, Cameroun')+f('niu',tr('NIU (n° contribuable)','Tax ID (NIU)'),'')+f('rccm',tr('RCCM','Trade register no.'),'')+f('co_phone',tr('Téléphone','Phone'),'')+f('co_email',tr('E-mail','Email'),'')},
+    return f('company',tr('Nom de la société','Company name'),'Vélume Coffee & Studios')+f('address',tr('Adresse','Address'),'Douala, Cameroun')+f('niu',tr('NIU (n° contribuable)','Tax ID (NIU)'),'')+f('rccm',tr('RCCM','Trade register no.'),'')+f('co_phone',tr('Téléphone','Phone'),'')+f('co_email',tr('E-mail','Email'),'')},
   foot:()=>'<button class="btn pri" data-a="co-ok">'+tr('Enregistrer','Save')+'</button><button class="btn" data-a="mclose">'+tr('Annuler','Cancel')+'</button>'};
 A['co-ok']=()=>{const d=UI.modal.data;['company','address','niu','rccm','co_phone','co_email'].forEach(k=>{if(d[k]!=null)ST.set[k]=d[k]});UI.modal=null;save();toast(tr('Société mise à jour : visible sur factures, devis et tickets.','Company updated: shown on invoices, quotes and receipts.'));render()};
 MODALS.doclay={title:()=>tr('Mise en page du document','Document layout'),
@@ -6220,7 +6221,7 @@ M.delivery.f.fee.def=()=>(ST.set.dl_fee!=null?+ST.set.dl_fee:1000);
 {const tv=A['till-validate'];A['till-validate']=()=>{const t=UI.till;const n0=D.all('posorder').length;const part=t&&t.partner;const total=t?cartTotal(t):0;tv();
   if(ST.set.ly_on===false||!part||D.all('posorder').length<=n0)return;
   const m=D.all('member').find(x=>x.partner===part);if(!m)return;
-  const pts=Math.floor(total/1000*(ST.set.ly_rate!=null?+ST.set.ly_rate:1));if(pts>0){D.write('member',m.id,{points:(+m.points||0)+pts},{silent:true});setTimeout(()=>toast('★ '+m.name+' : +'+pts+' '+tr('points Velume Club','Velume Club points')),700)}}}
+  const pts=Math.floor(total/1000*(ST.set.ly_rate!=null?+ST.set.ly_rate:1));if(pts>0){D.write('member',m.id,{points:(+m.points||0)+pts},{silent:true});setTimeout(()=>toast('★ '+m.name+' : +'+pts+' '+tr('points Vélume Club','Vélume Club points')),700)}}}
 })();
 
 /* ===== VELUME PRO — assistant de démarrage, comptes/rôles, base vierge, modes d'affichage ===== */
@@ -6325,7 +6326,7 @@ window.addEventListener('resize',()=>{if(DEV==='auto'&&document.documentElement.
 /* ---------- garde d'accès + rendu ---------- */
 {const r0=render;render=function(){if(ST&&ST.auth&&R.screen==='app'&&R.app&&!canApp(R.app)){R.screen='home';R.app=null;R.menu=null;R.rid=null}applyDevice();return r0.apply(this,arguments)}}
 {const nb=navbar;navbar=function(ap){const r=role();let o=null;
-  try{return nb(ap).replace('<span class="co">Velume Coffee &amp; Studio</span>','<span class="co">'+esc(company())+'</span>')}finally{if(o)ap.menus=o}}}
+  try{return nb(ap).replace('<span class="co">Vélume Coffee &amp; Studios</span>','<span class="co">'+esc(company())+'</span>')}finally{if(o)ap.menus=o}}}
 {const h0=homeHtml;homeHtml=function(){const h=h0();const u=curUser();const first=u?String(u.name).split(' ')[0]:'';
   const n=APPS.filter(appVisible).length;
   const msg='<div class="hi"><b>'+tr('Bonjour','Hello')+(first?' '+esc(first):'')+'</b><span class="badge">'+esc(ROLELBL(role()))+'</span><span class="muted">'+esc(company())+'</span>'+(n?'':'<span class="muted">'+tr('Aucune application autorisée : demandez à l’administrateur.','No app allowed: ask the administrator.')+'</span>')+'</div>';
@@ -6804,10 +6805,40 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v39';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v41';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
+
+/* ---------- v40 : anciennes catégories de recettes → nouvelles ---------- */
+{const MAPC={hot:'classic',cold:'iced',food:'froid'};
+function migRecipes(){try{D.all('recipe').forEach(r=>{if(MAPC[r.cat])D.write('recipe',r.id,{cat:MAPC[r.cat]},{silent:true})})}catch(e){}}
+const pb=window.__pro4Boot;window.__pro4Boot=function(){try{migRecipes()}catch(e){}return pb&&pb.apply(this,arguments)};
+setTimeout(()=>{try{migRecipes()}catch(e){}},2500)}
+
+/* ---------- v41 : familles de matières premières + recettes → caisse ---------- */
+{const f=M.stockitem&&M.stockitem.f&&M.stockitem.f.cat;
+if(f)f.opts=[['coffee','Café & thé','Coffee & tea',''],['perish','Denrées périssables','Perishable goods','bad'],['dairy','Boissons','Drinks','info'],['bakery','Pâtisseries et viennoiseries','Pastries & viennoiserie','warn'],['pack','Consommables Coffee','Coffee supplies',''],['studio','Consommables studio','Studio supplies','gold']]}
+{const RC=[['grill','Grillades','Grills'],['pancake','Pancakes et gaufres','Pancakes & waffles'],['pain','Pains et conforts','Breads & comfort food'],['froid','Plats froids','Cold dishes'],['vienn','Viennoiserie','Pastries'],['classic','Café classique','Classic coffee'],['signature','Café signature','Signature coffee'],['iced','Café glacé','Iced coffee'],['fresh','Boissons fresh','Fresh drinks'],['mocktail','Mocktails','Mocktails'],['dessert','Desserts','Desserts']];
+if(M.product&&!M.product.f.rec)M.product.f.rec={k:'rec',t:'int',fr:'Recette liée',en:'Linked recipe',hide:1};
+function pcatFor(key){const c=RC.find(x=>x[0]===key)||RC[5];const i=RC.indexOf(c);
+  let p=D.all('pcat').find(x=>x.rkey===c[0]||x.name===c[1]);
+  if(!p)p=D.create('pcat',{name:T(c[1],c[2]),seq:10+i*5,rkey:c[0]},{silent:true});
+  else if(!p.rkey)D.write('pcat',p.id,{rkey:c[0]},{silent:true});
+  return p.id}
+window.__recipesToPos=function(){try{
+  const rs=D.all('recipe'),ps=D.all('product');const seen={};
+  ps.filter(p=>p.rec).sort((a,b)=>a.id-b.id).forEach(p=>{if(seen[p.rec]){D.unlink('product',p.id)}else seen[p.rec]=p});
+  rs.forEach(r=>{const on=r.active!==false&&!!r.name;const p=seen[r.id];
+    if(!on){if(p&&p.active!==false)D.write('product',p.id,{active:false,pos:false},{silent:true});return}
+    const v={name:r.name,price:+r.price||0,cat:pcatFor(r.cat),reg:'bar',kind:'consu',pos:true,active:true,rec:r.id};
+    if(!p)D.create('product',v,{silent:true});
+    else if(p.name!==v.name||p.price!==v.price||p.cat!==v.cat||p.active===false||p.pos===false)D.write('product',p.id,v,{silent:true})});
+  D.all('product').filter(p=>p.rec&&!seen[p.rec]&&!D.get('recipe',p.rec)).forEach(p=>{});
+  saveNow()}catch(e){try{console.error(e)}catch(x){}}};
+{const ot=openTill;openTill=function(id){try{window.__recipesToPos()}catch(e){}return ot.apply(this,arguments)}}
+{const fs=A.fsave;A.fsave=function(){const isR=FV&&FV.a&&FV.a.model==='recipe';const r=fs.apply(this,arguments);if(isR)try{window.__recipesToPos()}catch(e){}return r}}
+}
 
 /* ===== VELUME CLOUD 8 — Supabase : comptes, rôles, synchronisation entre appareils, hors connexion ===== */
 (function(){
@@ -7199,12 +7230,12 @@ const rl=g=>({admin:tr('Administrateur','Administrator'),manager:tr('Gérant','M
 function rows(){const me=meU();return D.all('user').filter(u=>u.group!=='portal'&&u.active!==false).sort((a,b)=>(b.owner?1:0)-(a.owner?1:0)||a.id-b.id).map(u=>{
   const self=me&&u.id===me.id;const can=!u.owner&&!self&&(u.group!=='admin'||isOwn());
   return '<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:150px"><b>'+esc(u.name||'')+'</b>'+(self?' <span class="badge">'+tr('Vous','You')+'</span>':'')+'<br><span class="muted">'+esc(u.login||'')+'</span></div><span class="badge'+(u.owner?' gold':'')+'">'+(u.owner?tr('Principal','Main'):u.pending?tr('En attente','Pending'):rl(u.group))+'</span>'+
-   (can?'<button class="btn danger sm" data-a="acc-del" data-id="'+u.id+'">'+tr('Supprimer','Delete')+'</button>':'')+'</div>'}).join('')}
+   (can?'<button class="btn danger sm" data-a="acc-del" data-id="'+u.id+'">'+tr('Supprimer','Delete')+'</button>':'')+(self&&!u.owner?'<button class="btn danger sm" data-a="pf-del">'+tr('Supprimer mon compte','Delete my account')+'</button>':'')+'</div>'}).join('')}
 MODALS.accounts={title:()=>tr('Gérer les comptes','Manage accounts'),body:()=>'<p class="muted">'+tr('Supprimer un compte retire définitivement l’accès de la personne (elle ne pourra plus se connecter). Ses données dans l’application (factures, contacts…) sont conservées.','Deleting an account permanently removes the person’s access (they can no longer sign in). Their records in the app (invoices, contacts…) are kept.')+'</p>'+(rows()||'<p class="muted">—</p>'),foot:()=>'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'};
 A['acc-open']=()=>{if(!isAdm())return toast(tr('Réservé aux administrateurs.','Reserved to administrators.'));openModal('accounts')};
 A['acc-del']=el=>{const id=+el.dataset.id,u=D.get('user',id);if(!u)return;
   openModal('confirm',{msg:tr('Supprimer définitivement le compte de '+(u.name||u.login)+' ? Cette personne ne pourra plus se connecter.','Permanently delete the account of '+(u.name||u.login)+'? This person will no longer be able to sign in.'),ok:()=>{D.unlink('user',id);save();toast(tr('Compte supprimé.','Account deleted.'));setTimeout(()=>openModal('accounts'),60)}})};
-{const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah?ah():'';if(!isAdm())return h;
+{const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah?ah():'';h=h.replace(/<button class="btn sm" data-a="adm-rm" data-id="(\d+)">/g,function(m,id){return '<button class="btn pri sm" data-a="ad-owner" data-id="'+id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button>'+m});if(!isAdm())return h;
   return h+'<div class="st3o"><b>'+tr('Comptes utilisateurs','User accounts')+'</b><span class="st3d">'+tr('Voir tous les comptes et en supprimer un.','See all accounts and delete one.')+'</span><div class="r"><button class="btn sm" data-a="acc-open">'+tr('Gérer / supprimer les comptes','Manage / delete accounts')+'</button></div></div>'}}
 {const pb=MODALS.pending&&MODALS.pending.body;if(pb)MODALS.pending.body=function(p){return pb.call(this,p)+'<div style="margin-top:10px"><button class="btn sm" data-a="acc-open">'+tr('Gérer / supprimer les comptes','Manage / delete accounts')+'</button></div>'}}
 /* supprimer mon propre compte */
@@ -7216,6 +7247,8 @@ A['acc-del']=el=>{const id=+el.dataset.id,u=D.get('user',id);if(!u)return;
   openModal('confirm',{msg:tr('Transférer le rôle d’administrateur principal à '+u.name+' ? Vous resterez administrateur mais perdrez le droit de nommer ou retirer des administrateurs. Vous pourrez ensuite supprimer votre compte.','Transfer main administrator role to '+u.name+'? You will remain an administrator but lose the right to appoint or remove administrators. You can then delete your account.'),ok:async()=>{
     const x=await sb.rpc('transfer_owner',{target:u.sb});if(!x.ok){const m=String(errText(x));return toast(m.indexOf('transfer_owner')>=0?tr('Mettez d’abord à jour la base (fichier velume-mise-a-jour-comptes.sql).','Update the database first (velume-mise-a-jour-comptes.sql file).'):rpcErr(x))}
     await pullProfiles();saveNow();renderSoon();toast(tr('Rôle transféré.','Role transferred.'))}})}}
+{const pp=popoverHtml;popoverHtml=function(){let h=pp();if(UI.pop!=='user')return h;return h.replace(/<button data-a="prof-open">[\s\S]*?<\/button>/,'')}}
+A['prof-open']=()=>A.profile();
 A['pf-del']=()=>{const u=meU();if(!u||u.owner)return toast(tr('L’administrateur principal ne peut pas supprimer son compte (transférez d’abord le rôle).','The main administrator cannot delete their account (transfer the role first).'));
   openModal('confirm',{msg:tr('Supprimer définitivement votre compte ? Vous serez déconnecté et ne pourrez plus revenir avec ce compte.','Permanently delete your account? You will be signed out and cannot return with this account.'),ok:async()=>{
     if(READY){const x=await sb.rpc('delete_my_account',{});if(!x.ok){const m=String(errText(x));return toast(m.indexOf('delete_my_account')>=0?tr('Mettez d’abord à jour la base (fichier velume-schema.sql).','Update the database first (velume-schema.sql file).'):rpcErr(x))}}
