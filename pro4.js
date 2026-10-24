@@ -51,7 +51,7 @@ const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;ret
 const canApp=id=>{const r=role();if(r==='admin')return true;if(id==='config'||id==='apps')return false;if(r==='portal')return false;return roleApps(r).includes(id)};
 window.__canApp=canApp;
 const ROLELBL=r=>r==='admin'?tr('Administrateur','Administrator'):(ROLES.find(x=>x[0]===r)?tr(ROLES.find(x=>x[0]===r)[1],ROLES.find(x=>x[0]===r)[2]):r);
-function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
+function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login||'').toLowerCase()&&u.login);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
 
 /* groupes d'accès + champ code */
 {const g=M.user.f.group;[['manager','Gérant / comptable','Manager / accountant','gold'],['cashier','Caissier / serveur','Cashier / waiter','info'],['studio','Studio / production','Studio / production','info'],['kitchen','Cuisine / bar','Kitchen / bar','info']].forEach(o=>g.opts.splice(1,0,o));
