@@ -6,7 +6,7 @@ const css=document.createElement('style');css.textContent=`
 @keyframes vBean{0%{transform:translateY(105vh) rotate(0)}100%{transform:translateY(-15vh) rotate(360deg)}}
 @keyframes vShine{0%{background-position:-120% 0}100%{background-position:220% 0}}
 @keyframes vBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.login{position:relative;overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 14%,var(--bg)),var(--bg) 45%,color-mix(in srgb,var(--teal) 12%,var(--bg)))}
+.login{position:relative;overflow:clip;background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 14%,var(--bg)),var(--bg) 45%,color-mix(in srgb,var(--teal) 12%,var(--bg)))}
 .login::before,.login::after,.home::before,.home::after{content:'';position:fixed;width:46vmax;height:46vmax;border-radius:50%;filter:blur(80px);opacity:.42;z-index:0;pointer-events:none;animation:vFloat 18s ease-in-out infinite alternate}
 .login::before,.home::before{background:color-mix(in srgb,var(--gold) 60%,transparent);left:-14vmax;top:-16vmax}
 .login::after,.home::after{background:color-mix(in srgb,var(--teal) 45%,transparent);right:-16vmax;bottom:-18vmax;animation-duration:25s;animation-direction:alternate-reverse}

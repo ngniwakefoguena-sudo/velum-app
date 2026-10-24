@@ -38,4 +38,4 @@ Ouvrez l'adresse dans Chrome ou Safari, puis **Ajouter à l'écran d'accueil** (
 
 ## Mettre à jour
 
-Remplacez `index.html` par la nouvelle version et envoyez sur GitHub : Vercel redéploie. Changez `V='velume-shell-v2'` dans `sw.js` pour forcer le rafraîchissement du cache hors connexion.
+Remplacez `index.html` par la nouvelle version et envoyez sur GitHub : Vercel redéploie. Changez la version `V` dans `sw.js` pour forcer le rafraîchissement du cache hors connexion.

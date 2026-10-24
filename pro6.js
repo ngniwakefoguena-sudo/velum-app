@@ -101,7 +101,7 @@ A['wz-prov']=el=>{const w=UI.wz;if(!w)return;w.prov=el.dataset.p;w.err='';render
 
 /* ---------- adaptation tous écrans ---------- */
 {const c=document.createElement('style');c.textContent=`
-html,body{max-width:100%;overflow-x:hidden}
+html{overflow-x:clip}body{max-width:100%;overflow-x:clip}.wz .opt{background:var(--surface)}
 .toast{width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box}
 #app{max-width:100vw}
 .lcard input[type=checkbox],.lcard input[type=radio]{width:auto;flex:none;min-height:0;padding:0}

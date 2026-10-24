@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v34';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v35';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
