@@ -5,7 +5,8 @@
 var DOSSIER='fonds';
 var IMAGES=[];        /* facultatif : liste manuelle, ex. ['fonds/cafe.jpg'] ; sinon laissez vide */
 var DUREE=8;          /* secondes par image */
-var ASSOMBRI=0.35;    /* 0 = image d'origine, 0.5 = bien plus sombre (le texte reste lisible) */
+var ASSOMBRI=0.45;    /* écrans de connexion : 0 = image d'origine, 0.6 = nettement plus sombre */
+var ASSOMBRI_ACCUEIL=0.6; /* écran d'accueil des applications (plus sombre pour bien voir les icônes) */
 var MOUVEMENT=true;   /* léger zoom lent */
 var SUR_ACCUEIL=true; /* afficher aussi derrière l'écran d'accueil des applications */
 
@@ -23,12 +24,14 @@ addCss('#vfond{position:fixed;inset:0;z-index:0;overflow:hidden;opacity:0;pointe
 '#vfond .s{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:opacity,transform}'+
 '#vfond .s.on{opacity:1}'+
 (MOUVEMENT?'#vfond .s.on{animation:vkb '+(DUREE+3)+'s linear forwards}@keyframes vkb{from{transform:scale(1)}to{transform:scale(1.08)}}':'')+
-'#vfond .v{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,12,6,'+(ASSOMBRI*0.8)+'),rgba(18,12,6,'+ASSOMBRI+'))}'+
+'#vfond{--vo:'+ASSOMBRI+'}html.has-fond-home #vfond{--vo:'+ASSOMBRI_ACCUEIL+'}'+
+'#vfond .v{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,12,6,calc(var(--vo)*.85)),rgba(18,12,6,var(--vo)))}'+
 'html.has-fond .login{background:transparent!important}'+
 'html.has-fond .login>*:not(.bgfx){position:relative;z-index:2}'+
 'html.has-fond-home body{background:transparent}html.has-fond-home .home{background:transparent!important}'+
 'html.has-fond-home .home .wrap{position:relative;z-index:1}'+
-'html.has-fond-home .home h1,html.has-fond-home .home h2,html.has-fond-home .home .ahello,html.has-fond-home .home .atn,html.has-fond-home .home .apptile span,html.has-fond-home .home .apptile b,html.has-fond-home .home .apptile .lbl{color:#fff!important;text-shadow:0 1px 6px rgba(0,0,0,.65)}'+
+'html.has-fond-home .home h1,html.has-fond-home .home h2,html.has-fond-home .home .ahello,html.has-fond-home .home .atn,html.has-fond-home .home .apptile .lb{color:#fff!important;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.6)}'+
+'html.has-fond-home .home .apptile .ai{box-shadow:0 2px 10px rgba(0,0,0,.35)}'+
 'html.has-fond-home .nav{background:color-mix(in srgb,var(--surface) 78%,transparent)}');
 var box=document.createElement('div');box.id='vfond';box.setAttribute('aria-hidden','true');
 var slides=list.map(function(u){var d=document.createElement('div');d.className='s';d.style.backgroundImage='url("'+u+'")';d.dataset.ok='1';box.appendChild(d);return d});
