@@ -44,17 +44,41 @@ const hsh=s=>{let h=5381;const t=String(s)+'|velume';for(let i=0;i<t.length;i++)
 window.__hsh=hsh;
 const curUser=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=curUser();return u?u.group:(ST.pro&&ST.pro.setup?'portal':'admin')};
-const ROLES=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
-const DEFAPPS={cashier:['pos','kitchen','loyalty','contacts','discuss','todo','calendar'],studio:['rental','planning','gallery','project','appointments','calendar','contacts','knowledge','discuss','todo','delivery'],kitchen:['kitchen','inventory','recipes','hygiene','discuss','todo'],user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
+const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['cashier','Caissier / Caissière','Cashier'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
+window.__ROLES=ROLES;
+const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],cashier:['Caissier','Caissière'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
+const BASEAPPS=['discuss','todo','calendar','timeoff','attendance'];
+const DEFAPPS={
+ /* Chef de salle : tout sauf Paramètres, Apps, Paie et Recrutement */
+ manager:null,
+ /* Caissier / Caissière : encaisse (café ET studios), clôture la caisse, fidélité, réservations studio en lecture */
+ cashier:['pos','cashbook','loyalty','contacts','rental','appointments','kitchen']
+   .concat(BASEAPPS),
+ /* Barista : caisse + écran bar + recettes + hygiène */
+ barista:['pos','kitchen','recipes','hygiene','loyalty','contacts','inventory'].concat(BASEAPPS),
+ /* Serveur / Serveuse : prend les commandes, voit la cuisine, le menu et les clients ; ne clôture pas la caisse */
+ waiter:['pos','kitchen','recipes','loyalty','contacts'].concat(BASEAPPS),
+ /* Cuisinier : écran cuisine, recettes, stock, hygiène */
+ kitchen:['kitchen','recipes','inventory','hygiene','planning','knowledge'].concat(BASEAPPS),
+ /* Photographe : réservations studio, rendez-vous, projets, galeries clients, planning */
+ photo:['rental','appointments','planning','project','gallery','contacts','knowledge','timesheets','delivery'].concat(BASEAPPS),
+ /* Technicien son : réservations podcast, projets, galeries, maintenance du matériel */
+ sound:['rental','appointments','planning','project','gallery','maintenance','contacts','knowledge','timesheets','delivery'].concat(BASEAPPS),
+ /* ancien rôle conservé pour les comptes existants */
+ studio:['rental','planning','gallery','project','appointments','calendar','contacts','knowledge','discuss','todo','delivery'],
+ user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
+window.__DEFAPPS=DEFAPPS;
 const ALLAPPS=()=>APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false)).map(a=>a.id);
-const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS():(DEFAPPS[r]||[])};
+const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment'].includes(i)):(DEFAPPS[r]||[])};
 const canApp=id=>{const r=role();if(r==='admin')return true;if(id==='config'||id==='apps')return false;if(r==='portal')return false;return roleApps(r).includes(id)};
 window.__canApp=canApp;
-const ROLELBL=r=>r==='admin'?tr('Administrateur','Administrator'):(ROLES.find(x=>x[0]===r)?tr(ROLES.find(x=>x[0]===r)[1],ROLES.find(x=>x[0]===r)[2]):r);
+const empSex=u=>{try{const e=(u&&u.emp&&D.get('employee',u.emp))||D.all('employee').find(x=>u&&u.login&&String(x.email||'').toLowerCase()===String(u.login).toLowerCase());return e&&e.sex||''}catch(x){return ''}};
+const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
+window.__roleLabel=ROLELBL;
 function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login||'').toLowerCase()&&u.login);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
 
 /* groupes d'accès + champ code */
-{const g=M.user.f.group;[['manager','Gérant / comptable','Manager / accountant','gold'],['cashier','Caissier / serveur','Cashier / waiter','info'],['studio','Studio / production','Studio / production','info'],['kitchen','Cuisine / bar','Kitchen / bar','info']].forEach(o=>g.opts.splice(1,0,o));
+{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['cashier','Caissier / Caissière','Cashier','info'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
  M.user.f.pending={k:'pending',t:'bool',fr:'En attente de validation',en:'Pending approval'};
  M.user.f.owner={k:'owner',t:'bool',fr:'Administrateur principal',en:'Main administrator'};
  M.user.f.newcode={k:'newcode',t:'char',fr:'Nouveau mot de passe / code',en:'New password / code'};
@@ -103,11 +127,11 @@ window.addEventListener('resize',()=>{if(DEV==='auto'&&document.documentElement.
   try{return nb(ap).replace('<span class="co">Velume Coffee &amp; Studio</span>','<span class="co">'+esc(company())+'</span>')}finally{if(o)ap.menus=o}}}
 {const h0=homeHtml;homeHtml=function(){const h=h0();const u=curUser();const first=u?String(u.name).split(' ')[0]:'';
   const n=APPS.filter(appVisible).length;
-  const msg='<div class="hi"><b>'+tr('Bonjour','Hello')+(first?' '+esc(first):'')+'</b><span class="badge">'+esc(ROLELBL(role()))+'</span><span class="muted">'+esc(company())+'</span>'+(n?'':'<span class="muted">'+tr('Aucune application autorisée : demandez à l’administrateur.','No app allowed: ask the administrator.')+'</span>')+'</div>';
+  const msg='<div class="hi"><b>'+tr('Bonjour','Hello')+(first?' '+esc(first):'')+'</b><span class="badge">'+esc(ROLELBL(role(),curUser()))+'</span><span class="muted">'+esc(company())+'</span>'+(n?'':'<span class="muted">'+tr('Aucune application autorisée : demandez à l’administrateur.','No app allowed: ask the administrator.')+'</span>')+'</div>';
   return h.replace(/<div class="notice trial">[\s\S]*?<\/button><\/div>/,'<div class="notice">'+msg+'</div>')}}
 {const p0=popoverHtml;popoverHtml=function(){let h=p0();if(UI.pop!=='user')return h;
   h=h.replace(/<button data-a="suser">[\s\S]*?<\/button>/,'<button data-a="lock">'+ic('user')+tr('Verrouiller / changer d’utilisateur','Lock / switch user')+'</button>');
-  const u=curUser();if(u)h=h.replace(/<div class="muted" style="font-size:.84rem">[^<]*<\/div>/,'<div class="muted" style="font-size:.84rem">'+esc(ROLELBL(u.group))+'</div>');
+  const u=curUser();if(u)h=h.replace(/<div class="muted" style="font-size:.84rem">[^<]*<\/div>/,'<div class="muted" style="font-size:.84rem">'+esc(ROLELBL(u.group,u))+'</div>');
   h=h.replace('<button data-a="dev">',DEVS.map(d=>'<button data-a="dev-set" data-m="'+d[0]+'">'+ic('gear')+tr('Affichage : ','Display: ')+esc(tr(d[1],d[2]))+(DEV===d[0]?' ✓':'')+'</button>').join('')+'<hr><button data-a="dev">');
   if(role()!=='admin')h=h.replace(/<button data-a="dev">[\s\S]*?<\/button>/,'').replace(/<button data-a="menu" data-app="config" data-id="st_gen">[\s\S]*?<\/button>/,'');
   return h}}
@@ -184,7 +208,7 @@ CUSTOM.access=function(){
   const apps=APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false));
   const head='<tr><th>'+tr('Application','Application')+'</th><th>'+tr('Administrateur','Administrator')+'</th>'+ROLES.map(r=>'<th>'+esc(tr(r[1],r[2]))+'</th>').join('')+'</tr>';
   const rows=apps.map(a=>'<tr><td>'+esc(L(a.l))+'</td><td><input type="checkbox" checked disabled></td>'+ROLES.map(r=>'<td><input type="checkbox" data-ac="'+r[0]+'|'+a.id+'"'+(roleApps(r[0]).includes(a.id)?' checked':'')+'></td>').join('')+'</tr>').join('');
-  return pageHead(tr('Rôles & accès','Roles & access'))+'<div class="va gut"><div class="card acc" style="overflow:auto"><p class="muted">'+tr('Choisissez les applications visibles pour chaque rôle. L’administrateur a toujours accès à tout, y compris aux Paramètres. Les menus Configuration et Rapports restent réservés à l’administrateur et au gérant.','Choose which apps each role can see. The administrator always has full access, including Settings. Configuration and Reporting menus stay reserved to administrator and manager.')+'</p><table>'+head+rows+'</table></div></div>';
+  return pageHead(tr('Rôles & accès','Roles & access'))+'<div class="va gut"><div class="card acc" style="overflow:auto"><p class="muted">'+tr('Choisissez les applications visibles pour chaque rôle. L’administrateur a toujours accès à tout, y compris aux Paramètres. Les menus Configuration sont réservés aux administrateurs ; les Rapports et la gestion de la caisse se règlent dans « Droits sensibles » plus bas.','Choose which apps each role can see. The administrator always has full access, including Settings. Configuration and Reporting menus stay reserved to administrator and manager.')+'</p><table>'+head+rows+'</table></div></div>';
 };
 document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dataset.ac)return;const [r,a]=el.dataset.ac.split('|');ST.set.roleApps=ST.set.roleApps||{};const cur=roleApps(r).slice();const i=cur.indexOf(a);if(el.checked&&i<0)cur.push(a);if(!el.checked&&i>=0)cur.splice(i,1);ST.set.roleApps[r]=cur;save();toast(tr('Accès mis à jour.','Access updated.'))});
 {const st=APPS.find(a=>a.id==='config');const g=st&&st.menus.find(m=>m.id==='st_usr');if(g&&!g.ch.some(c=>c.id==='st_acc'))g.ch.splice(1,0,M_('st_acc',['Rôles & accès','Roles & access'],null,{cus:'access'}))}
@@ -225,7 +249,7 @@ A['su-ok']=()=>{
 };
 const pendingUsers=()=>D.all('user').filter(u=>u.pending);
 MODALS.pending={title:()=>tr('Demandes de compte','Account requests'),
-  body:()=>{const p=pendingUsers();return p.length?p.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b><div class="muted">'+esc(u.login)+'</div></div><select data-pr="'+u.id+'">'+['cashier','studio','kitchen','manager','user'].map(r=>'<option value="'+r+'">'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="pr-ok" data-id="'+u.id+'">'+tr('Approuver','Approve')+'</button><button class="btn sm" data-a="pr-no" data-id="'+u.id+'">'+tr('Refuser','Reject')+'</button></div>').join(''):'<p class="muted">'+tr('Aucune demande en attente.','No pending request.')+'</p>'},
+  body:()=>{const p=pendingUsers();return p.length?p.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b><div class="muted">'+esc(u.login)+'</div></div><select data-pr="'+u.id+'">'+ROLES.map(x=>x[0]).map(r=>'<option value="'+r+'">'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="pr-ok" data-id="'+u.id+'">'+tr('Approuver','Approve')+'</button><button class="btn sm" data-a="pr-no" data-id="'+u.id+'">'+tr('Refuser','Reject')+'</button></div>').join(''):'<p class="muted">'+tr('Aucune demande en attente.','No pending request.')+'</p>'},
   foot:()=>'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'};
 A['pr-ok']=el=>{const id=+el.dataset.id;const sel=document.querySelector('[data-pr="'+id+'"]');D.write('user',id,{pending:false,group:sel?sel.value:'user'},{silent:true});save();toast(tr('Compte approuvé.','Account approved.'));render()};
 A['pr-no']=el=>{D.unlink('user',+el.dataset.id);save();toast(tr('Demande refusée.','Request rejected.'));render()};
@@ -250,7 +274,7 @@ const deny=()=>toast(tr('Action réservée à l’administrateur principal.','Ac
 CUSTOM.admins=function(){
   const ad=D.all('user').filter(u=>u.group==='admin'),own=isOwner();
   const cand=D.all('user').filter(u=>u.group!=='admin'&&u.group!=='portal'&&!u.pending&&u.active!==false);
-  const rows=ad.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">'+avatar(u.name,'',true)+'<div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b> '+(u.owner?'<span class="badge gold">'+tr('Administrateur principal','Main administrator')+'</span>':'<span class="badge">'+tr('Administrateur','Administrator')+'</span>')+'<div class="muted">'+esc(u.login)+'</div></div>'+(own&&!u.owner?'<button class="btn sm" data-a="ad-owner" data-id="'+u.id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button><select data-adr="'+u.id+'">'+['manager','cashier','studio','kitchen','user'].map(r=>'<option value="'+r+'"'+(r==='user'?' selected':'')+'>'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn sm danger" data-a="ad-demote" data-id="'+u.id+'">'+tr('Retirer les droits admin','Remove admin rights')+'</button>':'')+'</div>').join('');
+  const rows=ad.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">'+avatar(u.name,'',true)+'<div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b> '+(u.owner?'<span class="badge gold">'+tr('Administrateur principal','Main administrator')+'</span>':'<span class="badge">'+tr('Administrateur','Administrator')+'</span>')+'<div class="muted">'+esc(u.login)+'</div></div>'+(own&&!u.owner?'<button class="btn sm" data-a="ad-owner" data-id="'+u.id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button><select data-adr="'+u.id+'">'+ROLES.map(x=>x[0]).map(r=>'<option value="'+r+'"'+(r==='user'?' selected':'')+'>'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn sm danger" data-a="ad-demote" data-id="'+u.id+'">'+tr('Retirer les droits admin','Remove admin rights')+'</button>':'')+'</div>').join('');
   const add=own?'<div class="card"><b>'+tr('Nommer un administrateur','Appoint an administrator')+'</b><p class="muted">'+tr('Choisissez un compte existant. Personne ne peut devenir administrateur en créant son propre compte.','Pick an existing account. Nobody can become administrator by creating their own account.')+'</p>'+(cand.length?'<div style="display:flex;gap:8px;flex-wrap:wrap"><select id="ad-pick">'+cand.map(u=>'<option value="'+u.id+'">'+esc(u.name)+' — '+esc(u.login)+'</option>').join('')+'</select><button class="btn pri" data-a="ad-add">'+tr('Nommer administrateur','Make administrator')+'</button></div>':'<p class="muted">'+tr('Aucun compte disponible : créez d’abord un compte employé.','No account available: create an employee account first.')+'</p>')+'</div>':'<p class="muted">'+tr('Seul l’administrateur principal peut nommer ou retirer des administrateurs.','Only the main administrator can appoint or remove administrators.')+'</p>';
   return pageHead(tr('Administrateurs','Administrators'))+'<div class="va gut">'+rows+add+'</div>';
 };
@@ -262,7 +286,7 @@ A['ad-owner']=el=>{if(!isOwner())return deny();const id=+el.dataset.id,u=D.get('
 /* ---------- mon profil (tout utilisateur) ---------- */
 MODALS.profile={title:()=>tr('Mon profil','My profile'),
   body:()=>{const u=curUser()||{},d=UI.modal.data;const f=(k,l,t)=>'<div class="fld"><label>'+l+'</label><input data-m="'+k+'" type="'+(t||'text')+'" value="'+esc(d[k]!=null?d[k]:'')+'"></div>';
-    return '<p><b>'+esc(u.name||'')+'</b> · '+esc(u.login||'')+' <span class="badge">'+esc(ROLELBL(u.group))+'</span></p>'+f('name',tr('Nom','Name'))+'<hr><b>'+tr('Changer mon mot de passe','Change my password')+'</b>'+f('old',tr('Mot de passe actuel','Current password'),'password')+f('new',tr('Nouveau mot de passe (6 min.)','New password (min. 6)'),'password')+(d.err?'<div class="lerr">'+esc(d.err)+'</div>':'')},
+    return '<p><b>'+esc(u.name||'')+'</b> · '+esc(u.login||'')+' <span class="badge">'+esc(ROLELBL(u.group,u))+'</span></p>'+f('name',tr('Nom','Name'))+'<hr><b>'+tr('Changer mon mot de passe','Change my password')+'</b>'+f('old',tr('Mot de passe actuel','Current password'),'password')+f('new',tr('Nouveau mot de passe (6 min.)','New password (min. 6)'),'password')+(d.err?'<div class="lerr">'+esc(d.err)+'</div>':'')},
   foot:()=>'<button class="btn pri" data-a="prof-ok">'+tr('Enregistrer','Save')+'</button><button class="btn" data-a="mclose">'+tr('Annuler','Cancel')+'</button>'};
 A['prof-open']=()=>{const u=curUser();if(!u)return;openModal('profile');UI.modal.data={name:u.name}};
 A['prof-ok']=()=>{const d=UI.modal.data,u=curUser();if(!u)return;const v={};

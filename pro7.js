@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v45';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v46';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
@@ -160,8 +160,20 @@ function receiptText(o,pr){
 }
 
 /* ---------- v45 : changer directement le rôle d'un administrateur ---------- */
-{const RL=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
+{const RL=(window.__ROLES||[]);
 const ah=window.__adminsHtml;window.__adminsHtml=function(){const h=ah?ah():'';
   return h.replace(/<button class="btn sm" data-a="adm-rm" data-id="(\d+)">/g,function(m,id){return '<select class="st3i" data-adr2="'+id+'" style="max-width:180px">'+RL.map(r=>'<option value="'+r[0]+'">'+esc(tr(r[1],r[2]))+'</option>').join('')+'</select><button class="btn pri sm" data-a="adm-role" data-id="'+id+'">'+tr('Changer le rôle','Change role')+'</button>'+m})};
 A['adm-role']=el=>{const id=+el.dataset.id,u=D.get('user',id),sel=document.querySelector('[data-adr2="'+id+'"]');if(!u||!sel)return;const rn=sel.options[sel.selectedIndex].text;
   openModal('confirm',{msg:tr('Retirer les droits d’administrateur à '+(u.name||u.login)+' et lui donner le rôle « '+rn+' » ?','Remove administrator rights from '+(u.name||u.login)+' and give them the role “'+rn+'”?'),ok:()=>{D.write('user',id,{group:sel.value});save();toast(tr('Rôle modifié.','Role changed.'));render()}})}}
+
+/* ---------- v46 : genre des employés (Serveur / Serveuse…) + rôles ---------- */
+{M.employee.f.sex={k:'sex',t:'sel',fr:'Genre',en:'Gender',opts:[['m','Homme','Male',''],['f','Femme','Female','']]};
+const ae=ACT.employees;if(ae&&ae.form&&ae.form.cols&&ae.form.cols[0]&&ae.form.cols[0].indexOf('sex')<0)ae.form.cols[0].splice(Math.min(2,ae.form.cols[0].length),0,'sex');
+const g=M.user.f.group;if(g&&!g.opts.some(o=>o[0]==='studio'))g.opts.push(['studio','Studio (ancien rôle)','Studio (old role)','']);
+const meU=()=>D.all('user').find(u=>u.id===ST.uid);
+function empOf(u,create){if(!u)return null;let e=u.emp&&D.get('employee',u.emp);if(!e&&u.login)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login).toLowerCase());
+  if(!e&&create)e=D.create('employee',{name:u.name||u.login,email:u.login},{silent:true});return e}
+{const pb=MODALS.profile&&MODALS.profile.body;if(pb)MODALS.profile.body=function(p){let h=pb.call(this,p);const u=meU();if(!u)return h;const e=empOf(u,false);const sx=(e&&e.sex)||'';
+  const sel='<div class="lf"><label>'+tr('Genre (pour l’intitulé de votre poste)','Gender (for your job title)')+'</label><select data-pfsex="1"><option value=""></option><option value="m"'+(sx==='m'?' selected':'')+'>'+tr('Homme','Male')+'</option><option value="f"'+(sx==='f'?' selected':'')+'>'+tr('Femme','Female')+'</option></select></div>';
+  return h.replace(/<hr>/,sel+'<hr>')}}
+document.addEventListener('change',ev=>{const el=ev.target;if(!el.dataset||!el.dataset.pfsex)return;const u=meU();if(!u)return;const e=empOf(u,true);if(e){D.write('employee',e.id,{sex:el.value},{silent:true});save();toast(tr('Genre enregistré.','Gender saved.'));try{render()}catch(x){}}})}

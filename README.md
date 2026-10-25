@@ -38,13 +38,14 @@ Ouvrez l'adresse dans Chrome ou Safari, puis **Ajouter à l'écran d'accueil** (
 
 ## Mettre à jour
 
-Remplacez `index.html` par la nouvelle version et envoyez sur GitHub : Vercel redéploie. Changez `V='velume-shell-v2'` dans `sw.js` pour forcer le rafraîchissement du cache hors connexion.
+Remplacez `index.html` par la nouvelle version et envoyez sur GitHub : Vercel redéploie. Incrémentez `V` dans `sw.js` pour forcer le rafraîchissement du cache hors connexion.
 
 
 ## Fond d'écran animé
 Mettez vos photos dans un dossier `fonds/` puis listez-les dans `fond.js` (variable IMAGES).
 
-## Serveur (Supabase) — v38
+## Serveur (Supabase) — v46
 - `velume-schema.sql` : à coller UNE fois dans Supabase > SQL Editor (peut être relancé sans risque).
+- Projet Supabase existant : exécutez aussi `velume-mise-a-jour-comptes.sql` pour ajouter les nouveaux rôles et fonctions.
 - `cloud8.js` : copie de référence du module serveur (déjà inclus dans index.html).
 - L'adresse et la clé publique du projet sont en tête de `cloud8.js` (et dans index.html).

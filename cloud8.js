@@ -17,7 +17,7 @@ const H=s=>{let h=5381,i=s.length;while(i)h=(h*33)^s.charCodeAt(--i);return (h>>
 const hr=o=>H(canon(o));
 const nrm=e=>String(e||'').trim().toLowerCase();
 const okMail=e=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
-const ROLE_LBL=r=>({admin:tr('Administrateur','Administrator'),manager:tr('Gérant','Manager'),cashier:tr('Caissier / serveur','Cashier / waiter'),studio:tr('Studio','Studio'),kitchen:tr('Cuisine','Kitchen'),user:tr('Utilisateur','User'),portal:tr('Portail','Portal')})[r]||r;
+const ROLE_LBL=r=>r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
 
 /* ---------- session ---------- */
 let SES=null;
@@ -388,12 +388,12 @@ const rl=g=>({admin:tr('Administrateur','Administrator'),manager:tr('Gérant','M
 function rows(){const me=meU();return D.all('user').filter(u=>u.group!=='portal'&&u.active!==false).sort((a,b)=>(b.owner?1:0)-(a.owner?1:0)||a.id-b.id).map(u=>{
   const self=me&&u.id===me.id;const can=!u.owner&&!self&&(u.group!=='admin'||isOwn());
   return '<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:150px"><b>'+esc(u.name||'')+'</b>'+(self?' <span class="badge">'+tr('Vous','You')+'</span>':'')+'<br><span class="muted">'+esc(u.login||'')+'</span></div><span class="badge'+(u.owner?' gold':'')+'">'+(u.owner?tr('Principal','Main'):u.pending?tr('En attente','Pending'):rl(u.group))+'</span>'+
-   (can?'<button class="btn danger sm" data-a="acc-del" data-id="'+u.id+'">'+tr('Supprimer','Delete')+'</button>':'')+'</div>'}).join('')}
+   (can?'<button class="btn danger sm" data-a="acc-del" data-id="'+u.id+'">'+tr('Supprimer','Delete')+'</button>':'')+(self&&!u.owner?'<button class="btn danger sm" data-a="pf-del">'+tr('Supprimer mon compte','Delete my account')+'</button>':'')+'</div>'}).join('')}
 MODALS.accounts={title:()=>tr('Gérer les comptes','Manage accounts'),body:()=>'<p class="muted">'+tr('Supprimer un compte retire définitivement l’accès de la personne (elle ne pourra plus se connecter). Ses données dans l’application (factures, contacts…) sont conservées.','Deleting an account permanently removes the person’s access (they can no longer sign in). Their records in the app (invoices, contacts…) are kept.')+'</p>'+(rows()||'<p class="muted">—</p>'),foot:()=>'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'};
 A['acc-open']=()=>{if(!isAdm())return toast(tr('Réservé aux administrateurs.','Reserved to administrators.'));openModal('accounts')};
 A['acc-del']=el=>{const id=+el.dataset.id,u=D.get('user',id);if(!u)return;
   openModal('confirm',{msg:tr('Supprimer définitivement le compte de '+(u.name||u.login)+' ? Cette personne ne pourra plus se connecter.','Permanently delete the account of '+(u.name||u.login)+'? This person will no longer be able to sign in.'),ok:()=>{D.unlink('user',id);save();toast(tr('Compte supprimé.','Account deleted.'));setTimeout(()=>openModal('accounts'),60)}})};
-{const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah?ah():'';if(!isAdm())return h;
+{const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah?ah():'';h=h.replace(/<button class="btn sm" data-a="adm-rm" data-id="(\d+)">/g,function(m,id){return '<button class="btn pri sm" data-a="ad-owner" data-id="'+id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button>'+m});if(!isAdm())return h;
   return h+'<div class="st3o"><b>'+tr('Comptes utilisateurs','User accounts')+'</b><span class="st3d">'+tr('Voir tous les comptes et en supprimer un.','See all accounts and delete one.')+'</span><div class="r"><button class="btn sm" data-a="acc-open">'+tr('Gérer / supprimer les comptes','Manage / delete accounts')+'</button></div></div>'}}
 {const pb=MODALS.pending&&MODALS.pending.body;if(pb)MODALS.pending.body=function(p){return pb.call(this,p)+'<div style="margin-top:10px"><button class="btn sm" data-a="acc-open">'+tr('Gérer / supprimer les comptes','Manage / delete accounts')+'</button></div>'}}
 /* supprimer mon propre compte */
@@ -405,6 +405,8 @@ A['acc-del']=el=>{const id=+el.dataset.id,u=D.get('user',id);if(!u)return;
   openModal('confirm',{msg:tr('Transférer le rôle d’administrateur principal à '+u.name+' ? Vous resterez administrateur mais perdrez le droit de nommer ou retirer des administrateurs. Vous pourrez ensuite supprimer votre compte.','Transfer main administrator role to '+u.name+'? You will remain an administrator but lose the right to appoint or remove administrators. You can then delete your account.'),ok:async()=>{
     const x=await sb.rpc('transfer_owner',{target:u.sb});if(!x.ok){const m=String(errText(x));return toast(m.indexOf('transfer_owner')>=0?tr('Mettez d’abord à jour la base (fichier velume-mise-a-jour-comptes.sql).','Update the database first (velume-mise-a-jour-comptes.sql file).'):rpcErr(x))}
     await pullProfiles();saveNow();renderSoon();toast(tr('Rôle transféré.','Role transferred.'))}})}}
+{const pp=popoverHtml;popoverHtml=function(){let h=pp();if(UI.pop!=='user')return h;return h.replace(/<button data-a="prof-open">[\s\S]*?<\/button>/,'')}}
+A['prof-open']=()=>A.profile();
 A['pf-del']=()=>{const u=meU();if(!u||u.owner)return toast(tr('L’administrateur principal ne peut pas supprimer son compte (transférez d’abord le rôle).','The main administrator cannot delete their account (transfer the role first).'));
   openModal('confirm',{msg:tr('Supprimer définitivement votre compte ? Vous serez déconnecté et ne pourrez plus revenir avec ce compte.','Permanently delete your account? You will be signed out and cannot return with this account.'),ok:async()=>{
     if(READY){const x=await sb.rpc('delete_my_account',{});if(!x.ok){const m=String(errText(x));return toast(m.indexOf('delete_my_account')>=0?tr('Mettez d’abord à jour la base (fichier velume-schema.sql).','Update the database first (velume-schema.sql file).'):rpcErr(x))}}

@@ -13,7 +13,7 @@ if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')retur
 /* Demande au navigateur de protéger les données contre l'effacement automatique */
 try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-25-v45',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-25-v46',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 </script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>VÉLUME</title>
@@ -2602,7 +2602,7 @@ defModel('pcat','Catégories de produits','Product categories','name',{name:['ch
 defModel('product','Produits','Products','name',{
   name:['char','Nom du produit','Product name',{req:1,tx:1}],
   cat:['m2o','Catégorie','Category',{rel:'pcat'}],
-  reg:['sel','Point de vente','Point of sale',{opts:[['bar','Vélume Bar','Vélume Bar'],['podcast','Studio Podcast','Podcast studio'],['shoot','Shooting & studios','Shoots & studios']],def:'bar'}],
+  reg:['sel','Point de vente','Point of sale',{opts:[['bar','Vélume Coffee','Vélume Coffee'],['podcast','Vélume Studios — Podcast','Podcast studio'],['shoot','Shooting & studios','Shoots & studios']],def:'bar'}],
   kind:['sel','Type','Type',{opts:[['consu','Consommable','Consumable'],['service','Service','Service'],['rental','Location','Rental','info']],def:'consu'}],
   price:['money','Prix de vente (TTC)','Sales price (incl. VAT)',{def:0}],
   unit:['sel','Facturation','Billing',{opts:[['f','Forfait','Flat fee'],['h','À l’heure','Per hour']],def:'f'}],
@@ -2614,7 +2614,7 @@ defModel('product','Produits','Products','name',{
   {rname:r=>tx(r.name)});
 defModel('rentcat','Catégories de location','Rental categories','name',{name:['char','Nom','Name',{req:1,tx:1}],note:['text','Description','Description']},{chatter:false});
 defModel('poscfg','Points de vente','Points of sale','name',{
-  name:['char','Nom','Name',{req:1}], reg:['sel','Catalogue','Catalog',{opts:[['bar','Vélume Bar','Vélume Bar'],['studios','Podcast & studios','Podcast & studios']],def:'bar'}],
+  name:['char','Nom','Name',{req:1}], reg:['sel','Catalogue','Catalog',{opts:[['bar','Vélume Coffee','Vélume Coffee'],['studios','Podcast & studios','Podcast & studios']],def:'bar'}],
   tip:['bool','Pourboires','Tips',{def:false}], kitchen:['bool','Envoyer à l’écran de cuisine','Send to kitchen display',{def:true}],
   drawer:['sel','Tiroir-caisse','Cash drawer',{opts:[['sim','Simulé (démonstration)','Simulated (demo)'],['serial','Branché au navigateur (USB / série ESC/POS)','Browser-connected (USB / serial ESC/POS)'],['none','Aucun tiroir','No drawer']],def:'sim'}],
   float:['money','Fond de caisse standard','Standard opening float',{def:25000}], maxcash:['money','Seuil d’alerte espèces (retrait conseillé)','Cash alert threshold (suggest pick-up)',{def:150000}]},{chatter:false});
@@ -2801,7 +2801,7 @@ function seedAll(){
       price:p.p,unit:f?f.unit:'f',dur:f?f.dur:1,studio:f?(f.studio):'',rcat:f?rc[f.studio]:null,pos:true}).id;
   });
   /* pos config */
-  const cBar=C('poscfg',{name:'Vélume Bar',reg:'bar'}).id,cStu=C('poscfg',{name:T('Vélume Studios','Vélume Studios'),reg:'studios',kitchen:false}).id;
+  const cBar=C('poscfg',{name:'Vélume Coffee',reg:'bar'}).id,cStu=C('poscfg',{name:T('Vélume Studios','Vélume Studios'),reg:'studios',kitchen:false}).id;
   [['Espèces','cash','Espèces'],['Orange Money','mobile','Orange Money'],['MTN MoMo','mobile','MTN MoMo'],['Carte bancaire','bank','Banque']].forEach(x=>C('paymeth',{name:x[0],kind:x[1],journal:x[2]}));
   const ses1=C('possession',{cfg:cBar,user:eS,open:nowM(300),cash0:20000,state:'open'}).id;
   /* seed POS orders */
@@ -3000,7 +3000,7 @@ act('pos_report',Object.assign({},ACT.posorders,{id:'pos_report',l:['Analyse des
 act('possessions',{model:'possession',l:['Sessions','Sessions'],icon:'clock',views:['list'],list:['name','cfg','user','open','close','state','total','cash0','cash_cnt','cash_diff'],sum:['total','cash_diff'],search:['name'],create:false,
   form:{status:'state',title:'name',cols:[['cfg','user','cash0'],['open','close','total'],['cash_exp','cash_cnt','cash_diff']],btns:[{l:['Clôturer la session (compter le tiroir)','Close session (count the drawer)'],when:b=>b.state==='open',pri:1,fn:b=>openModal('closecount',{ses:b.id,exp:drawerBal(b.id)})}]}});
 act('pos_products',{model:'product',l:['Produits','Products'],icon:'cup',views:['kanban','list'],dom:r=>r.pos&&r.kind!=='rental'||r.kind==='rental'&&r.pos,list:['name','cat','reg','kind','price'],search:['name'],groups:['cat','reg','kind'],
-  filters:[['bar',['Vélume Bar','Vélume Bar'],r=>r.reg==='bar'],['studios',['Podcast & studios','Podcast & studios'],r=>r.reg!=='bar']],
+  filters:[['bar',['Vélume Coffee','Vélume Coffee'],r=>r.reg==='bar'],['studios',['Podcast & studios','Podcast & studios'],r=>r.reg!=='bar']],
   kanban:{by:'cat',card:r=>'<b>'+esc(rn('product',r))+'</b><b class="num" style="color:var(--gold-ink)">'+money(r.price)+'</b><span class="muted" style="font-size:.82rem">HT '+money(htOf(r.price))+'</span>'},
   form:{title:'name',cols:[['cat','reg','kind','price'],['unit','dur','pos','active']]}});
 act('pcats',{model:'pcat',l:['Catégories de produits','Product categories'],icon:'tag',views:['list'],list:['name','seq'],form:{title:'name',cols:[['seq']]}});
@@ -3391,18 +3391,18 @@ A['till-close']=()=>{UI.till=null;render()};
 const cartTotal=t=>sum(t.cart,l=>{const p=D.get('product',l.p);return (p?p.price:0)*l.q});
 function tillProducts(t){
   const cfg=D.get('poscfg',t.cfg);
-  return D.all('product').filter(p=>p.pos!==false&&p.active!==false&&(cfg.reg==='bar'?p.reg==='bar':p.reg===t.reg)&&(t.cat==='all'||p.cat===t.cat)&&(!t.q||tx(p.name).toLowerCase().includes(t.q.toLowerCase())));
+  return D.all('product').filter(p=>p.pos!==false&&p.active!==false&&p.reg===t.reg&&(t.cat==='all'||p.cat===t.cat)&&(!t.q||tx(p.name).toLowerCase().includes(t.q.toLowerCase())));
 }
 function prodIcon(p){return p.reg==='bar'?(p.cat&&tx(D.name('pcat',p.cat))&&/Gourm|Bites/.test(tx(D.name('pcat',p.cat)))?'shop':/Boutique|Shop/.test(D.name('pcat',p.cat))?'box':'cup'):p.reg==='podcast'?'mic':(p.studio==='video'?'video':'camera')}
 function tillHtml(){
   const t=UI.till;const cfg=D.get('poscfg',t.cfg);const ses=D.get('possession',t.ses);
   const prods=tillProducts(t);
-  const cats=D.all('pcat').filter(c=>D.all('product').some(p=>p.cat===c.id&&p.pos!==false&&(cfg.reg==='bar'?p.reg==='bar':p.reg===t.reg))).sort((a,b)=>a.seq-b.seq);
+  const cats=D.all('pcat').filter(c=>D.all('product').some(p=>p.cat===c.id&&p.pos!==false&&p.reg===t.reg)).sort((a,b)=>a.seq-b.seq);
   const total=cartTotal(t);
   const lines=t.cart.map((l,i)=>{const p=D.get('product',l.p);return '<div class="line'+(t.sel===i?' on':'')+'" data-a="till-sel" data-i="'+i+'"><b>'+esc(tx(p.name))+'</b><b class="num">'+money(p.price*l.q)+'</b><span class="muted" style="font-size:.86rem">'+l.q+' × '+money(p.price)+'</span><span style="justify-self:end;display:flex;gap:4px"><button class="ib bd" data-a="till-qty" data-i="'+i+'" data-d="-1" aria-label="-">−</button><button class="ib bd" data-a="till-qty" data-i="'+i+'" data-d="1" aria-label="+">+</button><button class="ib" data-a="till-rm" data-i="'+i+'" aria-label="remove">'+ic('trash')+'</button></span></div>'}).join('')||'<div class="emp" style="padding:30px 10px">'+ic('cart','big')+'<p class="muted">'+tr('Commande vide. Touchez un produit pour l’ajouter.','Empty order. Tap a product to add it.')+'</p></div>';
   const partners=D.all('partner').filter(p=>p.kind!=='supplier');
   return '<div class="posr" role="dialog" aria-label="'+tr('Caisse','Register')+'"><div class="ptop"><button class="btn" data-a="till-close">'+ic('chevL')+tr('Retour','Back')+'</button><b>'+esc(cfg.name)+'</b><span class="muted">'+esc(ses.name)+'</span>'+
-    (cfg.reg!=='bar'?'<div class="seg" role="group"><button data-a="till-reg" data-r="podcast" aria-pressed="'+(t.reg==='podcast')+'">Podcast</button><button data-a="till-reg" data-r="shoot" aria-pressed="'+(t.reg==='shoot')+'">'+tr('Shooting & studios','Shoots & studios')+'</button></div>':'')+
+    '<div class="seg" role="group">'+(cfg.reg==='bar'?'<button data-a="till-reg" data-r="bar" aria-pressed="'+(t.reg==='bar')+'">Vélume Coffee</button>':'')+'<button data-a="till-reg" data-r="podcast" aria-pressed="'+(t.reg==='podcast')+'">Vélume Studios — Podcast</button><button data-a="till-reg" data-r="shoot" aria-pressed="'+(t.reg==='shoot')+'">'+tr('Vélume Studios — Photo / Shooting','Vélume Studios — Photo / Shoots')+'</button></div>'+
     '<span class="sp"></span><select data-a="till-partner" aria-label="'+tr('Client','Customer')+'" style="max-width:190px"><option value="">'+tr('Client de passage','Walk-in customer')+'</option>'+partners.map(p=>'<option value="'+p.id+'"'+(t.partner===p.id?' selected':'')+'>'+esc(p.name)+'</option>').join('')+'</select>'+
     (cfg.drawer!=='none'||true?(()=>{const bal=drawerBal(ses.id);return '<button class="btn dchip'+(UI.dopen?' open':'')+(cfg.maxcash&&bal>cfg.maxcash?' hot':'')+'" data-a="drawer-menu" aria-label="'+tr('Tiroir-caisse','Cash drawer')+'">'+ic('drawer')+'<span class="num">'+money(bal)+'</span></button>'+(UI.dopen?'<button class="btn sm" data-a="drawer-close">'+tr('Tiroir ouvert : refermer','Drawer open: close it')+'</button>':'')})():'')+
     '<button class="btn" data-a="till-closeses" data-id="'+ses.id+'">'+tr('Clôturer la session','Close session')+'</button></div>'+
@@ -3439,7 +3439,7 @@ document.addEventListener('input',e=>{if(!UI.till)return;if(e.target.id==='tq'){
 A['till-validate']=()=>{
   const t=UI.till;const cfg=D.get('poscfg',t.cfg);const total=cartTotal(t);
   if(t.method==='cash'&&t.given&&+t.given<total)return toast(tr('Montant reçu insuffisant.','Amount received too low.'));
-  const reg=cfg.reg==='bar'?'bar':t.reg;
+  const _rg=t.cart.map(l=>(D.get('product',l.p)||{}).reg);const reg=_rg.includes('bar')?'bar':(_rg[0]||t.reg);
   const o=D.create('posorder',{session:t.ses,cfg:t.cfg,date:isoDT(new Date()),partner:t.partner,pay:t.method,state:'paid',reg:reg,kstatus:(cfg.kitchen&&reg==='bar')?'new':'served',lines:t.cart.map(l=>({product:l.p,qty:l.q,price:D.get('product',l.p).price}))});
   D.write('possession',t.ses,{},{silent:true});
   const change=t.method==='cash'&&+t.given>total?+t.given-total:0;
@@ -5647,7 +5647,7 @@ defModel('attend','Présences','Attendance','name',{
   name:['char','Référence','Reference',{ro:1}], emp:['m2o','Employé','Employee',{rel:'employee',def:()=>ST.me,req:1}],
   cin:['datetime','Arrivée','Check in',{def:()=>isoDT(new Date())}], cout:['datetime','Départ','Check out'],
   hours:['float','Heures travaillées','Worked hours',{ro:1,unit:'h'}],
-  place:['sel','Lieu','Place',{opts:[['bar','Vélume Bar',' Vélume Bar'],['studio','Studios','Studios'],['out','Extérieur (shooting)','On location']],def:'bar'}],
+  place:['sel','Lieu','Place',{opts:[['bar','Vélume Coffee',' Vélume Coffee'],['studio','Studios','Studios'],['out','Extérieur (shooting)','On location']],def:'bar'}],
   note:['text','Note','Note']},
   {chatter:false,seqfield:'name',seqname:r=>'PR/'+p4(r.id),compute:r=>{const a=pd(r.cin),b=pd(r.cout);r.hours=a&&b?Math.max(0,Math.round((b-a)/36e5*100)/100):0}});
 
@@ -6270,17 +6270,41 @@ const hsh=s=>{let h=5381;const t=String(s)+'|velume';for(let i=0;i<t.length;i++)
 window.__hsh=hsh;
 const curUser=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=curUser();return u?u.group:(ST.pro&&ST.pro.setup?'portal':'admin')};
-const ROLES=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
-const DEFAPPS={cashier:['pos','kitchen','loyalty','contacts','discuss','todo','calendar'],studio:['rental','planning','gallery','project','appointments','calendar','contacts','knowledge','discuss','todo','delivery'],kitchen:['kitchen','inventory','recipes','hygiene','discuss','todo'],user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
+const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['cashier','Caissier / Caissière','Cashier'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
+window.__ROLES=ROLES;
+const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],cashier:['Caissier','Caissière'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
+const BASEAPPS=['discuss','todo','calendar','timeoff','attendance'];
+const DEFAPPS={
+ /* Chef de salle : tout sauf Paramètres, Apps, Paie et Recrutement */
+ manager:null,
+ /* Caissier / Caissière : encaisse (café ET studios), clôture la caisse, fidélité, réservations studio en lecture */
+ cashier:['pos','cashbook','loyalty','contacts','rental','appointments','kitchen']
+   .concat(BASEAPPS),
+ /* Barista : caisse + écran bar + recettes + hygiène */
+ barista:['pos','kitchen','recipes','hygiene','loyalty','contacts','inventory'].concat(BASEAPPS),
+ /* Serveur / Serveuse : prend les commandes, voit la cuisine, le menu et les clients ; ne clôture pas la caisse */
+ waiter:['pos','kitchen','recipes','loyalty','contacts'].concat(BASEAPPS),
+ /* Cuisinier : écran cuisine, recettes, stock, hygiène */
+ kitchen:['kitchen','recipes','inventory','hygiene','planning','knowledge'].concat(BASEAPPS),
+ /* Photographe : réservations studio, rendez-vous, projets, galeries clients, planning */
+ photo:['rental','appointments','planning','project','gallery','contacts','knowledge','timesheets','delivery'].concat(BASEAPPS),
+ /* Technicien son : réservations podcast, projets, galeries, maintenance du matériel */
+ sound:['rental','appointments','planning','project','gallery','maintenance','contacts','knowledge','timesheets','delivery'].concat(BASEAPPS),
+ /* ancien rôle conservé pour les comptes existants */
+ studio:['rental','planning','gallery','project','appointments','calendar','contacts','knowledge','discuss','todo','delivery'],
+ user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
+window.__DEFAPPS=DEFAPPS;
 const ALLAPPS=()=>APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false)).map(a=>a.id);
-const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS():(DEFAPPS[r]||[])};
+const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment'].includes(i)):(DEFAPPS[r]||[])};
 const canApp=id=>{const r=role();if(r==='admin')return true;if(id==='config'||id==='apps')return false;if(r==='portal')return false;return roleApps(r).includes(id)};
 window.__canApp=canApp;
-const ROLELBL=r=>r==='admin'?tr('Administrateur','Administrator'):(ROLES.find(x=>x[0]===r)?tr(ROLES.find(x=>x[0]===r)[1],ROLES.find(x=>x[0]===r)[2]):r);
+const empSex=u=>{try{const e=(u&&u.emp&&D.get('employee',u.emp))||D.all('employee').find(x=>u&&u.login&&String(x.email||'').toLowerCase()===String(u.login).toLowerCase());return e&&e.sex||''}catch(x){return ''}};
+const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
+window.__roleLabel=ROLELBL;
 function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login||'').toLowerCase()&&u.login);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
 
 /* groupes d'accès + champ code */
-{const g=M.user.f.group;[['manager','Gérant / comptable','Manager / accountant','gold'],['cashier','Caissier / serveur','Cashier / waiter','info'],['studio','Studio / production','Studio / production','info'],['kitchen','Cuisine / bar','Kitchen / bar','info']].forEach(o=>g.opts.splice(1,0,o));
+{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['cashier','Caissier / Caissière','Cashier','info'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
  M.user.f.pending={k:'pending',t:'bool',fr:'En attente de validation',en:'Pending approval'};
  M.user.f.owner={k:'owner',t:'bool',fr:'Administrateur principal',en:'Main administrator'};
  M.user.f.newcode={k:'newcode',t:'char',fr:'Nouveau mot de passe / code',en:'New password / code'};
@@ -6329,11 +6353,11 @@ window.addEventListener('resize',()=>{if(DEV==='auto'&&document.documentElement.
   try{return nb(ap).replace('<span class="co">Vélume Coffee &amp; Studios</span>','<span class="co">'+esc(company())+'</span>')}finally{if(o)ap.menus=o}}}
 {const h0=homeHtml;homeHtml=function(){const h=h0();const u=curUser();const first=u?String(u.name).split(' ')[0]:'';
   const n=APPS.filter(appVisible).length;
-  const msg='<div class="hi"><b>'+tr('Bonjour','Hello')+(first?' '+esc(first):'')+'</b><span class="badge">'+esc(ROLELBL(role()))+'</span><span class="muted">'+esc(company())+'</span>'+(n?'':'<span class="muted">'+tr('Aucune application autorisée : demandez à l’administrateur.','No app allowed: ask the administrator.')+'</span>')+'</div>';
+  const msg='<div class="hi"><b>'+tr('Bonjour','Hello')+(first?' '+esc(first):'')+'</b><span class="badge">'+esc(ROLELBL(role(),curUser()))+'</span><span class="muted">'+esc(company())+'</span>'+(n?'':'<span class="muted">'+tr('Aucune application autorisée : demandez à l’administrateur.','No app allowed: ask the administrator.')+'</span>')+'</div>';
   return h.replace(/<div class="notice trial">[\s\S]*?<\/button><\/div>/,'<div class="notice">'+msg+'</div>')}}
 {const p0=popoverHtml;popoverHtml=function(){let h=p0();if(UI.pop!=='user')return h;
   h=h.replace(/<button data-a="suser">[\s\S]*?<\/button>/,'<button data-a="lock">'+ic('user')+tr('Verrouiller / changer d’utilisateur','Lock / switch user')+'</button>');
-  const u=curUser();if(u)h=h.replace(/<div class="muted" style="font-size:.84rem">[^<]*<\/div>/,'<div class="muted" style="font-size:.84rem">'+esc(ROLELBL(u.group))+'</div>');
+  const u=curUser();if(u)h=h.replace(/<div class="muted" style="font-size:.84rem">[^<]*<\/div>/,'<div class="muted" style="font-size:.84rem">'+esc(ROLELBL(u.group,u))+'</div>');
   h=h.replace('<button data-a="dev">',DEVS.map(d=>'<button data-a="dev-set" data-m="'+d[0]+'">'+ic('gear')+tr('Affichage : ','Display: ')+esc(tr(d[1],d[2]))+(DEV===d[0]?' ✓':'')+'</button>').join('')+'<hr><button data-a="dev">');
   if(role()!=='admin')h=h.replace(/<button data-a="dev">[\s\S]*?<\/button>/,'').replace(/<button data-a="menu" data-app="config" data-id="st_gen">[\s\S]*?<\/button>/,'');
   return h}}
@@ -6410,7 +6434,7 @@ CUSTOM.access=function(){
   const apps=APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false));
   const head='<tr><th>'+tr('Application','Application')+'</th><th>'+tr('Administrateur','Administrator')+'</th>'+ROLES.map(r=>'<th>'+esc(tr(r[1],r[2]))+'</th>').join('')+'</tr>';
   const rows=apps.map(a=>'<tr><td>'+esc(L(a.l))+'</td><td><input type="checkbox" checked disabled></td>'+ROLES.map(r=>'<td><input type="checkbox" data-ac="'+r[0]+'|'+a.id+'"'+(roleApps(r[0]).includes(a.id)?' checked':'')+'></td>').join('')+'</tr>').join('');
-  return pageHead(tr('Rôles & accès','Roles & access'))+'<div class="va gut"><div class="card acc" style="overflow:auto"><p class="muted">'+tr('Choisissez les applications visibles pour chaque rôle. L’administrateur a toujours accès à tout, y compris aux Paramètres. Les menus Configuration et Rapports restent réservés à l’administrateur et au gérant.','Choose which apps each role can see. The administrator always has full access, including Settings. Configuration and Reporting menus stay reserved to administrator and manager.')+'</p><table>'+head+rows+'</table></div></div>';
+  return pageHead(tr('Rôles & accès','Roles & access'))+'<div class="va gut"><div class="card acc" style="overflow:auto"><p class="muted">'+tr('Choisissez les applications visibles pour chaque rôle. L’administrateur a toujours accès à tout, y compris aux Paramètres. Les menus Configuration sont réservés aux administrateurs ; les Rapports et la gestion de la caisse se règlent dans « Droits sensibles » plus bas.','Choose which apps each role can see. The administrator always has full access, including Settings. Configuration and Reporting menus stay reserved to administrator and manager.')+'</p><table>'+head+rows+'</table></div></div>';
 };
 document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dataset.ac)return;const [r,a]=el.dataset.ac.split('|');ST.set.roleApps=ST.set.roleApps||{};const cur=roleApps(r).slice();const i=cur.indexOf(a);if(el.checked&&i<0)cur.push(a);if(!el.checked&&i>=0)cur.splice(i,1);ST.set.roleApps[r]=cur;save();toast(tr('Accès mis à jour.','Access updated.'))});
 {const st=APPS.find(a=>a.id==='config');const g=st&&st.menus.find(m=>m.id==='st_usr');if(g&&!g.ch.some(c=>c.id==='st_acc'))g.ch.splice(1,0,M_('st_acc',['Rôles & accès','Roles & access'],null,{cus:'access'}))}
@@ -6451,7 +6475,7 @@ A['su-ok']=()=>{
 };
 const pendingUsers=()=>D.all('user').filter(u=>u.pending);
 MODALS.pending={title:()=>tr('Demandes de compte','Account requests'),
-  body:()=>{const p=pendingUsers();return p.length?p.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b><div class="muted">'+esc(u.login)+'</div></div><select data-pr="'+u.id+'">'+['cashier','studio','kitchen','manager','user'].map(r=>'<option value="'+r+'">'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="pr-ok" data-id="'+u.id+'">'+tr('Approuver','Approve')+'</button><button class="btn sm" data-a="pr-no" data-id="'+u.id+'">'+tr('Refuser','Reject')+'</button></div>').join(''):'<p class="muted">'+tr('Aucune demande en attente.','No pending request.')+'</p>'},
+  body:()=>{const p=pendingUsers();return p.length?p.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b><div class="muted">'+esc(u.login)+'</div></div><select data-pr="'+u.id+'">'+ROLES.map(x=>x[0]).map(r=>'<option value="'+r+'">'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="pr-ok" data-id="'+u.id+'">'+tr('Approuver','Approve')+'</button><button class="btn sm" data-a="pr-no" data-id="'+u.id+'">'+tr('Refuser','Reject')+'</button></div>').join(''):'<p class="muted">'+tr('Aucune demande en attente.','No pending request.')+'</p>'},
   foot:()=>'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'};
 A['pr-ok']=el=>{const id=+el.dataset.id;const sel=document.querySelector('[data-pr="'+id+'"]');D.write('user',id,{pending:false,group:sel?sel.value:'user'},{silent:true});save();toast(tr('Compte approuvé.','Account approved.'));render()};
 A['pr-no']=el=>{D.unlink('user',+el.dataset.id);save();toast(tr('Demande refusée.','Request rejected.'));render()};
@@ -6476,7 +6500,7 @@ const deny=()=>toast(tr('Action réservée à l’administrateur principal.','Ac
 CUSTOM.admins=function(){
   const ad=D.all('user').filter(u=>u.group==='admin'),own=isOwner();
   const cand=D.all('user').filter(u=>u.group!=='admin'&&u.group!=='portal'&&!u.pending&&u.active!==false);
-  const rows=ad.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">'+avatar(u.name,'',true)+'<div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b> '+(u.owner?'<span class="badge gold">'+tr('Administrateur principal','Main administrator')+'</span>':'<span class="badge">'+tr('Administrateur','Administrator')+'</span>')+'<div class="muted">'+esc(u.login)+'</div></div>'+(own&&!u.owner?'<button class="btn sm" data-a="ad-owner" data-id="'+u.id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button><select data-adr="'+u.id+'">'+['manager','cashier','studio','kitchen','user'].map(r=>'<option value="'+r+'"'+(r==='user'?' selected':'')+'>'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn sm danger" data-a="ad-demote" data-id="'+u.id+'">'+tr('Retirer les droits admin','Remove admin rights')+'</button>':'')+'</div>').join('');
+  const rows=ad.map(u=>'<div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">'+avatar(u.name,'',true)+'<div style="flex:1;min-width:160px"><b>'+esc(u.name)+'</b> '+(u.owner?'<span class="badge gold">'+tr('Administrateur principal','Main administrator')+'</span>':'<span class="badge">'+tr('Administrateur','Administrator')+'</span>')+'<div class="muted">'+esc(u.login)+'</div></div>'+(own&&!u.owner?'<button class="btn sm" data-a="ad-owner" data-id="'+u.id+'">'+tr('Transférer la propriété','Transfer ownership')+'</button><select data-adr="'+u.id+'">'+ROLES.map(x=>x[0]).map(r=>'<option value="'+r+'"'+(r==='user'?' selected':'')+'>'+esc(ROLELBL(r))+'</option>').join('')+'</select><button class="btn sm danger" data-a="ad-demote" data-id="'+u.id+'">'+tr('Retirer les droits admin','Remove admin rights')+'</button>':'')+'</div>').join('');
   const add=own?'<div class="card"><b>'+tr('Nommer un administrateur','Appoint an administrator')+'</b><p class="muted">'+tr('Choisissez un compte existant. Personne ne peut devenir administrateur en créant son propre compte.','Pick an existing account. Nobody can become administrator by creating their own account.')+'</p>'+(cand.length?'<div style="display:flex;gap:8px;flex-wrap:wrap"><select id="ad-pick">'+cand.map(u=>'<option value="'+u.id+'">'+esc(u.name)+' — '+esc(u.login)+'</option>').join('')+'</select><button class="btn pri" data-a="ad-add">'+tr('Nommer administrateur','Make administrator')+'</button></div>':'<p class="muted">'+tr('Aucun compte disponible : créez d’abord un compte employé.','No account available: create an employee account first.')+'</p>')+'</div>':'<p class="muted">'+tr('Seul l’administrateur principal peut nommer ou retirer des administrateurs.','Only the main administrator can appoint or remove administrators.')+'</p>';
   return pageHead(tr('Administrateurs','Administrators'))+'<div class="va gut">'+rows+add+'</div>';
 };
@@ -6488,7 +6512,7 @@ A['ad-owner']=el=>{if(!isOwner())return deny();const id=+el.dataset.id,u=D.get('
 /* ---------- mon profil (tout utilisateur) ---------- */
 MODALS.profile={title:()=>tr('Mon profil','My profile'),
   body:()=>{const u=curUser()||{},d=UI.modal.data;const f=(k,l,t)=>'<div class="fld"><label>'+l+'</label><input data-m="'+k+'" type="'+(t||'text')+'" value="'+esc(d[k]!=null?d[k]:'')+'"></div>';
-    return '<p><b>'+esc(u.name||'')+'</b> · '+esc(u.login||'')+' <span class="badge">'+esc(ROLELBL(u.group))+'</span></p>'+f('name',tr('Nom','Name'))+'<hr><b>'+tr('Changer mon mot de passe','Change my password')+'</b>'+f('old',tr('Mot de passe actuel','Current password'),'password')+f('new',tr('Nouveau mot de passe (6 min.)','New password (min. 6)'),'password')+(d.err?'<div class="lerr">'+esc(d.err)+'</div>':'')},
+    return '<p><b>'+esc(u.name||'')+'</b> · '+esc(u.login||'')+' <span class="badge">'+esc(ROLELBL(u.group,u))+'</span></p>'+f('name',tr('Nom','Name'))+'<hr><b>'+tr('Changer mon mot de passe','Change my password')+'</b>'+f('old',tr('Mot de passe actuel','Current password'),'password')+f('new',tr('Nouveau mot de passe (6 min.)','New password (min. 6)'),'password')+(d.err?'<div class="lerr">'+esc(d.err)+'</div>':'')},
   foot:()=>'<button class="btn pri" data-a="prof-ok">'+tr('Enregistrer','Save')+'</button><button class="btn" data-a="mclose">'+tr('Annuler','Cancel')+'</button>'};
 A['prof-open']=()=>{const u=curUser();if(!u)return;openModal('profile');UI.modal.data={name:u.name}};
 A['prof-ok']=()=>{const d=UI.modal.data,u=curUser();if(!u)return;const v={};
@@ -6619,7 +6643,7 @@ const CAPS=[
  ['config','Modifier la configuration des applications','Edit app configuration','Menus Configuration et Paramètres de chaque application.','Configuration and Settings menus of each app.'],
  ['reports','Voir les rapports et analyses','See reports and analytics','Menus Reporting, Rapports, Analyse.','Reporting, Reports, Analysis menus.']
 ];
-const DEFCAPS={manager:['delete','export','cashctl','hr','config','reports'],cashier:[],studio:[],kitchen:[],user:[]};
+const DEFCAPS={manager:['delete','export','cashctl','reports'],cashier:['cashctl'],barista:['cashctl'],waiter:[],kitchen:[],photo:[],sound:[],studio:[],user:[]};
 const caps=r=>{const o=ST.set.roleCaps&&ST.set.roleCaps[r];return o||DEFCAPS[r]||[]};
 const can=c=>{const r=role();if(r==='admin')return true;if(r==='portal')return false;return caps(r).includes(c)};
 window.__can=can;
@@ -6653,7 +6677,7 @@ function openAppSafe(ap,f){const first=m=>m.ch?first(m.ch.filter(c=>!blocked(c))
 
 /* tableau des droits dans Rôles & accès */
 {const a0=CUSTOM.access;CUSTOM.access=function(){const base=a0();
-  const ROLES=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
+  const ROLES=window.__ROLES;
   const head='<tr><th>'+tr('Droit sensible','Sensitive right')+'</th><th>'+tr('Administrateur','Administrator')+'</th>'+ROLES.map(r=>'<th>'+esc(tr(r[1],r[2]))+'</th>').join('')+'</tr>';
   const rows=CAPS.map(c=>'<tr><td style="text-align:left"><b>'+esc(tr(c[1],c[2]))+'</b><div class="muted" style="font-size:.8rem">'+esc(tr(c[3],c[4]))+'</div></td><td><input type="checkbox" checked disabled></td>'+ROLES.map(r=>'<td><input type="checkbox" data-cap="'+r[0]+'|'+c[0]+'"'+(caps(r[0]).includes(c[0])?' checked':'')+'></td>').join('')+'</tr>').join('');
   return base.replace(/<\/table><\/div><\/div>$/,'</table><h3 style="margin:22px 0 6px">'+tr('Droits sensibles','Sensitive rights')+'</h3><p class="muted">'+tr('Seul l’administrateur peut accorder ces droits. Ils s’appliquent à tous les employés du rôle.','Only the administrator can grant these rights. They apply to every employee of the role.')+'</p><table>'+head+rows+'</table></div></div>')}}
@@ -6661,12 +6685,12 @@ document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dat
 
 /* ---------- invitations (code lié à un rôle) ---------- */
 const invs=()=>ST.set.invites||(ST.set.invites=[]);
-const RL=(r)=>{const x={manager:['Gérant / comptable','Manager / accountant'],cashier:['Caissier / serveur','Cashier / waiter'],studio:['Studio / production','Studio / production'],kitchen:['Cuisine / bar','Kitchen / bar'],user:['Utilisateur interne','Internal user']}[r];return x?tr(x[0],x[1]):r};
+const RL=(r)=>{const x=(window.__ROLES||[]).find(z=>z[0]===r);return x?tr(x[1],x[2]):r};
 {const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah();if(role()!=='admin')return h;
   const list=invs().filter(i=>!i.used);
   const block='<div class="st3o"><b>'+tr('Codes d’invitation','Invitation codes')+'</b><span class="st3d">'+tr('Donnez un code à un employé : en créant son compte avec ce code, il reçoit directement le rôle choisi, sans attendre de validation.','Give a code to an employee: when creating their account with this code they get the chosen role directly, without waiting for approval.')+'</span><div class="adm">'+
    list.map(i=>'<div class="r"><b style="font-family:monospace;font-size:1.05rem">'+esc(i.code)+'</b><span class="badge">'+esc(RL(i.role))+'</span><button class="btn sm" data-a="inv-del" data-c="'+esc(i.code)+'">'+tr('Annuler','Revoke')+'</button></div>').join('')+
-   '<div class="r"><select id="invrole" class="st3i">'+['cashier','studio','kitchen','manager','user'].map(r=>'<option value="'+r+'">'+esc(RL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="inv-new">'+tr('Générer un code','Generate a code')+'</button></div></div></div>';
+   '<div class="r"><select id="invrole" class="st3i">'+(window.__ROLES||[]).map(x=>x[0]).map(r=>'<option value="'+r+'">'+esc(RL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="inv-new">'+tr('Générer un code','Generate a code')+'</button></div></div></div>';
   return h+block}}
 A['inv-new']=()=>{const r=(document.getElementById('invrole')||{}).value||'user';const c='VLM-'+Math.random().toString(36).slice(2,7).toUpperCase();invs().push({code:c,role:r,used:false});save();toast(tr('Code créé : ','Code created: ')+c);render()};
 A['inv-del']=el=>{ST.set.invites=invs().filter(i=>i.code!==el.dataset.c);save();render()};
@@ -6805,7 +6829,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v45';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v46';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VÉLUME '+BUILD}catch(err){}return x}}
 })();
@@ -6907,11 +6931,23 @@ function receiptText(o,pr){
 }
 
 /* ---------- v45 : changer directement le rôle d'un administrateur ---------- */
-{const RL=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
+{const RL=(window.__ROLES||[]);
 const ah=window.__adminsHtml;window.__adminsHtml=function(){const h=ah?ah():'';
   return h.replace(/<button class="btn sm" data-a="adm-rm" data-id="(\d+)">/g,function(m,id){return '<select class="st3i" data-adr2="'+id+'" style="max-width:180px">'+RL.map(r=>'<option value="'+r[0]+'">'+esc(tr(r[1],r[2]))+'</option>').join('')+'</select><button class="btn pri sm" data-a="adm-role" data-id="'+id+'">'+tr('Changer le rôle','Change role')+'</button>'+m})};
 A['adm-role']=el=>{const id=+el.dataset.id,u=D.get('user',id),sel=document.querySelector('[data-adr2="'+id+'"]');if(!u||!sel)return;const rn=sel.options[sel.selectedIndex].text;
   openModal('confirm',{msg:tr('Retirer les droits d’administrateur à '+(u.name||u.login)+' et lui donner le rôle « '+rn+' » ?','Remove administrator rights from '+(u.name||u.login)+' and give them the role “'+rn+'”?'),ok:()=>{D.write('user',id,{group:sel.value});save();toast(tr('Rôle modifié.','Role changed.'));render()}})}}
+
+/* ---------- v46 : genre des employés (Serveur / Serveuse…) + rôles ---------- */
+{M.employee.f.sex={k:'sex',t:'sel',fr:'Genre',en:'Gender',opts:[['m','Homme','Male',''],['f','Femme','Female','']]};
+const ae=ACT.employees;if(ae&&ae.form&&ae.form.cols&&ae.form.cols[0]&&ae.form.cols[0].indexOf('sex')<0)ae.form.cols[0].splice(Math.min(2,ae.form.cols[0].length),0,'sex');
+const g=M.user.f.group;if(g&&!g.opts.some(o=>o[0]==='studio'))g.opts.push(['studio','Studio (ancien rôle)','Studio (old role)','']);
+const meU=()=>D.all('user').find(u=>u.id===ST.uid);
+function empOf(u,create){if(!u)return null;let e=u.emp&&D.get('employee',u.emp);if(!e&&u.login)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login).toLowerCase());
+  if(!e&&create)e=D.create('employee',{name:u.name||u.login,email:u.login},{silent:true});return e}
+{const pb=MODALS.profile&&MODALS.profile.body;if(pb)MODALS.profile.body=function(p){let h=pb.call(this,p);const u=meU();if(!u)return h;const e=empOf(u,false);const sx=(e&&e.sex)||'';
+  const sel='<div class="lf"><label>'+tr('Genre (pour l’intitulé de votre poste)','Gender (for your job title)')+'</label><select data-pfsex="1"><option value=""></option><option value="m"'+(sx==='m'?' selected':'')+'>'+tr('Homme','Male')+'</option><option value="f"'+(sx==='f'?' selected':'')+'>'+tr('Femme','Female')+'</option></select></div>';
+  return h.replace(/<hr>/,sel+'<hr>')}}
+document.addEventListener('change',ev=>{const el=ev.target;if(!el.dataset||!el.dataset.pfsex)return;const u=meU();if(!u)return;const e=empOf(u,true);if(e){D.write('employee',e.id,{sex:el.value},{silent:true});save();toast(tr('Genre enregistré.','Gender saved.'));try{render()}catch(x){}}})}
 
 /* ===== VÉLUME CLOUD 8 — Supabase : comptes, rôles, synchronisation entre appareils, hors connexion ===== */
 (function(){
@@ -6932,7 +6968,7 @@ const H=s=>{let h=5381,i=s.length;while(i)h=(h*33)^s.charCodeAt(--i);return (h>>
 const hr=o=>H(canon(o));
 const nrm=e=>String(e||'').trim().toLowerCase();
 const okMail=e=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
-const ROLE_LBL=r=>({admin:tr('Administrateur','Administrator'),manager:tr('Gérant','Manager'),cashier:tr('Caissier / serveur','Cashier / waiter'),studio:tr('Studio','Studio'),kitchen:tr('Cuisine','Kitchen'),user:tr('Utilisateur','User'),portal:tr('Portail','Portal')})[r]||r;
+const ROLE_LBL=r=>r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
 
 /* ---------- session ---------- */
 let SES=null;

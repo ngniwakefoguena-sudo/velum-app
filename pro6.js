@@ -13,7 +13,7 @@ const CAPS=[
  ['config','Modifier la configuration des applications','Edit app configuration','Menus Configuration et Paramètres de chaque application.','Configuration and Settings menus of each app.'],
  ['reports','Voir les rapports et analyses','See reports and analytics','Menus Reporting, Rapports, Analyse.','Reporting, Reports, Analysis menus.']
 ];
-const DEFCAPS={manager:['delete','export','cashctl','hr','config','reports'],cashier:[],studio:[],kitchen:[],user:[]};
+const DEFCAPS={manager:['delete','export','cashctl','reports'],cashier:['cashctl'],barista:['cashctl'],waiter:[],kitchen:[],photo:[],sound:[],studio:[],user:[]};
 const caps=r=>{const o=ST.set.roleCaps&&ST.set.roleCaps[r];return o||DEFCAPS[r]||[]};
 const can=c=>{const r=role();if(r==='admin')return true;if(r==='portal')return false;return caps(r).includes(c)};
 window.__can=can;
@@ -47,7 +47,7 @@ function openAppSafe(ap,f){const first=m=>m.ch?first(m.ch.filter(c=>!blocked(c))
 
 /* tableau des droits dans Rôles & accès */
 {const a0=CUSTOM.access;CUSTOM.access=function(){const base=a0();
-  const ROLES=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
+  const ROLES=window.__ROLES;
   const head='<tr><th>'+tr('Droit sensible','Sensitive right')+'</th><th>'+tr('Administrateur','Administrator')+'</th>'+ROLES.map(r=>'<th>'+esc(tr(r[1],r[2]))+'</th>').join('')+'</tr>';
   const rows=CAPS.map(c=>'<tr><td style="text-align:left"><b>'+esc(tr(c[1],c[2]))+'</b><div class="muted" style="font-size:.8rem">'+esc(tr(c[3],c[4]))+'</div></td><td><input type="checkbox" checked disabled></td>'+ROLES.map(r=>'<td><input type="checkbox" data-cap="'+r[0]+'|'+c[0]+'"'+(caps(r[0]).includes(c[0])?' checked':'')+'></td>').join('')+'</tr>').join('');
   return base.replace(/<\/table><\/div><\/div>$/,'</table><h3 style="margin:22px 0 6px">'+tr('Droits sensibles','Sensitive rights')+'</h3><p class="muted">'+tr('Seul l’administrateur peut accorder ces droits. Ils s’appliquent à tous les employés du rôle.','Only the administrator can grant these rights. They apply to every employee of the role.')+'</p><table>'+head+rows+'</table></div></div>')}}
@@ -55,12 +55,12 @@ document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!el.dat
 
 /* ---------- invitations (code lié à un rôle) ---------- */
 const invs=()=>ST.set.invites||(ST.set.invites=[]);
-const RL=(r)=>{const x={manager:['Gérant / comptable','Manager / accountant'],cashier:['Caissier / serveur','Cashier / waiter'],studio:['Studio / production','Studio / production'],kitchen:['Cuisine / bar','Kitchen / bar'],user:['Utilisateur interne','Internal user']}[r];return x?tr(x[0],x[1]):r};
+const RL=(r)=>{const x=(window.__ROLES||[]).find(z=>z[0]===r);return x?tr(x[1],x[2]):r};
 {const ah=window.__adminsHtml;window.__adminsHtml=function(){let h=ah();if(role()!=='admin')return h;
   const list=invs().filter(i=>!i.used);
   const block='<div class="st3o"><b>'+tr('Codes d’invitation','Invitation codes')+'</b><span class="st3d">'+tr('Donnez un code à un employé : en créant son compte avec ce code, il reçoit directement le rôle choisi, sans attendre de validation.','Give a code to an employee: when creating their account with this code they get the chosen role directly, without waiting for approval.')+'</span><div class="adm">'+
    list.map(i=>'<div class="r"><b style="font-family:monospace;font-size:1.05rem">'+esc(i.code)+'</b><span class="badge">'+esc(RL(i.role))+'</span><button class="btn sm" data-a="inv-del" data-c="'+esc(i.code)+'">'+tr('Annuler','Revoke')+'</button></div>').join('')+
-   '<div class="r"><select id="invrole" class="st3i">'+['cashier','studio','kitchen','manager','user'].map(r=>'<option value="'+r+'">'+esc(RL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="inv-new">'+tr('Générer un code','Generate a code')+'</button></div></div></div>';
+   '<div class="r"><select id="invrole" class="st3i">'+(window.__ROLES||[]).map(x=>x[0]).map(r=>'<option value="'+r+'">'+esc(RL(r))+'</option>').join('')+'</select><button class="btn pri sm" data-a="inv-new">'+tr('Générer un code','Generate a code')+'</button></div></div></div>';
   return h+block}}
 A['inv-new']=()=>{const r=(document.getElementById('invrole')||{}).value||'user';const c='VLM-'+Math.random().toString(36).slice(2,7).toUpperCase();invs().push({code:c,role:r,used:false});save();toast(tr('Code créé : ','Code created: ')+c);render()};
 A['inv-del']=el=>{ST.set.invites=invs().filter(i=>i.code!==el.dataset.c);save();render()};

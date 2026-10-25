@@ -9,7 +9,7 @@ create table if not exists public.profiles (
   email      text not null,
   name       text,
   role       text not null default 'user'
-             check (role in ('admin','manager','cashier','studio','kitchen','user','portal')),
+             check (role in ('admin','manager','cashier','barista','waiter','kitchen','photo','sound','studio','user','portal')),
   is_owner   boolean not null default false,
   approved   boolean not null default false,
   created_at timestamptz not null default now()
@@ -44,7 +44,7 @@ create table if not exists public.id_counters (
 -- 5) Codes d'invitation créés par l'administrateur
 create table if not exists public.invites (
   code       text primary key,
-  role       text not null check (role in ('manager','cashier','studio','kitchen','user')),
+  role       text not null check (role in ('manager','cashier','barista','waiter','kitchen','photo','sound','studio','user')),
   used       boolean not null default false,
   used_by    uuid,
   created_by uuid,
@@ -114,7 +114,7 @@ begin
   if not found then raise exception 'unknown_user'; end if;
   if t.is_owner then raise exception 'owner_protected'; end if;
   if target = auth.uid() then raise exception 'not_yourself'; end if;
-  if new_role not in ('admin','manager','cashier','studio','kitchen','user','portal') then raise exception 'bad_role'; end if;
+  if new_role not in ('admin','manager','cashier','barista','waiter','kitchen','photo','sound','studio','user','portal') then raise exception 'bad_role'; end if;
   if (new_role = 'admin' or t.role = 'admin') and not public.is_owner() then raise exception 'owner_only'; end if;
   update public.profiles set role = new_role, approved = new_approved where id = target;
 end $$;
@@ -138,7 +138,7 @@ language plpgsql security definer set search_path = public as $$
 declare c text;
 begin
   if not public.is_admin() then raise exception 'admin_only'; end if;
-  if r not in ('manager','cashier','studio','kitchen','user') then raise exception 'bad_role'; end if;
+  if r not in ('manager','cashier','barista','waiter','kitchen','photo','sound','studio','user') then raise exception 'bad_role'; end if;
   c := 'VLM-' || upper(substr(md5(random()::text || clock_timestamp()::text), 1, 5));
   insert into public.invites (code, role, created_by) values (c, r, auth.uid());
   return c;
@@ -230,3 +230,29 @@ grant execute on function
   public.create_invite(text), public.redeem_invite(text), public.delete_invite(text), public.reserve_ids(text,int), public.seed_counter(text,bigint)
   to authenticated;
 grant execute on function public.is_member(), public.is_admin(), public.is_owner() to authenticated;
+
+-- ---------- supprimer son propre compte (hors administrateur principal) ----------
+create or replace function public.delete_my_account() returns void
+language plpgsql security definer set search_path = public as $$
+declare t public.profiles;
+begin
+  select * into t from public.profiles where id = auth.uid();
+  if not found then return; end if;
+  if t.is_owner then raise exception 'owner_protected'; end if;
+  delete from auth.users where id = auth.uid();
+end $$;
+revoke all on function public.delete_my_account() from public, anon;
+grant execute on function public.delete_my_account() to authenticated;
+
+-- ---------- transférer le rôle d'administrateur principal ----------
+create or replace function public.transfer_owner(target uuid) returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if not public.is_owner() then raise exception 'owner_only'; end if;
+  if target = auth.uid() then return; end if;
+  if not exists (select 1 from public.profiles where id = target and approved) then raise exception 'not_approved'; end if;
+  update public.profiles set is_owner = false where id = auth.uid();
+  update public.profiles set is_owner = true, role = 'admin' where id = target;
+end $$;
+revoke all on function public.transfer_owner(uuid) from public, anon;
+grant execute on function public.transfer_owner(uuid) to authenticated;
