@@ -102,7 +102,7 @@ defModel('delivery','Livraisons','Deliveries','name',{
   {status:'state',seqfield:'name',seqname:r=>'LIV/'+p4(r.id)});
 
 defModel('recipe','Recettes & coûts','Recipes & costs','name',{
-  cat:['sel','Catégorie','Category',{opts:[['grill','Grillades','Grills','warn'],['pancake','Pancakes et gaufres','Pancakes & waffles','gold'],['pain','Pains et conforts','Breads & comfort food','gold'],['froid','Plats froids','Cold dishes','info'],['vienn','Viennoiserie','Pastries',''],['classic','Café classique','Classic coffee','warn'],['signature','Café signature','Signature coffee','warn'],['iced','Café glacé','Iced coffee','info'],['fresh','Boissons fresh','Fresh drinks','good'],['mocktail','Mocktails','Mocktails','good'],['dessert','Desserts','Desserts','']],def:'classic'}],
+  cat:['sel','Catégorie','Category',{opts:[['mocktail','Mocktails','Mocktails','good'],['cocktail','Cocktails','Cocktails','bad'],['biere','Bières','Beers','warn'],['presse','Boissons pressées et infusées','Pressed juices & infusions','good'],['soft','Soft drinks','Soft drinks','info'],['gateau','Gâteaux & pâtisseries','Cakes & pastries','gold'],['vienn','Viennoiseries','Viennoiserie',''],['grill','Grillades','Grills','warn'],['pain','Pains & conforts','Breads & comfort food','gold'],['pancake','Gaufres & pancakes','Waffles & pancakes','gold'],['froid','Plats froids','Cold dishes','info'],['classic','Cafés classiques','Classic coffees','warn'],['signature','Cafés signatures','Signature coffees','warn']],def:'classic'}],
   name:['char','Nom de la recette','Recipe name',{req:1}],
   price:['money','Prix de vente TTC','Sales price (incl. VAT)',{def:0}],
   lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient (stock)',en:'Ingredient (stock)',w:220},{k:'label',t:'char',fr:'Ou nom libre',en:'Or free name',w:170},{k:'qty',t:'float',fr:'Quantité',en:'Quantity',def:1,w:100},{k:'cost',t:'money',fr:'Coût unitaire (à saisir)',en:'Unit cost (enter it)',w:140},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
@@ -397,7 +397,7 @@ window.__seedApps2=function(){
   R(['Cappuccino','Cappuccino'],'classic',1500,[['café arabica',0.018],['lait entier',0.15],['gobelets',1],['couvercles',1]]);
   R(['Latte vanille','Vanilla latte'],'classic',2000,[['café arabica',0.018],['lait entier',0.2],['sirop vanille',0.03],['gobelets',1],['couvercles',1]]);
   R(['Espresso','Espresso'],'classic',1000,[['café arabica',0.009],['gobelets',1]]);
-  R(['Latte glacé avoine','Iced oat latte'],'iced',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
+  R(['Latte glacé avoine','Iced oat latte'],'signature',2300,[['café arabica',0.018],['lait d’avoine',0.2],['gobelets',1],['couvercles',1]]);
   R(['Croissant','Croissant'],'vienn',800,[['croissants',1]]);
   // hygiène
   [['Ouverture du bar','open','bar',null,'ok',0,8],['Température frigo principal','temp','fridge',4,'ok',0,9],['Température congélateur','temp','fridge',-14,'nok',1,9],['Nettoyage machine espresso','clean','bar',null,'ok',1,19],['Fermeture du bar','close','bar',null,'ok',1,21],['Sanitaires','clean','wc',null,'ok',0,12]].forEach(h=>
