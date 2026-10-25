@@ -13,14 +13,14 @@ if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')retur
 /* Demande au navigateur de protéger les données contre l'effacement automatique */
 try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-24-v41',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-24-v42',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 </script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>VELUME</title>
+<title>VÉLUME</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* VELUME — layout: Odoo-style shell (home launcher, navbar with menus and systray, control panel, view area).
+/* VÉLUME — layout: Odoo-style shell (home launcher, navbar with menus and systray, control panel, view area).
    Palette from the business plan (off-white, beige, wood, gold). Chart hues from a validated set. */
 :root{
   --bg:#F7F4EC; --surface:#FFFDF8; --surface-2:#EFE8D8; --surface-3:#E7DEC9; --ink:#2B241B; --ink-2:#6A5E4E; --line:#E3D9C6; --line-2:#D6CAB2;
@@ -789,7 +789,7 @@ code,.card p{overflow-wrap:anywhere}
 (function(){
 'use strict';
 /* =========================================================
-   VELUME — core: helpers, i18n, icons, store, ORM-like db,
+   VÉLUME — core: helpers, i18n, icons, store, ORM-like db,
    automation engine, RPC, search model. (own code, Odoo-inspired architecture)
    ========================================================= */
 
@@ -1238,7 +1238,7 @@ function groupRows(a,rows,fields){
 /* render scheduler (set by shell) */
 let renderSoon=()=>{};
 
-/* VELUME — business-plan data (prices TTC FCFA, formulas, forecasts) */
+/* VÉLUME — business-plan data (prices TTC FCFA, formulas, forecasts) */
 const PRODUCTS=[
  {id:'esp',reg:'bar',cat:'cafes',fr:'Espresso',en:'Espresso',p:1000},
  {id:'ame',reg:'bar',cat:'cafes',fr:'Americano',en:'Americano',p:1500},
@@ -1293,7 +1293,7 @@ const PLAN={
  tot:[71313208,109766038,131451572],ebe:[14624000,41776000,55628000],net:[-7611000,16238000,27449000],ramp:[45,55,65,75,80,85,90,95,100,100,100,100]};
 
 /* =========================================================
-   VELUME — views: control panel, list, kanban, calendar, gantt,
+   VÉLUME — views: control panel, list, kanban, calendar, gantt,
    graph, pivot, activity, form (+ chatter)
    ========================================================= */
 const R={screen:'home',app:null,menu:null,rid:null};
@@ -1948,7 +1948,7 @@ function chatterHtml(m,id){
 }
 
 /* =========================================================
-   VELUME — shell: login, home launcher, navbar + systray, router,
+   VÉLUME — shell: login, home launcher, navbar + systray, router,
    popovers, modals, command palette, event delegation, boot
    ========================================================= */
 const A={};            // click actions
@@ -1962,7 +1962,7 @@ function applyTheme(){
   const r=document.documentElement;
   if(ST.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',ST.theme);
   document.documentElement.lang=LANG;
-  document.title='VELUME';
+  document.title='VÉLUME';
 }
 function setLang(l){LANG=l;ST.lang=l;save();render()}
 
@@ -2013,7 +2013,7 @@ function parseHash(){
 
 /* ---------- login ---------- */
 function loginHtml(){
-  return '<div class="login"><div class="lcard"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span><p class="muted" style="margin-top:4px;font-size:.88rem">Coffee &amp; Studio · Douala</p></div>'+
+  return '<div class="login"><div class="lcard"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span><p class="muted" style="margin-top:4px;font-size:.88rem">Coffee &amp; Studio · Douala</p></div>'+
    '<div class="lf"><label for="lg">'+tr('E-mail','E-mail')+'</label><input id="lg" type="text" value="promotrice@velume.cm" autocomplete="username"></div>'+
    '<div class="lf"><div class="lh"><label for="lp">'+tr('Mot de passe','Password')+'</label><a data-a="lreset">'+tr('Réinitialiser le mot de passe','Reset password')+'</a></div><input id="lp" type="password" value="demo" autocomplete="current-password"></div>'+
    '<button class="btn pri" data-a="login">'+tr('Se connecter','Log in')+'</button><div class="or">'+tr('ou','or')+'</div>'+
@@ -2046,7 +2046,7 @@ function navbar(ap){
   return '<header class="nav" role="banner"><div class="gut">'+
     (NAVH.length>1?'<button class="ib backbtn" data-a="back" aria-label="'+tr('Retour','Back')+'" title="'+tr('Retour à l’écran précédent','Back to previous screen')+'">'+ic('chevL')+'</button>':'')+
     (ap?'<button class="ib burger" data-a="mm" aria-label="menu">'+ic('menu')+'</button>':'')+
-    (ap?'<a class="ib appsbtn" href="#home" data-a="home" aria-label="'+tr('Toutes les applications','All apps')+'" title="'+tr('Toutes les applications','All apps')+'">'+ic('appsgrid')+'</a>':'<a class="brand" href="#home" data-a="home" aria-label="VELUME"><i class="brand-mark"></i><span class="brandtx">VELUME</span></a>')+
+    (ap?'<a class="ib appsbtn" href="#home" data-a="home" aria-label="'+tr('Toutes les applications','All apps')+'" title="'+tr('Toutes les applications','All apps')+'">'+ic('appsgrid')+'</a>':'<a class="brand" href="#home" data-a="home" aria-label="VÉLUME"><i class="brand-mark"></i><span class="brandtx">VÉLUME</span></a>')+
     (ap?'<span class="appname">'+esc(L(ap.l))+'</span><nav class="menus" aria-label="menus">'+menus+moreDd+'</nav>':'<span style="flex:1"></span>')+
     '<div class="systray">'+
       '<button class="ib'+(UI.ai?' on':'')+'" data-a="ai" aria-label="Vélume AI" title="Vélume AI">'+ic('bolt')+'</button>'+
@@ -2574,7 +2574,7 @@ document.addEventListener('drop',e=>{
 window.addEventListener('hashchange',()=>{if(!ST||!ST.auth)return;const h=(location.hash||'').replace('#','');const cur=R.screen==='app'?R.app+'.'+R.menu+(R.rid!=null?'.'+R.rid:''):'home';if(h&&h!==cur&&h!=='login'){if(h==='home'){goHome()}else{parseHash();render()}}});
 
 /* =========================================================
-   VELUME — data models (schema) + demo seed
+   VÉLUME — data models (schema) + demo seed
    ========================================================= */
 const PAYOPT=[['cash','Espèces','Cash'],['om','Orange Money','Orange Money'],['momo','MTN MoMo','MTN MoMo'],['card','Carte','Card'],['bank','Virement','Transfer']];
 const yr=()=>new Date().getFullYear();
@@ -2890,7 +2890,7 @@ function seedAll(){
   [['image',pA,'signed',6],['location',pK,'signed',5],['location',pB,'sent',1],['club',pMC,'sent',0],['image',pN,'signed',3],['location',pX,'expired',25]].forEach(d=>C('sigdoc',{name:T(TPL[d[0]].fr,TPL[d[0]].en)+' — '+D.name('partner',d[1]),tpl:tp[d[0]],partner:d[1],state:d[2],date:ago(d[3]),expire:ago(d[3]-30),signedat:d[2]==='signed'?isoDT(addDays(today,-d[3])):''}));
   /* knowledge */
   const A=(n,ic_,sec,body,parent,fav)=>C('article',{name:T(n[0],n[1]),icon:ic_,section:sec,body:body,parent:parent||null,fav:!!fav});
-  const a1=A(['Bienvenue chez Vélume','Welcome to Vélume'],'☕','workspace','<h2>Notre promesse</h2><p>Vélume réunit un café de spécialité, un studio photo, un studio podcast et un studio vidéo pour créateurs à Douala.</p><h2>Les 3 règles</h2><ul><li>Accueillir chaque client comme un invité.</li><li>Garder les studios impeccables entre deux séances.</li><li>Tout noter dans VELUME : réservations, caisse, factures.</li></ul>',null,true);
+  const a1=A(['Bienvenue chez Vélume','Welcome to Vélume'],'☕','workspace','<h2>Notre promesse</h2><p>Vélume réunit un café de spécialité, un studio photo, un studio podcast et un studio vidéo pour créateurs à Douala.</p><h2>Les 3 règles</h2><ul><li>Accueillir chaque client comme un invité.</li><li>Garder les studios impeccables entre deux séances.</li><li>Tout noter dans VÉLUME : réservations, caisse, factures.</li></ul>',null,true);
   A(['Procédure d’ouverture du café','Café opening checklist'],'🔑','workspace','<h2>Avant l’ouverture</h2><p>Allumer la machine, vérifier la mouture, compter le fond de caisse.</p><div class="cb"><input type="checkbox"> Machine à espresso allumée</div><div class="cb"><input type="checkbox"> Fond de caisse compté</div><div class="cb"><input type="checkbox"> Écran de cuisine connecté</div>',a1);
   A(['Guide du studio photo','Photo studio guide'],'📸','workspace','<h2>Avant une séance</h2><p>Fond installé, lumières testées, batteries chargées. Le créneau inclut l’installation et le rangement.</p>',a1);
   A(['Tarifs et TVA','Prices and VAT'],'💰','shared','<h2>TVA</h2><p>Les prix affichés sont TTC. TVA appliquée : 19,25 % (HT = TTC ÷ 1,1925).</p><h2>Moyens de paiement</h2><p>Espèces, Orange Money, MTN MoMo, carte.</p>',null,true);
@@ -2903,7 +2903,7 @@ function seedAll(){
   const chC=C('channel',{name:'café',kind:'channel',members:[eP,eL,eM,eS],desc:'Service, stocks, menu'}).id;
   const chBot=C('channel',{name:'Vélume Bot',kind:'chat',bot:true,members:[eP]}).id;
   const chB=C('channel',{name:'Brice',kind:'chat',members:[eP,eB]}).id;
-  [[chG,eP,'Bienvenue sur VELUME ! Tout se passe ici : caisse, studios, factures, planning.',600],[chG,eB,'Le planning de la semaine est publié.',300],[chS,eY,'Les micros du studio podcast sont testés.',200],[chS,eB,'Pensez à confirmer l’acompte 50 % avant chaque séance.',120],[chC,eL,'Le café du Cameroun arrive jeudi.',90],[chB,eB,'Je passe voir le local demain à 10 h.',45]].forEach(m=>C('message',{channel:m[0],author:m[1],text:T(m[2],m[2]),date:nowM(m[3])}));
+  [[chG,eP,'Bienvenue sur VÉLUME ! Tout se passe ici : caisse, studios, factures, planning.',600],[chG,eB,'Le planning de la semaine est publié.',300],[chS,eY,'Les micros du studio podcast sont testés.',200],[chS,eB,'Pensez à confirmer l’acompte 50 % avant chaque séance.',120],[chC,eL,'Le café du Cameroun arrive jeudi.',90],[chB,eB,'Je passe voir le local demain à 10 h.',45]].forEach(m=>C('message',{channel:m[0],author:m[1],text:T(m[2],m[2]),date:nowM(m[3])}));
   C('message',{channel:chBot,author:0,text:'Bonjour ! Je suis Vélume Bot. Je vous préviens ici des factures en retard, des locations confirmées et des nouvelles réponses aux sondages.',date:nowM(500)});
   C('message',{channel:chBot,author:0,text:'Facture AGENCE PIXEL WOURI en retard : 250 000 FCFA.',date:nowM(60)});
   /* automations */
@@ -2927,7 +2927,7 @@ defModel('contract','Contrats','Contracts','name',{
   state:['sel','Statut','Status',{opts:[['draft','Nouveau','New',''],['run','En cours','Running','good'],['expired','Expiré','Expired','bad']],def:'draft'}]},{status:'state'});
 
 /* =========================================================
-   VELUME — window actions (views per menu) + apps/menus registry
+   VÉLUME — window actions (views per menu) + apps/menus registry
    ========================================================= */
 function act(id,spec){ACT[id]=Object.assign({id:id,views:['list'],filters:[],groups:[],icon:'table'},spec);return ACT[id]}
 function app(id,spec){APPS.push(Object.assign({id:id,menus:[]},spec))}
@@ -3164,7 +3164,7 @@ app('config',{l:['Paramètres','Settings'],icon:'gear',color:'var(--ink-2)',core
   MC('st_tech',['Technique','Technical'],[M_('st_aut',['Actions automatisées','Automated actions'],'automs'),M_('st_mod',['Modèles de données','Data models'],null,{cus:'models'}),M_('st_rpc',['Console API (RPC)','API console (RPC)'],null,{cus:'rpc'}),M_('st_io',['Importer / exporter','Import / export'],null,{cus:'importexport'}),M_('st_studio',['Studio (champs personnalisés)','Studio (custom fields)'],null,{cus:'studio'}),M_('st_reset',['Réinitialiser les données','Reset data'],null,{cus:'reset'})],{dev:true})]});
 
 /* =========================================================
-   VELUME — special pages: Discuss, Knowledge, Dashboards, Booking,
+   VÉLUME — special pages: Discuss, Knowledge, Dashboards, Booking,
    POS dashboard + till, Kitchen display, Invoicing dashboard,
    Apps catalogue, Settings, technical pages, reports, signature, surveys
    ========================================================= */
@@ -3733,7 +3733,7 @@ CUSTOM.studio=function(){
 A['studio-open']=el=>openModal('studio',{model:el.dataset.m});
 
 /* =========================================================
-   VELUME — modules métier supplémentaires (au-delà d'Odoo) :
+   VÉLUME — modules métier supplémentaires (au-delà d'Odoo) :
    CRM, Achats, Inventaire, Notes de frais, Maintenance,
    Marketing, Fidélité & abonnements, Caisse & Mobile Money
    ========================================================= */
@@ -4087,7 +4087,7 @@ function seedExtra(){
 }
 
 /* =========================================================
-   VELUME — Discussion v2 : Général / Administrateurs (privé) / chats,
+   VÉLUME — Discussion v2 : Général / Administrateurs (privé) / chats,
    WhatsApp clients, réunions vidéo d'équipe, historique des appels,
    configuration (catégories, réponses enregistrées, rôles, notifications, voix & vidéo)
    ========================================================= */
@@ -4415,7 +4415,7 @@ function teamTarget(aud){
 A['tm-now']=()=>{const d=UI.modal.data,aud=d.aud||'all';const ch=aud==='all'?(D.all('channel').find(c=>c.all)||{}).id:(UI.ch&&D.get('channel',UI.ch)&&!D.get('channel',UI.ch).bot?UI.ch:teamTarget(aud).id);UI.modal=null;startMeet({ch:ch,kind:'meeting',title:d.title,invited:audienceIds(aud),audience:aud})};
 A['tm-plan']=()=>{
   const d=UI.modal.data,aud=d.aud||'all';const s=pd(String(d.when||'').length===16?d.when+':00':d.when);if(!s)return toast(tr('Date invalide.','Invalid date.'));const e=new Date(s.getTime()+36e5);
-  const ids=audienceIds(aud);const ev=D.create('event',{name:d.title||tr('Réunion d’équipe','Team meeting'),start:isoDT(s),stop:isoDT(e),kind:'meet',emps:ids,loc:tr('Visio VELUME','VELUME video')});
+  const ids=audienceIds(aud);const ev=D.create('event',{name:d.title||tr('Réunion d’équipe','Team meeting'),start:isoDT(s),stop:isoDT(e),kind:'meet',emps:ids,loc:tr('Visio VÉLUME','VÉLUME video')});
   const ch=teamTarget(aud);if(ch)D.create('message',{channel:ch.id,author:ST.me,text:tr('📅 Réunion planifiée : ','📅 Meeting scheduled: ')+(d.title||tr('Réunion d’équipe','Team meeting'))+' — '+fmtDT(isoDT(s)),date:isoDT(new Date()),read:true,dir:'out'},{silent:true});
   UI.modal=null;save();toast(tr('Réunion planifiée et invitation publiée.','Meeting scheduled and invitation posted.'));render();
 };
@@ -4448,7 +4448,7 @@ function seedDiscuss(){
 }
 
 /* =========================================================
-   VELUME — application « WhatsApp » : conversations clients,
+   VÉLUME — application « WhatsApp » : conversations clients,
    modèles, guide de connexion pas à pas
    (icône générique de messagerie : aucune marque reproduite)
    ========================================================= */
@@ -4473,20 +4473,20 @@ CUSTOM.waguide=function(){
   const text=encodeURIComponent('Bonjour Vélume Coffee & Studios ! ');const link='https://wa.me/'+digits+'?text='+text;
   const steps=WA_STEPS.map((s,i)=>'<label class="wastep'+(done.includes(i)?' ok':'')+'"><input type="checkbox" data-a="wa-step" data-i="'+i+'" '+(done.includes(i)?'checked':'')+'><span class="wn">'+(i+1)+'</span><span><b>'+esc(L(s[0]))+'</b><span class="muted" style="display:block">'+esc(L(s[1]))+'</span></span></label>').join('');
   return pageHead(tr('Connecter WhatsApp','Connect WhatsApp'),'<span class="badge warn">'+tr('Démo : non connecté','Demo: not connected')+'</span>')+'<div class="va gut"><div class="grid2">'+
-   '<div class="card wacard"><h3>'+ic('wa')+' '+tr('Option 1 — utilisable tout de suite','Option 1 — usable right now')+'</h3><p class="muted">'+tr('Sans programmation : avec l’application WhatsApp Business sur le téléphone du café. VELUME sert à suivre les demandes (CRM) et à garder vos réponses types.','No coding: with the WhatsApp Business app on the café’s phone. VELUME is used to track requests (CRM) and keep your canned replies.')+'</p>'+
+   '<div class="card wacard"><h3>'+ic('wa')+' '+tr('Option 1 — utilisable tout de suite','Option 1 — usable right now')+'</h3><p class="muted">'+tr('Sans programmation : avec l’application WhatsApp Business sur le téléphone du café. VÉLUME sert à suivre les demandes (CRM) et à garder vos réponses types.','No coding: with the WhatsApp Business app on the café’s phone. VÉLUME is used to track requests (CRM) and keep your canned replies.')+'</p>'+
    '<ol class="wal2"><li>'+tr('Installez WhatsApp Business sur le téléphone du café et créez le profil (adresse, horaires, description).','Install WhatsApp Business on the café’s phone and set up the profile (address, hours, description).')+'</li><li>'+tr('Activez le message d’accueil et le message d’absence.','Turn on the greeting and away messages.')+'</li><li>'+tr('Recopiez vos « Réponses rapides » (menu à gauche) dans l’application.','Copy your “Quick replies” (left menu) into the app.')+'</li><li>'+tr('Partagez le lien ci-dessous sur Instagram, l’affiche et le site.','Share the link below on Instagram, posters and website.')+'</li></ol>'+
    '<div class="fld"><label>'+tr('Numéro WhatsApp du café','Café WhatsApp number')+'</label><input id="wanum" data-fk="wanum" value="'+esc(num)+'"></div>'+
    '<div class="walink"><code>'+esc(link)+'</code><button class="btn sm" data-a="copylink" data-t="'+esc(link)+'">'+ic('copy')+tr('Copier','Copy')+'</button><a class="btn sm" href="'+esc(link)+'" target="_blank" rel="noopener">'+ic('external')+tr('Tester','Test')+'</a></div></div>'+
    '<div class="card"><h3>'+ic('shield')+' '+tr('Règles à connaître','Rules to know')+'</h3><ul class="wal2"><li>'+tr('Quand un client vous écrit, vous avez <b>24 heures</b> pour répondre librement.','When a customer writes to you, you have <b>24 hours</b> to reply freely.')+'</li><li>'+tr('Au-delà, ou pour écrire le premier, il faut un <b>modèle de message approuvé</b> par Meta.','Beyond that, or to write first, you need a <b>Meta-approved message template</b>.')+'</li><li>'+tr('Le jeton d’accès est un secret : il reste sur le serveur, jamais dans cette page.','The access token is a secret: it stays on the server, never in this page.')+'</li><li>'+tr('Dans cette démo, les messages entrants sont simulés (bouton « Simuler un message du client »).','In this demo, incoming messages are simulated (“Simulate customer message” button).')+'</li></ul>'+
    '<a class="btn" href="https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started" target="_blank" rel="noopener">'+ic('external')+tr('Documentation officielle Meta','Official Meta documentation')+'</a></div></div>'+
-   '<div class="card" style="margin-top:14px"><h3>'+ic('link')+' '+tr('Option 2 — recevoir les vrais messages dans VELUME (API officielle)','Option 2 — receive real messages in VELUME (official API)')+'</h3><div class="kprog" style="margin:8px 0 12px"><i style="width:'+pct+'%;background:var(--good)"></i></div><p class="muted" style="margin-bottom:8px">'+done.length+' / '+WA_STEPS.length+' '+tr('étapes cochées','steps ticked')+'</p><div class="wasteps">'+steps+'</div>'+
+   '<div class="card" style="margin-top:14px"><h3>'+ic('link')+' '+tr('Option 2 — recevoir les vrais messages dans VÉLUME (API officielle)','Option 2 — receive real messages in VÉLUME (official API)')+'</h3><div class="kprog" style="margin:8px 0 12px"><i style="width:'+pct+'%;background:var(--good)"></i></div><p class="muted" style="margin-bottom:8px">'+done.length+' / '+WA_STEPS.length+' '+tr('étapes cochées','steps ticked')+'</p><div class="wasteps">'+steps+'</div>'+
    '<p class="muted" style="margin-top:12px">'+tr('Une fois ces étapes faites, il reste à relier le webhook à VELUME. Cette page ne peut pas héberger de serveur : demandez-moi de préparer le code du serveur relais.','Once these steps are done, the webhook must be linked to VELUME. This page cannot host a server: ask me to prepare the relay server code.')+'</p></div></div>';
 };
 A['wa-step']=el=>{const i=+el.dataset.i;const a=(ST.set.wa_steps||[]).slice();const k=a.indexOf(i);if(k>=0)a.splice(k,1);else a.push(i);ST.set.wa_steps=a;save();render()};
 document.addEventListener('input',e=>{if(e.target&&e.target.id==='wanum'){UI.wanum=e.target.value;ST.set.wa_num=e.target.value;const c=$('.walink code');if(c){const d=String(e.target.value).replace(/\D/g,'');const l='https://wa.me/'+d+'?text='+encodeURIComponent('Bonjour Vélume Coffee & Studios ! ');c.textContent=l;const b=$('.walink [data-a=copylink]');if(b)b.dataset.t=l;const a=$('.walink a');if(a)a.href=l}}});
 
 /* =====================================================================
-   VELUME — Tiroir-caisse (cash drawer) pour le Point de Vente
+   VÉLUME — Tiroir-caisse (cash drawer) pour le Point de Vente
    Ouverture (comptage du fond), ventes espèces, entrées/sorties,
    journal de caisse, clôture avec écart → Caisse & Mobile Money
    ===================================================================== */
@@ -4580,7 +4580,7 @@ document.addEventListener('input',e=>{const el=e.target;if(UI.modal&&el.dataset&
 MODALS.opencount={wide:true,title:()=>tr('Ouverture de caisse : comptage du fond','Register opening: count the float'),
   body:p=>{
     const cfg=D.get('poscfg',p.cfg);const d=UI.modal.data;const kept=lastKept(p.cfg);const tot=denTotal(d);
-    return '<div class="drwhead"><div class="dvis'+(UI.dopen?' open':'')+'">'+ic('drawer','big')+'</div><div><b>'+esc(cfg.name)+'</b><p class="muted" style="margin:2px 0 0">'+tr('Bonjour ! Avant la première vente, comptez les billets et les pièces dans le tiroir. Ce montant devient le <b>fond de caisse</b> : VELUME le retire des ventes pour calculer ce que le tiroir doit contenir ce soir.','Good morning! Before the first sale, count the notes and coins in the drawer. This amount becomes the <b>opening float</b>: VELUME uses it to work out what the drawer should hold tonight.')+'</p></div></div>'+
+    return '<div class="drwhead"><div class="dvis'+(UI.dopen?' open':'')+'">'+ic('drawer','big')+'</div><div><b>'+esc(cfg.name)+'</b><p class="muted" style="margin:2px 0 0">'+tr('Bonjour ! Avant la première vente, comptez les billets et les pièces dans le tiroir. Ce montant devient le <b>fond de caisse</b> : VÉLUME le retire des ventes pour calculer ce que le tiroir doit contenir ce soir.','Good morning! Before the first sale, count the notes and coins in the drawer. This amount becomes the <b>opening float</b>: VÉLUME uses it to work out what the drawer should hold tonight.')+'</p></div></div>'+
       '<div class="notice" style="margin:10px 0">'+ic('info')+'<span>'+(kept!=null?tr('Fond laissé hier soir : ','Float left last night: ')+'<b>'+money(kept)+'</b> · ':'')+tr('Fond standard : ','Standard float: ')+'<b>'+money(cfg.float||0)+'</b></span></div>'+
       '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"><button class="btn sm" data-a="den-preset">'+tr('Remplir avec le fond standard','Fill with the standard float')+'</button><button class="btn sm ghost" data-a="den-zero">'+tr('Tout remettre à zéro','Reset all')+'</button></div>'+
       denGrid(d)+'<div class="dtotal"><span>'+tr('Total compté','Total counted')+'</span><b class="num" id="dtot">'+money(tot)+'</b></div>';
@@ -4673,7 +4673,7 @@ MODALS.closecount={wide:true,title:()=>tr('Clôture de caisse : comptage du tiro
   body:p=>{
     const s=D.get('possession',p.ses);const cfg=D.get('poscfg',s.cfg);const d=UI.modal.data;const exp=drawerBal(s.id);const tot=denTotal(d);const g=tot-exp;
     if(d.keep==null)d.keep=cfg.float||0;
-    return '<p class="muted">'+tr('Comptez le tiroir en fin de service, sans regarder le montant attendu. VELUME calcule l’écart avec les ventes en espèces, les entrées et les sorties du jour.','Count the drawer at end of shift. VELUME works out the gap against the day’s cash sales, ins and outs.')+'</p>'+
+    return '<p class="muted">'+tr('Comptez le tiroir en fin de service, sans regarder le montant attendu. VÉLUME calcule l’écart avec les ventes en espèces, les entrées et les sorties du jour.','Count the drawer at end of shift. VÉLUME works out the gap against the day’s cash sales, ins and outs.')+'</p>'+
       '<div class="dsum" style="margin-bottom:8px"><div><span>'+tr('Fond d’ouverture','Opening float')+'</span><b class="num">'+money(s.cash0||0)+'</b></div><div class="tot"><span>'+tr('Attendu dans le tiroir','Expected in drawer')+'</span><b class="num" id="dexp">'+money(exp)+'</b></div></div>'+
       denGrid(d)+'<div class="dtotal"><span>'+tr('Total compté','Total counted')+'</span><b class="num" id="dtot">'+money(tot)+'</b></div>'+
       '<div class="dtotal"><span>'+tr('Écart (compté − attendu)','Gap (counted − expected)')+'</span><b class="num '+(g===0?'ok':g>0?'plus':'minus')+'" id="ddiff">'+(g>0?'+':'')+money(g)+'</b></div>'+
@@ -4752,7 +4752,7 @@ function seedDrawer(){
 document.addEventListener('input',e=>{if(UI.till&&UI.till.pay&&e.target&&e.target.id==='given')render()});
 
 /* =====================================================================
-   VELUME — Écrans de préparation (à la Odoo) + imprimantes de commandes
+   VÉLUME — Écrans de préparation (à la Odoo) + imprimantes de commandes
    ===================================================================== */
 IC.printer=IC.print||'<path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/>';
 
@@ -4791,7 +4791,7 @@ function ticketText(o,d,pr){
   const w=pr&&pr.paper==='58'?32:42;const ctr=s=>' '.repeat(Math.max(0,Math.floor((w-s.length)/2)))+s;
   const ln=(a,b)=>{a=String(a);b=String(b||'');return a+' '.repeat(Math.max(1,w-a.length-b.length))+b};
   const p=o.partner?D.name('partner',o.partner):tr('Client de passage','Walk-in');
-  const L=['='.repeat(w),ctr('VELUME'),ctr((d?tx(d.name):tr('CUISINE / BAR','KITCHEN / BAR')).toUpperCase()),'='.repeat(w),ln(o.ref,(o.date||'').slice(11,16)),ln(tr('Client','Customer'),p),'-'.repeat(w)];
+  const L=['='.repeat(w),ctr('VÉLUME'),ctr((d?tx(d.name):tr('CUISINE / BAR','KITCHEN / BAR')).toUpperCase()),'='.repeat(w),ln(o.ref,(o.date||'').slice(11,16)),ln(tr('Client','Customer'),p),'-'.repeat(w)];
   dispLines(o,d).forEach(l=>{L.push(ln(l.qty+' x '+tx(D.name('product',l.product)),''))});
   L.push('-'.repeat(w),ln(tr('Imprimé à ','Printed at '),isoDT(new Date()).slice(11,16)),'='.repeat(w));
   return L.join('\n');
@@ -4969,7 +4969,7 @@ function seedKitchen2(){
 IC.building='<path d="M4 21V5l8-2v18M12 8h8v13M4 21h16M8 8h1M8 12h1M8 16h1M16 12h1M16 16h1"/>';
 IC.folder='<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13l2 2 4-4"/>';
 /* =====================================================================
-   VELUME — Facturation façon Odoo : tableau de bord, menus, rapports
+   VÉLUME — Facturation façon Odoo : tableau de bord, menus, rapports
    ===================================================================== */
 defModel('currency','Devises','Currencies','name',{name:['char','Devise','Currency',{req:1}],symbol:['char','Symbole','Symbol'],rate:['float','Taux (1 devise = … FCFA)','Rate (1 unit = … FCFA)',{def:1}],base:['bool','Devise de la société','Company currency',{def:false}],active:['bool','Active','Active',{def:true}]},{chatter:false});
 defModel('fiscpos','Positions fiscales','Fiscal positions','name',{name:['char','Nom','Name',{req:1,tx:1}],note:['text','Règle appliquée','Rule applied'],active:['bool','Active','Active',{def:true}]},{chatter:false});
@@ -5024,7 +5024,7 @@ function makeBillFromFile(f){
 }
 A['inv-upload']=()=>openModal('invupload',{});
 MODALS.invupload={title:()=>tr('Uploader une facture','Upload a document'),
-  body:()=>'<p class="muted">'+tr('Choisissez le PDF ou la photo d’une facture. VELUME crée un brouillon avec le fichier en référence ; vous saisissez ensuite les lignes (aucune reconnaissance automatique de texte dans cette version).','Pick the PDF or photo of an invoice. VELUME creates a draft referencing the file; you then enter the lines (no automatic text recognition in this version).')+'</p><div class="fld"><input type="file" id="invf" accept=".pdf,image/*"></div>',
+  body:()=>'<p class="muted">'+tr('Choisissez le PDF ou la photo d’une facture. VÉLUME crée un brouillon avec le fichier en référence ; vous saisissez ensuite les lignes (aucune reconnaissance automatique de texte dans cette version).','Pick the PDF or photo of an invoice. VÉLUME creates a draft referencing the file; you then enter the lines (no automatic text recognition in this version).')+'</p><div class="fld"><input type="file" id="invf" accept=".pdf,image/*"></div>',
   foot:()=>'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'};
 document.addEventListener('change',e=>{if(e.target.id==='invf'&&e.target.files[0]){const f=e.target.files[0];UI.modal=null;makeBillFromFile(f)}});
 document.addEventListener('dragover',e=>{if(e.target.closest&&e.target.closest('[data-drop]')){e.preventDefault();e.target.closest('[data-drop]').classList.add('over')}});
@@ -5426,7 +5426,7 @@ CUSTOM.sgset=function(){
    '</div><div>'+
    sgChk('sg_itsme','Digital Identity &amp; Qualified Signatures with itsme®','Verify signatories identities with itsme® and enable eIDAS Qualified Electronic Signatures (QES)','<div class="sgls">'+sgLink(tr('Disponible dans les pays pris en charge','Available in supported countries'))+sgLink('Manage &amp; Buy Identification Credits')+sgLink('Manage &amp; Buy QES Credits')+'</div>')+
    '<div class="sgo"><div class="sgl"><span><b>'+tr('Authentifier par SMS','Authenticate by SMS')+' <span class="muted" title="'+esc(tr('Code à usage unique envoyé par SMS.','One-time code sent by SMS.'))+'" style="border:1px solid var(--teal);color:var(--teal);border-radius:50%;padding:0 5px;font-size:.75rem">?</span></b><span class="sgd">'+tr('Envoyer des codes à usage unique par SMS pour identifier les signataires lors de la signature d’un document','Send one-time SMS codes to identify signers when signing a document')+'</span></span></div><div class="sgls">'+sgLink(tr('Gérer les services et acheter des crédits','Manage services and buy credits'))+'</div></div>'+
-   '</div></div><div class="sgo" style="margin:18px 0 0 40px"><div class="sgl" style="border-left:1px solid var(--line);padding-left:14px"><span><b>Cryptographic signature</b> '+ic('plan')+'<span class="sgd">'+tr('Certifiez vos documents à l’aide d’un fichier .pfx ou .p12 fourni.','Certify your documents with a provided .pfx or .p12 file.')+'</span><span style="display:flex;gap:12px;align-items:baseline;margin-top:10px"><b>'+tr('Certificat de signature','Signing certificate')+'</b><select data-a="sg-cert" style="border:0;border-bottom:1px solid var(--line-2);background:transparent;min-width:150px"><option value=""></option><option'+(sgv('sg_cert')==='ve'?' selected':'')+' value="ve">'+tr('Certificat VELUME (exemple)','VELUME certificate (sample)')+'</option></select></span></span></div></div></div></div></div>'};
+   '</div></div><div class="sgo" style="margin:18px 0 0 40px"><div class="sgl" style="border-left:1px solid var(--line);padding-left:14px"><span><b>Cryptographic signature</b> '+ic('plan')+'<span class="sgd">'+tr('Certifiez vos documents à l’aide d’un fichier .pfx ou .p12 fourni.','Certify your documents with a provided .pfx or .p12 file.')+'</span><span style="display:flex;gap:12px;align-items:baseline;margin-top:10px"><b>'+tr('Certificat de signature','Signing certificate')+'</b><select data-a="sg-cert" style="border:0;border-bottom:1px solid var(--line-2);background:transparent;min-width:150px"><option value=""></option><option'+(sgv('sg_cert')==='ve'?' selected':'')+' value="ve">'+tr('Certificat VÉLUME (exemple)','VÉLUME certificate (sample)')+'</option></select></span></span></div></div></div></div></div>'};
 A['sg-chk']=el=>{UI.sgd=UI.sgd||{};UI.sgd[el.dataset.k]=el.checked;render()};
 CH['sg-cert']=el=>{UI.sgd=UI.sgd||{};UI.sgd.sg_cert=el.value;render()};
 A['sg-save']=()=>{Object.assign(ST.set,UI.sgd||{});UI.sgd=null;save();toast(tr('Paramètres enregistrés.','Settings saved.'));render()};
@@ -5587,7 +5587,7 @@ function seedEmp3(){
 
 M.challenge.f.rules.adds=[['Nouvelle règle','New rule',{}]];M.challenge.f.goals.adds=[['Ajouter une ligne','Add a line',{}]];M.challenge.f.goals.fill=5;
 
-/* ===== apps2 : catalogue Apps façon Odoo + nouvelles applications VELUME ===== */
+/* ===== apps2 : catalogue Apps façon Odoo + nouvelles applications VÉLUME ===== */
 (function(){
 const _st=document.createElement('style');_st.textContent=`
 .ap2side h4{font-size:.74rem;letter-spacing:.06em;margin:14px 0 6px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
@@ -5880,7 +5880,7 @@ const CAT=[
  C_('shopee','Shopee Connector','Shopee Connector','Importez les commandes Shopee et synchronisez les livraisons','Import Shopee orders and sync deliveries','sales','shop',5),
  C_('tiktok','TikTok Shop Connector','TikTok Shop Connector','Importez les commandes TikTok Shop et synchronisez les livraisons','Import TikTok Shop orders and sync deliveries','sales','shop',6),
  C_('bpost','bpost Shipping','bpost Shipping','Envoyez vos colis avec bpost','Send your shippings through bpost','ship','box',7),
- /* ---- ajouts VELUME : café + studios ---- */
+ /* ---- ajouts VÉLUME : café + studios ---- */
  C_('club','Vélume Club','Vélume Club','Points, niveaux, solde prépayé et cartes cadeaux','Points, tiers, prepaid balance and gift cards','sales','heart',2,'loyalty','ly_mem',1,1),
  C_('delivery','Livraison','Delivery','Livraisons à domicile, livreurs, Glovo / Yango','Home deliveries, riders, Glovo / Yango','sales','map',3,'delivery',null,1,1),
  C_('cashbook','Caisse & Mobile Money','Cash & Mobile Money','Clôtures de caisse et rapprochement Orange Money / MTN MoMo','Cash closings and Orange Money / MTN MoMo matching','acct','dollar',5,'cashbook',null,1,1),
@@ -5912,10 +5912,10 @@ CUSTOM.apps=function(){
   const btns=e=>{const s=apStatus(e);
     return (s==='inst'?'<button class="btn sm pri" data-a="ap-open" data-k="'+e.k+'">'+tr('Ouvrir','Open')+'</button>':'<button class="btn sm pri" data-a="ap-install" data-k="'+e.k+'">'+tr('Installer','Install')+'</button>')+
       '<button class="btn sm" data-a="ap-info" data-k="'+e.k+'">'+tr('En savoir plus','Learn more')+'</button>'};
-  const tag=e=>(e.nv?'<span class="ap2n">VELUME</span>':'')+(apIns(e)?' <span class="ap2ok">✓</span>':'');
+  const tag=e=>(e.nv?'<span class="ap2n">VÉLUME</span>':'')+(apIns(e)?' <span class="ap2ok">✓</span>':'');
   const grid='<div class="ap2grid">'+list.map(e=>'<div class="ap2c" style="--k:'+pcol(e.col)+'"><span class="ap2i">'+ic(e.icon)+'</span><div class="ap2m"><b>'+esc(nm(e))+tag(e)+'</b><p>'+esc(ds(e))+'</p><div class="ap2b">'+btns(e)+'</div></div><button class="ib ap2dot" data-a="ap-info" data-k="'+e.k+'" aria-label="info">'+ic('more')+'</button></div>').join('')+'</div>';
   const tbl='<div class="vwrap scrollx"><table class="lv ap2list"><thead><tr><th></th><th>'+tr('Application','App')+'</th><th>'+tr('Description','Description')+'</th><th>'+tr('Catégorie','Category')+'</th><th>'+tr('État','Status')+'</th><th></th></tr></thead><tbody>'+
-    list.map(e=>{const s=apStatus(e);return '<tr><td style="width:46px"><span class="ap2i" style="--k:'+pcol(e.col)+'">'+ic(e.icon)+'</span></td><td><b>'+esc(nm(e))+'</b>'+(e.nv?' <span class="ap2n">VELUME</span>':'')+'</td><td class="muted">'+esc(ds(e))+'</td><td>'+esc(LANG==='fr'?CATS[e.cat][0]:CATS[e.cat][1])+'</td><td>'+(s==='inst'?'<span class="badge good">'+tr('Installée','Installed')+'</span>':s==='avail'?'<span class="badge">'+tr('Non installée','Not installed')+'</span>':'<span class="badge warn">'+tr('Pas encore développée','Not built yet')+'</span>')+'</td><td><div class="ap2b" style="margin:0">'+btns(e)+'</div></td></tr>'}).join('')+'</tbody></table></div>';
+    list.map(e=>{const s=apStatus(e);return '<tr><td style="width:46px"><span class="ap2i" style="--k:'+pcol(e.col)+'">'+ic(e.icon)+'</span></td><td><b>'+esc(nm(e))+'</b>'+(e.nv?' <span class="ap2n">VÉLUME</span>':'')+'</td><td class="muted">'+esc(ds(e))+'</td><td>'+esc(LANG==='fr'?CATS[e.cat][0]:CATS[e.cat][1])+'</td><td>'+(s==='inst'?'<span class="badge good">'+tr('Installée','Installed')+'</span>':s==='avail'?'<span class="badge">'+tr('Non installée','Not installed')+'</span>':'<span class="badge warn">'+tr('Pas encore développée','Not built yet')+'</span>')+'</td><td><div class="ap2b" style="margin:0">'+btns(e)+'</div></td></tr>'}).join('')+'</tbody></table></div>';
   const empty='<div class="emp"><h3>'+tr('Aucune application trouvée','No app found')+'</h3></div>';
   const fl=(id,fr,en)=>'<button data-a="ap-flt" data-f="'+id+'" aria-pressed="'+(flt===id)+'">'+tr(fr,en)+'</button>';
   const n=list.length;
@@ -5939,12 +5939,12 @@ A['ap-wish']=el=>{ST.wish=ST.wish||{};ST.wish[el.dataset.k]=!ST.wish[el.dataset.
 MODALS.appinfo={title:p=>{const e=CAT.find(x=>x.k===p.k)||{};return LANG==='fr'?e.fr:e.en},wide:false,
   body:p=>{const e=CAT.find(x=>x.k===p.k);if(!e)return '';const s=apStatus(e);ST.wish=ST.wish||{};
     const real=e.real?APPS.find(a=>a.id===e.real):null;
-    const st=s==='inst'?'<span class="badge good">'+tr('Installée','Installed')+'</span>':s==='avail'?'<span class="badge">'+tr('Non installée','Not installed')+'</span>':'<span class="badge warn">'+tr('Pas encore développée dans VELUME','Not built in VELUME yet')+'</span>';
-    return '<div class="ap2info"><span class="ap2i" style="--k:'+pcol(e.col)+'">'+ic(e.icon)+'</span><div style="min-width:0"><p>'+esc(LANG==='fr'?e.dfr:e.den)+'</p><div style="margin-top:8px">'+st+(e.nv?' <span class="ap2n">VELUME</span>':'')+'</div></div></div>'+
+    const st=s==='inst'?'<span class="badge good">'+tr('Installée','Installed')+'</span>':s==='avail'?'<span class="badge">'+tr('Non installée','Not installed')+'</span>':'<span class="badge warn">'+tr('Pas encore développée dans VÉLUME','Not built in VÉLUME yet')+'</span>';
+    return '<div class="ap2info"><span class="ap2i" style="--k:'+pcol(e.col)+'">'+ic(e.icon)+'</span><div style="min-width:0"><p>'+esc(LANG==='fr'?e.dfr:e.den)+'</p><div style="margin-top:8px">'+st+(e.nv?' <span class="ap2n">VÉLUME</span>':'')+'</div></div></div>'+
      '<div class="ap2kv"><span>'+tr('Catégorie','Category')+'</span><span>'+esc(LANG==='fr'?CATS[e.cat][0]:CATS[e.cat][1])+'</span><span>'+tr('Nom technique','Technical name')+'</span><span><code>'+esc(e.k)+'</code></span>'+
      (real?'<span>'+tr('Menus inclus','Included menus')+'</span><span>'+esc(real.menus.map(m=>L(m.l)).join(' · '))+'</span>':'')+
      (s==='na'?'<span>'+tr('Votre demande','Your request')+'</span><span>'+(ST.wish[e.k]?'✓ '+tr('enregistrée','saved'):tr('aucune','none'))+'</span>':'')+'</div>'+
-     (s==='na'?'<p class="muted" style="margin-top:12px;font-size:.88rem">'+tr('Cette application d’Odoo n’est pas encore reproduite dans VELUME. Cliquez sur « Je la veux » pour la marquer comme prioritaire : elle sera construite d’après vos captures d’écran.','This Odoo app is not reproduced in VELUME yet. Click “I want it” to mark it as a priority: it will be built from your screenshots.')+'</p>':'');},
+     (s==='na'?'<p class="muted" style="margin-top:12px;font-size:.88rem">'+tr('Cette application d’Odoo n’est pas encore reproduite dans VELUME. Cliquez sur « Je la veux » pour la marquer comme prioritaire : elle sera construite d’après vos captures d’écran.','This Odoo app is not reproduced in VÉLUME yet. Click “I want it” to mark it as a priority: it will be built from your screenshots.')+'</p>':'');},
   foot:()=>{const p=UI.modal.p;const e=CAT.find(x=>x.k===p.k);if(!e)return '<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>';const s=apStatus(e);ST.wish=ST.wish||{};
     return (s==='inst'?'<button class="btn pri" data-a="ap-open" data-k="'+e.k+'">'+tr('Ouvrir','Open')+'</button><button class="btn danger" data-a="ap-uninstall" data-k="'+e.k+'">'+tr('Désinstaller','Uninstall')+'</button>':s==='avail'?'<button class="btn pri" data-a="ap-install" data-k="'+e.k+'">'+tr('Installer','Install')+'</button>':'<button class="btn pri" data-a="ap-wish" data-k="'+e.k+'">'+(ST.wish[e.k]?tr('Retirer ma demande','Remove my request'):tr('Je la veux','I want it'))+'</button>')+'<button class="btn" data-a="mclose">'+tr('Fermer','Close')+'</button>'}};
 
@@ -5999,7 +5999,7 @@ window.__seedApps2=function(){
 };
 })();
 
-/* ===== VELUME — Paramètres façon Odoo (page unique, sections, navigation par application) ===== */
+/* ===== VÉLUME — Paramètres façon Odoo (page unique, sections, navigation par application) ===== */
 (function(){
 const css=document.createElement('style');css.textContent=`
 .st3{display:grid;grid-template-columns:200px minmax(0,1fr);background:var(--surface);border:1px solid var(--line);border-radius:6px;height:calc(100vh - 150px);min-height:480px;overflow:hidden}
@@ -6040,7 +6040,7 @@ const GEN=[
  {t:['Unités de mesure','Units of measure'],c:[[F('radio','wunit','Poids','Weight','Définir votre unité de mesure de poids','Define your weight unit','kg',{opts:[['kg','Kilogrammes (kg)','Kilograms (kg)'],['lb','Livres (lb)','Pounds (lb)']]})],[F('radio','vunit','Volume','Volume','Définir l’unité de mesure de votre volume','Define your volume unit','m3',{opts:[['m3','Mètres cubes (m³)','Cubic meters (m³)'],['ft3','Pieds cubes (ft³)','Cubic feet (ft³)']]})]]},
  {t:['E-mails','Emails'],c:[
   [B('mail_custom','Utiliser les serveurs de messagerie personnalisés','Use custom email servers','Configurer vos propres serveurs de messagerie','Configure your own mail servers',false),
-   B('digest','Digest d’e-mails','Email digests','Ajouter de nouveaux utilisateurs comme destinataires d’un e-mail périodique comprenant des métriques clés','Add new users as recipients of a periodic email with key metrics',true,[F('sel','digest_tpl','Template','Template','','','d1',{opts:[['d1','Votre digest périodique VELUME','Your periodic VELUME digest'],['d2','Digest hebdomadaire de la caisse','Weekly register digest']],inline:1})],[['Configurer les digests d’e-mails','Configure email digests','toastx']])],
+   B('digest','Digest d’e-mails','Email digests','Ajouter de nouveaux utilisateurs comme destinataires d’un e-mail périodique comprenant des métriques clés','Add new users as recipients of a periodic email with key metrics',true,[F('sel','digest_tpl','Template','Template','','','d1',{opts:[['d1','Votre digest périodique VÉLUME','Your periodic VÉLUME digest'],['d2','Digest hebdomadaire de la caisse','Weekly register digest']],inline:1})],[['Configurer les digests d’e-mails','Configure email digests','toastx']])],
   [F('text','alias_dom','Domaine alias','Alias domain','Utiliser différents domaines pour vos alias de messagerie','Use different domains for your mail aliases','velume.cm',{prefix:'@'}),
    B('tpl_restrict','Restreindre le rendu du modèle','Restrict template rendering','Restreindre l’édition des modèles d’e-mail et l’utilisation des placeholders.','Restrict editing of email templates and placeholder use.',true)]]},
  {t:['Discussion','Discuss'],c:[
@@ -6051,14 +6051,14 @@ const GEN=[
    B('ds_bot','Vélume Bot','Vélume Bot','Alertes automatiques (factures, locations, stock, sondages) dans la discussion.','Automatic alerts (invoices, rentals, stock, surveys) in chat.',true)]]},
  {t:['Contacts','Contacts'],c:[
   [LK('Envoyer un SMS','Send SMS','Envoyer des SMS à vos contacts','Send SMS to your contacts',[['Gérer les services et acheter des crédits','Manage services and buy credits','toastx']]),
-   LK('Achat intégré VELUME','VELUME in-app purchase','Consulter vos services et recharger vos crédits','Check your services and top up credits',[['Voir mes services','View my services','toastx']])],
+   LK('Achat intégré VÉLUME','VÉLUME in-app purchase','Consulter vos services et recharger vos crédits','Check your services and top up credits',[['Voir mes services','View my services','toastx']])],
   [B('autocomp','Autocomplétion de partenaires','Partner autocomplete','Enrichir automatiquement votre base de contacts avec des données sur les entreprises','Automatically enrich your contacts with company data',true,null,[['Gérer les services et acheter des crédits','Manage services and buy credits','toastx']])]]},
  {t:['Permissions','Permissions'],c:[
   [F('radio','signup','Création de compte employé','Employee account creation','Les employés peuvent créer eux-mêmes un compte avec un identifiant (ou une adresse Gmail) et un mot de passe.','Employees can create their own account with a username (or Gmail address) and a password.','approval',{opts:[['off','Désactivée (l’administrateur crée tout)','Off (administrator creates all)'],['approval','Avec validation par l’administrateur','Needs administrator approval'],['open','Libre (accès de base immédiat)','Open (basic access right away)']]}),F('radio','portal','Compte client','Customer account','Permettre à vos clients de se connecter pour consulter leurs documents','Let your customers sign in to view their documents','free',{opts:[['invite','Sur invitation','By invitation'],['free','Inscription gratuite','Free sign-up']],links:[['Droits d’accès par défaut','Default access rights','groups']]}),
    LK('Droits d’accès par défaut','Default access rights','Définir les droits d’accès personnalisés pour les nouveaux utilisateurs','Set custom access rights for new users',[['Droits d’accès par défaut','Default access rights','groups']]),
    B('twofa','Appliquer l’authentification à deux facteurs','Enforce two-factor authentication','Appliquer l’authentification à deux facteurs par e-mail pour les employés ou pour tous les utilisateurs.','Enforce email two-factor authentication for employees or all users.',false)],
   [B('remember_ok','Rester connecté sur l’appareil','Stay signed in on device','Propose « Rester connecté et mémoriser mon identifiant » sur l’écran de connexion. Désactivez-le pour les appareils partagés.','Offers “Stay signed in and remember my username” on the login screen. Turn off for shared devices.',true),B('pwreset','Réinitialisation du mot de passe','Password reset','Permettre la réinitialisation du mot de passe depuis la page de connexion','Allow password reset from the login page',true),
-   LK('Clés API','API keys','Les clés API permettent à vos utilisateurs d’accéder à VELUME avec des outils externes.','API keys let your users access VELUME with external tools.',[['Gérer les clés API','Manage API keys','rpc']])]]},
+   LK('Clés API','API keys','Les clés API permettent à vos utilisateurs d’accéder à VÉLUME avec des outils externes.','API keys let your users access VÉLUME with external tools.',[['Gérer les clés API','Manage API keys','rpc']])]]},
  {t:['Certificats et clés','Certificates and keys'],c:[[LK('Gérer vos certificats','Manage your certificates','','',[['Certificats','Certificates','toastx']],{}) ],[LK('Gérer vos clés','Manage your keys','','',[['Clés','Keys','toastx']])]]},
  {t:['Intégrations','Integrations'],c:[
   [B('oauth','Authentification OAuth','OAuth authentication','Utiliser des comptes externes pour vous connecter (Google)','Use external accounts to sign in (Google)',false),
@@ -6070,7 +6070,7 @@ const GEN=[
    B('unsplash','Bibliothèque d’images Unsplash','Unsplash image library','Trouver des images gratuites haute résolution sur Unsplash','Find free high-resolution images on Unsplash',true),
    F('text','mapbox','Mapbox','Mapbox','Active l’itinéraire optimal et le style de carte fourni par Mapbox.','Enable optimal routing and the map style provided by Mapbox.','',{}),
    B('turnstile','Cloudflare Turnstile','Cloudflare Turnstile','Protégez vos formulaires grâce à CF Turnstile.','Protect your forms with CF Turnstile.',false)]]},
- {t:['Paiements & messagerie (VELUME)','Payments & messaging (VELUME)'],c:[
+ {t:['Paiements & messagerie (VÉLUME)','Payments & messaging (VÉLUME)'],c:[
   [B('int_om','Orange Money','Orange Money','Active la méthode dans la caisse et les factures ; confirmation saisie à la main (pas d’appel à l’opérateur).','Enables the method in POS and invoices; confirmation is entered by hand (no operator call).',true),
    B('int_momo','MTN MoMo','MTN MoMo','Idem : suivi manuel des paiements pour l’instant.','Same: manual payment tracking for now.',true)],
   [F('text','wa_num','Numéro WhatsApp Business','WhatsApp Business number','Affiché aux clients, utilisé pour les liens WhatsApp de l’application.','Shown to customers, used for the app’s WhatsApp links.','+237 6 00 00 00 10',{}),
@@ -6115,7 +6115,7 @@ const CUST={
  ccount:it=>'<div class="st3o"><b>1 '+tr('Société','Company')+'</b>'+lnk([['Gérer des sociétés','Manage companies','companies']])+'</div>',
  mailtpl:it=>'<div class="st3o"><b>'+hl(lab(it.l))+'</b><span class="st3d">'+esc(lab(it.d))+'</span><div class="st3row" style="margin-top:12px"><span style="min-width:120px">'+tr('Texte du bouton','Button text')+'</span>'+ctl({st:'color',k:'mail_btn_fg'},V({k:'mail_btn_fg',def:'#ffffff'}))+'</div><div class="st3row"><span style="min-width:120px">'+tr('Couleur de bouton','Button color')+'</span>'+ctl({st:'color',k:'mail_btn_bg'},V({k:'mail_btn_bg',def:'#b8863b'}))+'</div>'+lnk([['Revoir tous les modèles','Review all templates','mailtpls']])+'</div>',
  reset:it=>'<div class="st3o"><b>'+hl(lab(it.l))+'</b><span class="st3d">'+esc(lab(it.d))+'</span><p style="margin-top:8px"><button class="btn danger sm" data-a="reset-ask">'+tr('Réinitialiser','Reset')+'</button></p></div>',
- about:it=>'<div class="st3o"><span class="st3d" style="margin:0">VELUME 1.0 — '+tr('édition démonstration','demo edition')+'</span><span class="st3d">'+tr('Interface inspirée d’Odoo. Données enregistrées dans ce navigateur.','Odoo-inspired interface. Data stored in this browser.')+'</span></div>'
+ about:it=>'<div class="st3o"><span class="st3d" style="margin:0">VÉLUME 1.0 — '+tr('édition démonstration','demo edition')+'</span><span class="st3d">'+tr('Interface inspirée d’Odoo. Données enregistrées dans ce navigateur.','Odoo-inspired interface. Data stored in this browser.')+'</span></div>'
 };
 function itemHtml(it,sub){
   if(CUST[it.st])return CUST[it.st](it);
@@ -6224,7 +6224,7 @@ M.delivery.f.fee.def=()=>(ST.set.dl_fee!=null?+ST.set.dl_fee:1000);
   const pts=Math.floor(total/1000*(ST.set.ly_rate!=null?+ST.set.ly_rate:1));if(pts>0){D.write('member',m.id,{points:(+m.points||0)+pts},{silent:true});setTimeout(()=>toast('★ '+m.name+' : +'+pts+' '+tr('points Vélume Club','Vélume Club points')),700)}}}
 })();
 
-/* ===== VELUME PRO — assistant de démarrage, comptes/rôles, base vierge, modes d'affichage ===== */
+/* ===== VÉLUME PRO — assistant de démarrage, comptes/rôles, base vierge, modes d'affichage ===== */
 (function(){
 const css=document.createElement('style');css.textContent=`
 .wz{max-width:520px;width:100%;display:grid;gap:14px}
@@ -6344,7 +6344,7 @@ loginHtml=function(){
   if(!ST.pro||!ST.pro.setup)return wizHtml();
   const us=D.all('user').filter(u=>u.active!==false&&!u.pending&&u.group!=='portal');
   const tiles=ST.set.quick_login!==false&&us.length>1?'<div class="qtiles">'+us.slice(0,12).map(u=>'<button data-a="lg-pick" data-id="'+u.id+'">'+avatar(u.name,'sm')+esc(String(u.name).split(' ')[0])+'</button>').join('')+'</div>':'';
-  return '<div class="login"><div class="lcard"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span><p class="muted" style="margin-top:4px;font-size:.9rem">'+esc(company())+'</p></div>'+tiles+
+  return '<div class="login"><div class="lcard"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span><p class="muted" style="margin-top:4px;font-size:.9rem">'+esc(company())+'</p></div>'+tiles+
    '<div class="lf"><label for="lg">'+tr('E-mail ou identifiant','E-mail or username')+'</label><input id="lg" type="text" value="'+esc(UI.lglogin||'')+'" autocomplete="username" autocapitalize="none"></div>'+
    '<div class="lf"><label for="lp">'+tr('Mot de passe / code','Password / code')+'</label><input id="lp" type="password" autocomplete="current-password"></div>'+
    (UI.lgerr?'<div class="lerr" role="alert">'+esc(UI.lgerr)+'</div>':'')+
@@ -6374,11 +6374,11 @@ const WZ=()=>UI.wz||(UI.wz={step:1,company:'',address:'',city:'Douala',niu:'',ph
 function wizHtml(){
   const w=WZ(),s=w.step;const f=(k,l,x)=>'<div class="lf"><label>'+l+'</label><input data-wz="'+k+'" value="'+esc(w[k])+'" '+(x||'')+'></div>';
   let b='';
-  if(s===1)b='<h2>'+tr('Bienvenue dans VELUME','Welcome to VELUME')+'</h2><p class="muted">'+tr('Configurons votre espace en quelques étapes. Tout démarre vide : vous créez vos produits, vos équipes et vos comptes.','Let’s set up your workspace in a few steps. Everything starts empty: you create your products, teams and accounts.')+'</p><div><b>'+tr('Langue','Language')+'</b><div class="seg" style="margin-top:6px" role="group"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">Français</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">English</button></div></div><div><b>'+tr('Mode d’affichage de cet appareil','Display mode for this device')+'</b><div style="margin-top:6px">'+window.__deviceHtml()+'</div></div>';
+  if(s===1)b='<h2>'+tr('Bienvenue dans VÉLUME','Welcome to VÉLUME')+'</h2><p class="muted">'+tr('Configurons votre espace en quelques étapes. Tout démarre vide : vous créez vos produits, vos équipes et vos comptes.','Let’s set up your workspace in a few steps. Everything starts empty: you create your products, teams and accounts.')+'</p><div><b>'+tr('Langue','Language')+'</b><div class="seg" style="margin-top:6px" role="group"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">Français</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">English</button></div></div><div><b>'+tr('Mode d’affichage de cet appareil','Display mode for this device')+'</b><div style="margin-top:6px">'+window.__deviceHtml()+'</div></div>';
   if(s===2)b='<h2>'+tr('Votre entreprise','Your business')+'</h2>'+f('company',tr('Nom de l’entreprise','Business name'))+'<div class="row2">'+f('city',tr('Ville','City'))+f('phone',tr('Téléphone','Phone'))+'</div>'+f('address',tr('Adresse','Address'))+f('niu',tr('NIU (n° contribuable) — facultatif','Tax ID (NIU) — optional'))+'<div><b>'+tr('Activités (pour préparer des catégories de départ)','Activities (to prepare starter categories)')+'</b><label class="opt'+(w.cafe?' on':'')+'" style="margin-top:6px"><input type="checkbox" data-wzc="cafe"'+(w.cafe?' checked':'')+'><span>'+tr('Café / bar / restaurant','Café / bar / restaurant')+'</span></label><label class="opt'+(w.studio?' on':'')+'" style="margin-top:6px"><input type="checkbox" data-wzc="studio"'+(w.studio?' checked':'')+'><span>'+tr('Studios (photo, podcast, vidéo)','Studios (photo, podcast, video)')+'</span></label></div>';
   if(s===3)b='<h2>'+tr('Compte administrateur','Administrator account')+'</h2><p class="muted">'+tr('L’administrateur contrôle tout : utilisateurs, accès, paramètres, finances. Vous créerez ensuite les comptes de vos employés.','The administrator controls everything: users, access, settings, finances. You will then create your employees’ accounts.')+'</p>'+f('name',tr('Nom complet','Full name'))+f('email',tr('E-mail (identifiant de connexion)','E-mail (login)'),'type="text" autocapitalize="none"')+'<div class="row2"><div class="lf"><label>'+tr('Mot de passe (6 caractères min.)','Password (min. 6 chars)')+'</label><input type="password" data-wz="code" value="'+esc(w.code)+'"></div><div class="lf"><label>'+tr('Confirmer','Confirm')+'</label><input type="password" data-wz="code2" value="'+esc(w.code2)+'"></div></div>';
   if(s===4)b='<h2>'+tr('Données de départ','Starting data')+'</h2><label class="opt'+(!w.demo?' on':'')+'"><input type="radio" name="wzd" data-wzr="0"'+(!w.demo?' checked':'')+'><span><b>'+tr('Commencer vierge (recommandé)','Start empty (recommended)')+'</b><br><span class="muted">'+tr('Aucun produit, client ni employé : vous ajoutez les vôtres.','No products, customers or employees: you add yours.')+'</span></span></label>'+(hasDemo()?'<label class="opt'+(w.demo?' on':'')+'" style="margin-top:8px"><input type="radio" name="wzd" data-wzr="1"'+(w.demo?' checked':'')+'><span><b>'+tr('Charger les données d’exemple','Load sample data')+'</b><br><span class="muted">'+tr('Pour explorer l’application. Vous pourrez tout effacer ensuite (Paramètres › Données).','To explore the app. You can wipe everything afterwards (Settings › Data).')+'</span></span></label>':'');
-  return '<div class="login"><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span></div><div class="steps">'+[1,2,3,4].map(i=>'<i class="'+(i<=s?'on':'')+'"></i>').join('')+'</div>'+b+(w.err?'<div class="err" role="alert">'+esc(w.err)+'</div>':'')+'<div class="foot">'+(s>1?'<button class="btn" data-a="wz-prev">'+tr('Retour','Back')+'</button>':'<span></span>')+(s<4?'<button class="btn pri" data-a="wz-next">'+tr('Continuer','Continue')+'</button>':'<button class="btn pri" data-a="wz-done">'+tr('Terminer et ouvrir VELUME','Finish and open VELUME')+'</button>')+'</div></div></div>';
+  return '<div class="login"><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span></div><div class="steps">'+[1,2,3,4].map(i=>'<i class="'+(i<=s?'on':'')+'"></i>').join('')+'</div>'+b+(w.err?'<div class="err" role="alert">'+esc(w.err)+'</div>':'')+'<div class="foot">'+(s>1?'<button class="btn" data-a="wz-prev">'+tr('Retour','Back')+'</button>':'<span></span>')+(s<4?'<button class="btn pri" data-a="wz-next">'+tr('Continuer','Continue')+'</button>':'<button class="btn pri" data-a="wz-done">'+tr('Terminer et ouvrir VÉLUME','Finish and open VÉLUME')+'</button>')+'</div></div></div>';
 }
 document.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.wz&&UI.wz)UI.wz[el.dataset.wz]=el.value});
 document.addEventListener('change',e=>{const el=e.target;if(!el.dataset||!UI.wz)return;if(el.dataset.wzc){UI.wz[el.dataset.wzc]=el.checked;render()}if(el.dataset.wzr!=null){UI.wz.demo=el.dataset.wzr==='1';render()}});
@@ -6499,7 +6499,7 @@ A['prof-ok']=()=>{const d=UI.modal.data,u=curUser();if(!u)return;const v={};
 {const p1=popoverHtml;popoverHtml=function(){let h=p1();if(UI.pop!=='user')return h;return h.replace('<button data-a="lock">','<button data-a="prof-open">'+ic('user')+tr('Mon profil et mot de passe','My profile & password')+'</button><button data-a="lock">')}}
 })();
 
-/* ===== VELUME PRO 2 — admin principal, profil, œil mot de passe, comptes Google/Outlook/Facebook, décor animé ===== */
+/* ===== VÉLUME PRO 2 — admin principal, profil, œil mot de passe, comptes Google/Outlook/Facebook, décor animé ===== */
 (function(){
 const bean="url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 56'%3E%3Cellipse cx='20' cy='28' rx='16' ry='24' fill='%23b8863b'/%3E%3Cpath d='M20 5C12 18 28 38 20 51' fill='none' stroke='%23fffdf7' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E\")";
 const css=document.createElement('style');css.textContent=`
@@ -6598,13 +6598,13 @@ const PROV={google:['Google','#ea4335',/@(gmail|googlemail)\.com$/i],outlook:['O
   const b=['google','own'].map(k=>'<button type="button" data-a="su-prov" data-p="'+k+'" aria-pressed="'+(pv===k)+'"><b style="background:'+PROV[k][1]+'">'+(k==='own'?'@':PROV[k][0][0])+'</b>'+(k==='own'?tr('Identifiant','Username'):PROV[k][0])+'</button>').join('');
   let inner=m0.body();
   inner=inner.replace(/<div class="lf"><label>[^<]*<\/label><input data-su="id"/,'<div class="lf"><label>'+(pv==='own'?tr('Identifiant au choix (sans espace)','Username of your choice (no spaces)'):tr('Votre adresse '+PROV[pv][0],'Your '+PROV[pv][0]+' address'))+'</label><input data-su="id" placeholder="'+(pv==='google'?'nom@gmail.com':pv==='outlook'?'nom@outlook.com':pv==='facebook'?'nom@exemple.com':'')+'"');
-  return '<div class="prov" style="margin-bottom:12px">'+b+'</div>'+(pv==='own'?'':'<p class="muted" style="font-size:.84rem">'+tr('Votre adresse '+PROV[pv][0]+' sert d’identifiant. Cette version ne contacte pas '+PROV[pv][0]+' : l’adresse n’est pas vérifiée et vous choisissez un mot de passe VELUME. La connexion en un clic nécessite le serveur.','Your '+PROV[pv][0]+' address is used as login. This version does not contact '+PROV[pv][0]+': the address is not verified and you choose a VELUME password. One-click sign-in needs the server.')+'</p>')+inner}})}
+  return '<div class="prov" style="margin-bottom:12px">'+b+'</div>'+(pv==='own'?'':'<p class="muted" style="font-size:.84rem">'+tr('Votre adresse '+PROV[pv][0]+' sert d’identifiant. Cette version ne contacte pas '+PROV[pv][0]+' : l’adresse n’est pas vérifiée et vous choisissez un mot de passe VELUME. La connexion en un clic nécessite le serveur.','Your '+PROV[pv][0]+' address is used as login. This version does not contact '+PROV[pv][0]+': the address is not verified and you choose a VÉLUME password. One-click sign-in needs the server.')+'</p>')+inner}})}
 A['su-prov']=el=>{UI.su=UI.su||{name:'',id:'',code:'',code2:'',err:''};UI.su.prov=el.dataset.p;UI.su.err='';render()};
 {const ok=A['su-ok'];A['su-ok']=()=>{const w=UI.su;if(w&&w.prov&&w.prov!=='own'){const id=(w.id||'').trim();if(!PROV[w.prov][2].test(id)){w.err=tr('Adresse '+PROV[w.prov][0]+' invalide.',PROV[w.prov][0]+' address is invalid.');return render()}}
   const n0=D.all('user').length;ok();if(w&&w.prov&&w.prov!=='own'&&D.all('user').length>n0){const u=D.all('user')[D.all('user').length-1];D.write('user',u.id,{provider:PROV[w.prov][0]},{silent:true});save()}}}
 })();
 
-/* ===== VELUME PRO 3 — premier accueil (admin / employé), droits sensibles, invitations, comptes Google/Outlook/Facebook pour l'admin ===== */
+/* ===== VÉLUME PRO 3 — premier accueil (admin / employé), droits sensibles, invitations, comptes Google/Outlook/Facebook pour l'admin ===== */
 (function(){
 const me=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=me();return u?u.group:'admin'};
@@ -6681,12 +6681,12 @@ A['inv-del']=el=>{ST.set.invites=invs().filter(i=>i.code!==el.dataset.c);save();
 {const l1=loginHtml;loginHtml=function(){
   if(!ST.pro||!ST.pro.setup){
     if(!UI.who){
-      return '<div class="login"><div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span></div><h2>'+tr('Bienvenue ! Qui êtes-vous ?','Welcome! Who are you?')+'</h2>'+
+      return '<div class="login"><div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span></div><h2>'+tr('Bienvenue ! Qui êtes-vous ?','Welcome! Who are you?')+'</h2>'+
        '<button class="opt" data-a="who" data-w="admin" style="text-align:left;font:inherit"><span><b>'+tr('Je crée l’espace de mon entreprise','I’m creating my business workspace')+'</b><br><span class="muted">'+tr('Vous devenez l’administrateur principal : vous configurez l’entreprise et vous donnez les droits à votre équipe.','You become the main administrator: you set up the business and grant rights to your team.')+'</span></span></button>'+
        '<button class="opt" data-a="who" data-w="employee" style="text-align:left;font:inherit"><span><b>'+tr('Je suis employé','I’m an employee')+'</b><br><span class="muted">'+tr('Vous rejoignez l’espace de votre entreprise avec le code ou le compte donné par votre administrateur.','You join your business workspace with the code or account given by your administrator.')+'</span></span></button>'+
        '<div class="seg" style="justify-self:center" role="group"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">Français</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">English</button></div></div></div>'}
     if(UI.who==='employee'){
-      return '<div class="login"><div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span></div><h2>'+tr('Aucun espace sur cet appareil','No workspace on this device')+'</h2><p class="muted">'+tr('L’administrateur de votre entreprise doit d’abord créer l’espace VELUME. Ouvrez VELUME sur l’appareil de l’entreprise (caisse, tablette ou ordinateur du bureau) et connectez-vous avec le compte ou le code d’invitation qu’il vous a remis.','Your business administrator must first create the VELUME workspace. Open VELUME on the business device (register, tablet or office computer) and sign in with the account or invitation code they gave you.')+'</p><p class="muted" style="font-size:.84rem">'+tr('Le partage automatique entre appareils arrivera avec la version serveur.','Automatic sharing between devices will come with the server version.')+'</p><div class="foot"><button class="btn" data-a="who" data-w="">'+tr('Retour','Back')+'</button><button class="btn pri" data-a="who" data-w="admin">'+tr('Je suis l’administrateur','I’m the administrator')+'</button></div></div></div>'}
+      return '<div class="login"><div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="lcard wz"><div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span></div><h2>'+tr('Aucun espace sur cet appareil','No workspace on this device')+'</h2><p class="muted">'+tr('L’administrateur de votre entreprise doit d’abord créer l’espace VELUME. Ouvrez VÉLUME sur l’appareil de l’entreprise (caisse, tablette ou ordinateur du bureau) et connectez-vous avec le compte ou le code d’invitation qu’il vous a remis.','Your business administrator must first create the VÉLUME workspace. Open VÉLUME on the business device (register, tablet or office computer) and sign in with the account or invitation code they gave you.')+'</p><p class="muted" style="font-size:.84rem">'+tr('Le partage automatique entre appareils arrivera avec la version serveur.','Automatic sharing between devices will come with the server version.')+'</p><div class="foot"><button class="btn" data-a="who" data-w="">'+tr('Retour','Back')+'</button><button class="btn pri" data-a="who" data-w="admin">'+tr('Je suis l’administrateur','I’m the administrator')+'</button></div></div></div>'}
   }
   let h=l1();
   if(ST.pro&&ST.pro.setup)h=h.replace(/(<button class="btn" data-a="su-open">[^<]*<\/button>)/,'<div class="or">'+tr('Nouveau ici ?','New here?')+'</div>$1');
@@ -6698,7 +6698,7 @@ const PV={google:['Google','#ea4335',/@(gmail|googlemail)\.com$/i,'nom@gmail.com
 {const l2=loginHtml;loginHtml=function(){let h=l2();const w=UI.wz;if(!w||w.step!==3||(ST.pro&&ST.pro.setup))return h;
   const pv=w.prov||'own';
   const btn=['google','own'].map(k=>'<button type="button" data-a="wz-prov" data-p="'+k+'" aria-pressed="'+(pv===k)+'"><b style="background:'+(k==='own'?'var(--gold)':PV[k][1])+'">'+(k==='own'?'@':PV[k][0][0])+'</b>'+(k==='own'?tr('E-mail','E-mail'):PV[k][0])+'</button>').join('');
-  h=h.replace(/(<div class="lf"><label>[^<]*<\/label><input data-wz="name")/,'<div class="prov">'+btn+'</div>'+(pv==='own'?'':'<p class="muted" style="font-size:.84rem;margin:0">'+tr('Votre adresse '+PV[pv][0]+' sert d’identifiant. L’adresse n’est pas vérifiée dans cette version (pas de connexion à '+PV[pv][0]+') et vous choisissez un mot de passe VELUME.','Your '+PV[pv][0]+' address is your login. It is not verified in this version (no connection to '+PV[pv][0]+') and you choose a VELUME password.')+'</p>')+'$1');
+  h=h.replace(/(<div class="lf"><label>[^<]*<\/label><input data-wz="name")/,'<div class="prov">'+btn+'</div>'+(pv==='own'?'':'<p class="muted" style="font-size:.84rem;margin:0">'+tr('Votre adresse '+PV[pv][0]+' sert d’identifiant. L’adresse n’est pas vérifiée dans cette version (pas de connexion à '+PV[pv][0]+') et vous choisissez un mot de passe VELUME.','Your '+PV[pv][0]+' address is your login. It is not verified in this version (no connection to '+PV[pv][0]+') and you choose a VÉLUME password.')+'</p>')+'$1');
   if(pv!=='own')h=h.replace(/data-wz="email" value="([^"]*)"/,'data-wz="email" placeholder="'+PV[pv][3]+'" value="$1"');
   return h}}
 A['wz-prov']=el=>{const w=UI.wz;if(!w)return;w.prov=el.dataset.p;w.err='';render()};
@@ -6745,7 +6745,7 @@ A['fg-ok']=()=>{const w=FG();w.err='';const ow=D.all('user').find(u=>u.owner);
 A['pf-rk']=()=>{const k=newRK();ST.pro.rk=window.__hsh(k);saveNow();openModal('reckey',{key:k})};
 })();
 
-/* ===== VELUME PRO 4 — boutons Google/Outlook/Facebook, rester connecté, identifiant mémorisé ===== */
+/* ===== VÉLUME PRO 4 — boutons Google/Outlook/Facebook, rester connecté, identifiant mémorisé ===== */
 (function(){
 const LS=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}};
 const SS=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){return null}};
@@ -6805,9 +6805,9 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v41';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v42';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
- const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
+ const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VÉLUME '+BUILD}catch(err){}return x}}
 })();
 
 /* ---------- v40 : anciennes catégories de recettes → nouvelles ---------- */
@@ -6840,7 +6840,23 @@ window.__recipesToPos=function(){try{
 {const fs=A.fsave;A.fsave=function(){const isR=FV&&FV.a&&FV.a.model==='recipe';const r=fs.apply(this,arguments);if(isR)try{window.__recipesToPos()}catch(e){}return r}}
 }
 
-/* ===== VELUME CLOUD 8 — Supabase : comptes, rôles, synchronisation entre appareils, hors connexion ===== */
+/* ---------- v42 : nom de la société + facture : partenaire libre, référence obligatoire ---------- */
+{function fixCompany(){try{const c=(ST.set&&ST.set.company)||'';const n=String(c).toLowerCase().normalize('NFD').replace(/[^a-z]/g,'');
+  if(/^velum+e?c+o+f+e+e?$/.test(n)&&c!=='Vélume Coffee'){ST.set.company='Vélume Coffee';save();try{render()}catch(e){}}}catch(e){}}
+const pb=window.__pro4Boot;window.__pro4Boot=function(){try{fixCompany()}catch(e){}return pb&&pb.apply(this,arguments)};
+setTimeout(fixCompany,2500);setInterval(fixCompany,20000)}
+{const F=M.invoice.f;F.pname={k:'pname',t:'char',fr:'… ou écrire le nom du partenaire',en:'… or type the partner name',help:['Saisie libre : si le nom n’existe pas, le partenaire est créé automatiquement.','Free entry: if the name does not exist, the partner is created automatically.']};
+F.partner.req=false;F.partner.fr='Partenaire (choisir)';F.partner.en='Partner (choose)';F.ref.req=true;
+INVF.cols=[['partner','pname','kind','journal'],['date','due','ref']];
+{const sf=saveForm;saveForm=function(opt){
+  if(FV&&FV.a&&FV.a.model==='invoice'&&(FV.dirty||FV.isNew)){const b=FV.buf;const nm=String(b.pname||'').trim();
+    if(nm){const ex=D.all('partner').find(p=>String(p.name||'').trim().toLowerCase()===nm.toLowerCase());
+      const p=ex||D.create('partner',{name:nm,kind:/^in_/.test(b.kind||'')?'supplier':'part'});b.partner=p.id}
+    delete b.pname;
+    if(!b.partner){FV.errs={partner:1,pname:1};toast(tr('Choisissez ou écrivez le partenaire.','Choose or type the partner.'));render();return false}}
+  return sf.apply(this,arguments)}}}
+
+/* ===== VÉLUME CLOUD 8 — Supabase : comptes, rôles, synchronisation entre appareils, hors connexion ===== */
 (function(){
 const CFG=window.VELUME_CLOUD||{url:'https://fokajfvtrmmslcvvnstm.supabase.co',key:'sb_publishable_xwwOi6VxfgnwGUZ0oc_-qg_YEJjgLiS'};
 const ON=!!(CFG&&CFG.url&&CFG.key&&CFG.enabled!==false);
@@ -7078,7 +7094,7 @@ async function bootCloud(){
 function pollWait(){clearTimeout(pollWait.t);pollWait.t=setTimeout(async()=>{const c=CL();if(c.view!=='wait'||!SES)return;try{const p=await getProfile();if(p&&p.approved){c.view=null;await enter(p)}else pollWait()}catch(e){pollWait()}},6000)}
 
 /* ---------- écrans ---------- */
-const brand='<div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span></div>';
+const brand='<div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VÉLUME</span></div>';
 const fx='<div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>';
 const seg=()=>'<div class="seg" style="justify-self:center" role="group"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">Français</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">English</button></div><div style="justify-self:center">'+window.__deviceHtml()+'</div>';
 const field=(k,label,type,extra)=>'<div class="lf"><label for="cl-'+k+'">'+label+'</label><input id="cl-'+k+'" data-cl="'+k+'" type="'+(type||'text')+'" value="'+esc(CL()[k]||'')+'" '+(extra||'')+'></div>';
@@ -7202,7 +7218,7 @@ window.__wzDoneLocal=function(){const w=UI.wz;if(!w)return;
   return r}}
 A['inv-new']=async()=>{const r=(document.getElementById('invrole')||{}).value||'user';const x=await sb.rpc('create_invite',{r:r});
   if(!x.ok)return toast(rpcErr(x));ST.set.invites=(ST.set.invites||[]).concat([{code:x.json,role:r,used:false}]);INVITES_KEY='';toast(tr('Code créé : ','Code created: ')+x.json);save();render()};
-MODALS.cinv={title:()=>tr('Code d’invitation','Invitation code'),body:p=>'<p>'+tr('Donnez ce code à l’employé. Il ouvre VELUME, choisit « Je suis employé », puis « Créer mon compte » et saisit ce code : il entre directement. Vous pourrez changer son rôle ensuite (Paramètres › Rôles & accès).','Give this code to the employee. They open VELUME, choose “I’m an employee”, then “Create my account” and enter this code: they get straight in. You can change their role afterwards (Settings › Roles & access).')+'</p><div class="card" style="text-align:center;font-family:monospace;font-size:1.5rem;letter-spacing:.08em"><b>'+esc(p.code)+'</b></div>',foot:()=>'<button class="btn pri" data-a="mclose">OK</button>'};
+MODALS.cinv={title:()=>tr('Code d’invitation','Invitation code'),body:p=>'<p>'+tr('Donnez ce code à l’employé. Il ouvre VÉLUME, choisit « Je suis employé », puis « Créer mon compte » et saisit ce code : il entre directement. Vous pourrez changer son rôle ensuite (Paramètres › Rôles & accès).','Give this code to the employee. They open VÉLUME, choose “I’m an employee”, then “Create my account” and enter this code: they get straight in. You can change their role afterwards (Settings › Roles & access).')+'</p><div class="card" style="text-align:center;font-family:monospace;font-size:1.5rem;letter-spacing:.08em"><b>'+esc(p.code)+'</b></div>',foot:()=>'<button class="btn pri" data-a="mclose">OK</button>'};
 A['st3-invite']=async()=>{const x=await sb.rpc('create_invite',{r:'user'});if(!x.ok)return toast(rpcErr(x));UI.sinv='';ST.set.invites=(ST.set.invites||[]).concat([{code:x.json,role:'user',used:false}]);INVITES_KEY='';save();openModal('cinv',{code:x.json})};
 A['inv-del']=async el=>{const x=await sb.rpc('delete_invite',{c:el.dataset.c});if(!x.ok)return toast(rpcErr(x));ST.set.invites=(ST.set.invites||[]).filter(i=>i.code!==el.dataset.c);INVITES_KEY='';save();render()};
 {const pf0=A['pf-ok'];A['pf-ok']=async function(){const w=UI.pf;

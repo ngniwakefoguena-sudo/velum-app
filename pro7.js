@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-24 · v41';window.__BUILD=BUILD;
+const BUILD='2026-10-24 · v42';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
@@ -92,3 +92,19 @@ window.__recipesToPos=function(){try{
 {const ot=openTill;openTill=function(id){try{window.__recipesToPos()}catch(e){}return ot.apply(this,arguments)}}
 {const fs=A.fsave;A.fsave=function(){const isR=FV&&FV.a&&FV.a.model==='recipe';const r=fs.apply(this,arguments);if(isR)try{window.__recipesToPos()}catch(e){}return r}}
 }
+
+/* ---------- v42 : nom de la société + facture : partenaire libre, référence obligatoire ---------- */
+{function fixCompany(){try{const c=(ST.set&&ST.set.company)||'';const n=String(c).toLowerCase().normalize('NFD').replace(/[^a-z]/g,'');
+  if(/^velum+e?c+o+f+e+e?$/.test(n)&&c!=='Vélume Coffee'){ST.set.company='Vélume Coffee';save();try{render()}catch(e){}}}catch(e){}}
+const pb=window.__pro4Boot;window.__pro4Boot=function(){try{fixCompany()}catch(e){}return pb&&pb.apply(this,arguments)};
+setTimeout(fixCompany,2500);setInterval(fixCompany,20000)}
+{const F=M.invoice.f;F.pname={k:'pname',t:'char',fr:'… ou écrire le nom du partenaire',en:'… or type the partner name',help:['Saisie libre : si le nom n’existe pas, le partenaire est créé automatiquement.','Free entry: if the name does not exist, the partner is created automatically.']};
+F.partner.req=false;F.partner.fr='Partenaire (choisir)';F.partner.en='Partner (choose)';F.ref.req=true;
+INVF.cols=[['partner','pname','kind','journal'],['date','due','ref']];
+{const sf=saveForm;saveForm=function(opt){
+  if(FV&&FV.a&&FV.a.model==='invoice'&&(FV.dirty||FV.isNew)){const b=FV.buf;const nm=String(b.pname||'').trim();
+    if(nm){const ex=D.all('partner').find(p=>String(p.name||'').trim().toLowerCase()===nm.toLowerCase());
+      const p=ex||D.create('partner',{name:nm,kind:/^in_/.test(b.kind||'')?'supplier':'part'});b.partner=p.id}
+    delete b.pname;
+    if(!b.partner){FV.errs={partner:1,pname:1};toast(tr('Choisissez ou écrivez le partenaire.','Choose or type the partner.'));render();return false}}
+  return sf.apply(this,arguments)}}}
