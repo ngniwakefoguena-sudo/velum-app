@@ -13,7 +13,7 @@ if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')retur
 /* Demande au navigateur de protéger les données contre l'effacement automatique */
 try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-25-v46',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-25-v49',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 </script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>VÉLUME</title>
@@ -5694,10 +5694,10 @@ defModel('recipe','Recettes & coûts','Recipes & costs','name',{
   cat:['sel','Catégorie','Category',{opts:[['mocktail','Mocktails','Mocktails','good'],['cocktail','Cocktails','Cocktails','bad'],['biere','Bières','Beers','warn'],['presse','Boissons pressées et infusées','Pressed juices & infusions','good'],['soft','Soft drinks','Soft drinks','info'],['gateau','Gâteaux & pâtisseries','Cakes & pastries','gold'],['vienn','Viennoiseries','Viennoiserie',''],['grill','Grillades','Grills','warn'],['pain','Pains & conforts','Breads & comfort food','gold'],['pancake','Gaufres & pancakes','Waffles & pancakes','gold'],['froid','Plats froids','Cold dishes','info'],['classic','Cafés classiques','Classic coffees','warn'],['signature','Cafés signatures','Signature coffees','warn']],def:'classic'}],
   name:['char','Nom de la recette','Recipe name',{req:1}],
   price:['money','Prix de vente TTC','Sales price (incl. VAT)',{def:0}],
-  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient (stock)',en:'Ingredient (stock)',w:220},{k:'label',t:'char',fr:'Ou nom libre',en:'Or free name',w:170},{k:'qty',t:'float',fr:'Quantité',en:'Quantity',def:1,w:100},{k:'cost',t:'money',fr:'Coût unitaire (à saisir)',en:'Unit cost (enter it)',w:140},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
+  lines:['lines','Ingrédients','Ingredients',{cols:[{k:'item',t:'m2o',rel:'stockitem',fr:'Ingrédient (stock)',en:'Ingredient (stock)',w:220},{k:'label',t:'char',fr:'Ou nom libre',en:'Or free name',w:170},{k:'qty',t:'char',fr:'Quantité (texte libre)',en:'Quantity (free text)',w:130},{k:'cost',t:'money',fr:'Coût unitaire (à saisir)',en:'Unit cost (enter it)',w:140},{k:'sub',t:'money',fr:'Coût',en:'Cost',ro:1}]}],
   cost:['money','Coût matière','Ingredient cost',{ro:1}], ht:['money','Prix HT','Price (excl.)',{ro:1}], margin:['money','Marge brute','Gross margin',{ro:1}], pct:['int','Taux de marge','Margin rate',{ro:1,unit:'%'}],
   steps:['text','Méthode de préparation','Preparation method'], active:['bool','Active','Active',{def:true}]},
-  {compute:r=>{(r.lines||[]).forEach(l=>{l.sub=Math.round((+l.qty||0)*(+l.cost||0))});r.cost=sum(r.lines||[],l=>l.sub);r.ht=Math.round((+r.price||0)/(1+TVA()/100));r.margin=r.ht-r.cost;r.pct=r.ht?Math.round(r.margin/r.ht*100):0},
+  {compute:r=>{(r.lines||[]).forEach(l=>{const m=String(l.qty==null?'':l.qty).replace(',','.').match(/\d+(\.\d+)?/);l.sub=Math.round((m?parseFloat(m[0]):1)*(+l.cost||0))});r.cost=sum(r.lines||[],l=>l.sub);r.ht=Math.round((+r.price||0)/(1+TVA()/100));r.margin=r.ht-r.cost;r.pct=r.ht?Math.round(r.margin/r.ht*100):0},
    lines_on:(b,row,k)=>{if(k==='item'){const it=D.get('stockitem',+row.item);if(it)row.cost=it.cost}}});
 
 defModel('hygiene','Contrôles hygiène','Hygiene checks','name',{
@@ -6270,12 +6270,12 @@ const hsh=s=>{let h=5381;const t=String(s)+'|velume';for(let i=0;i<t.length;i++)
 window.__hsh=hsh;
 const curUser=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=curUser();return u?u.group:(ST.pro&&ST.pro.setup?'portal':'admin')};
-const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['cashier','Caissier / Caissière','Cashier'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
+const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
 window.__ROLES=ROLES;
-const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],cashier:['Caissier','Caissière'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
+const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
 const BASEAPPS=['discuss','todo','calendar','timeoff','attendance'];
 const DEFAPPS={
- /* Chef de salle : tout sauf Paramètres, Apps, Paie et Recrutement */
+ /* Chef de salle : tout sauf Paramètres, Apps, Paie, Employés, Recrutement et Facturation */
  manager:null,
  /* Caissier / Caissière : encaisse (café ET studios), clôture la caisse, fidélité, réservations studio en lecture */
  cashier:['pos','cashbook','loyalty','contacts','rental','appointments','kitchen']
@@ -6295,16 +6295,16 @@ const DEFAPPS={
  user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
 window.__DEFAPPS=DEFAPPS;
 const ALLAPPS=()=>APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false)).map(a=>a.id);
-const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment'].includes(i)):(DEFAPPS[r]||[])};
+const roleApps=r=>{if(r==='cashier')r='barista';const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment','employees','billing'].includes(i)):(DEFAPPS[r]||[])};
 const canApp=id=>{const r=role();if(r==='admin')return true;if(id==='config'||id==='apps')return false;if(r==='portal')return false;return roleApps(r).includes(id)};
 window.__canApp=canApp;
 const empSex=u=>{try{const e=(u&&u.emp&&D.get('employee',u.emp))||D.all('employee').find(x=>u&&u.login&&String(x.email||'').toLowerCase()===String(u.login).toLowerCase());return e&&e.sex||''}catch(x){return ''}};
-const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
+const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r==='cashier'?tr('Caissier (ancien rôle)','Cashier (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
 window.__roleLabel=ROLELBL;
 function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login||'').toLowerCase()&&u.login);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
 
 /* groupes d'accès + champ code */
-{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['cashier','Caissier / Caissière','Cashier','info'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
+{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
  M.user.f.pending={k:'pending',t:'bool',fr:'En attente de validation',en:'Pending approval'};
  M.user.f.owner={k:'owner',t:'bool',fr:'Administrateur principal',en:'Main administrator'};
  M.user.f.newcode={k:'newcode',t:'char',fr:'Nouveau mot de passe / code',en:'New password / code'};
@@ -6444,8 +6444,8 @@ A['st3-invite']=()=>{
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))return toast(tr('Adresse e-mail invalide.','Invalid email address.'));
   if(D.all('user').some(u=>(u.login||'').toLowerCase()===e))return toast(tr('Cet utilisateur existe déjà.','This user already exists.'));
   const code=String(Math.floor(100000+Math.random()*900000));
-  const u=D.create('user',{name:e.split('@')[0],login:e,code:hsh(code),group:'cashier',lang:LANG,active:true},{silent:true});ensureEmp(u);
-  UI.sinv='';save();openModal('newacct',{login:e,code:code,group:'cashier'});
+  const u=D.create('user',{name:e.split('@')[0],login:e,code:hsh(code),group:'barista',lang:LANG,active:true},{silent:true});ensureEmp(u);
+  UI.sinv='';save();openModal('newacct',{login:e,code:code,group:'barista'});
 };
 
 /* ---------- inscription libre des employés ---------- */
@@ -6829,7 +6829,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v46';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v49';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VÉLUME '+BUILD}catch(err){}return x}}
 })();
@@ -6968,7 +6968,7 @@ const H=s=>{let h=5381,i=s.length;while(i)h=(h*33)^s.charCodeAt(--i);return (h>>
 const hr=o=>H(canon(o));
 const nrm=e=>String(e||'').trim().toLowerCase();
 const okMail=e=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
-const ROLE_LBL=r=>r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
+const ROLE_LBL=r=>r==='cashier'?tr('Caissier (ancien rôle)','Cashier (old role)'):r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
 
 /* ---------- session ---------- */
 let SES=null;
