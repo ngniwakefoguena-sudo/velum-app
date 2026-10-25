@@ -17,7 +17,7 @@ const H=s=>{let h=5381,i=s.length;while(i)h=(h*33)^s.charCodeAt(--i);return (h>>
 const hr=o=>H(canon(o));
 const nrm=e=>String(e||'').trim().toLowerCase();
 const okMail=e=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
-const ROLE_LBL=r=>r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
+const ROLE_LBL=r=>r==='cashier'?tr('Caissier (ancien rôle)','Cashier (old role)'):r==='admin'?tr('Administrateur','Administrator'):r==='portal'?tr('Portail','Portal'):((window.__ROLES||[]).find(x=>x[0]===r)?tr((window.__ROLES.find(x=>x[0]===r))[1],(window.__ROLES.find(x=>x[0]===r))[2]):r);
 
 /* ---------- session ---------- */
 let SES=null;
@@ -239,7 +239,7 @@ function pollWait(){clearTimeout(pollWait.t);pollWait.t=setTimeout(async()=>{con
 const brand='<div style="text-align:center"><span class="brand" style="margin:0;font-size:1.3rem;letter-spacing:.3em"><i class="brand-mark"></i>VELUME</span></div>';
 const fx='<div class="bgfx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>';
 const seg=()=>'<div class="seg" style="justify-self:center" role="group"><button data-a="lang" data-l="fr" aria-pressed="'+(LANG==='fr')+'">Français</button><button data-a="lang" data-l="en" aria-pressed="'+(LANG==='en')+'">English</button></div><div style="justify-self:center">'+window.__deviceHtml()+'</div>';
-const field=(k,label,type,extra)=>'<div class="lf"><label for="cl-'+k+'">'+label+'</label><input id="cl-'+k+'" data-cl="'+k+'" type="'+(type||'text')+'" value="'+esc(CL()[k]||'')+'" '+(extra||'')+'></div>';
+const field=(k,label,type,extra)=>'<div class="lf"><label for="cl-'+k+'">'+label+'</label><input id="cl-'+k+'" name="'+({email:'email',pw:'password'}[k]||k)+'" data-cl="'+k+'" type="'+(type||'text')+'" value="'+esc(CL()[k]||'')+'" '+(extra||'')+'></div>';
 const gbtn=()=>'<div class="or">'+tr('ou','or')+'</div><div class="soc"><button type="button" data-a="cl-google"><b style="background:#ea4335">G</b>'+tr('Continuer avec Google','Continue with Google')+'</button></div>';
 const errBox=()=>CL().err?'<div class="lerr" role="alert">'+esc(CL().err)+'</div>':'';
 const infoBox=()=>CL().info?'<p class="muted" style="text-align:center;margin:0">'+esc(CL().info)+'</p>':'';
@@ -278,7 +278,8 @@ const guard=async(fn)=>{const c=CL();if(c.busy)return;c.busy=true;c.err='';c.inf
 A['cl-login']=()=>guard(async c=>{const email=nrm(c.email);if(!okMail(email)||!c.pw){c.err=tr('E-mail et mot de passe requis.','E-mail and password required.');return}
   const k=document.getElementById('cl-keep');if(k)c.keep=k.checked;ls(K.keep,c.keep===false?'0':'1');
   const r=await sb.signIn(email,c.pw);if(!r.ok){c.err=mapAuth(r);return}
-  saveSes(normSes(r.json),c.keep!==false);ls(K.last,email);await afterAuth()});
+  try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:email,password:c.pw,name:email}))}catch(e){}
+  saveSes(normSes(r.json),c.keep!==false);ls(K.last,email);await afterAuth();try{window.__bioOffer&&window.__bioOffer()}catch(e){}});
 A['cl-signup']=()=>guard(async c=>{const email=nrm(c.email),name=(c.name||'').trim();
   if(!name||!okMail(email)){c.err=tr('Nom et e-mail valide requis.','Name and a valid e-mail are required.');return}
   if((c.pw||'').length<6){c.err=tr('Mot de passe : 6 caractères minimum.','Password: 6 characters minimum.');return}
@@ -414,4 +415,44 @@ A['pf-del']=()=>{const u=meU();if(!u||u.owner)return toast(tr('L’administrateu
     toast(tr('Compte supprimé.','Account deleted.'));A.logout()}})};
 }
 window.__cloud={sync:()=>cycle(),state:()=>({READY,OFFLINE,profile:PROFILE,pending:scan().length}),scan:scan};
+/* ---------- v53 : connexion par empreinte / reconnaissance faciale (WebAuthn, sur l'appareil) ---------- */
+{const KB='velume.bio',KS='velume.bio.ses',KN='velume.bio.no';
+const gj=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+const sj=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const b64=u=>{let s='';new Uint8Array(u).forEach(x=>s+=String.fromCharCode(x));return btoa(s)};
+const unb=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u};
+const rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+let AVAIL=false;
+try{if(window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable&&window.isSecureContext)PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(v=>{AVAIL=!!v;if(v&&document.querySelector('.login'))try{render()}catch(e){}}).catch(()=>{})}catch(e){}
+const enabled=()=>{const b=gj(KB);return !!(b&&b.cred)};
+const ready=()=>AVAIL&&enabled()&&!!gj(KS);
+async function enroll(){
+  const em=(SES&&SES.email)||lg(K.last)||'';const nm=(SES&&SES.name)||em;
+  const cr=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'Vélume',id:location.hostname},user:{id:rnd(16),name:em||'velume',displayName:nm||'Vélume'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000,attestation:'none'}});
+  if(!cr)throw new Error('cancel');
+  sj(KB,{cred:b64(cr.rawId),email:em,at:Date.now()});if(SES)sj(KS,SES);try{localStorage.removeItem(KN)}catch(e){}}
+function snap(){if(enabled()&&SES&&SES.refresh_token)sj(KS,SES)}
+{const lo=A.logout;A.logout=function(){try{snap()}catch(e){}return lo.apply(this,arguments)}}
+{const co=A['cl-out'];A['cl-out']=function(){try{snap()}catch(e){}return co.apply(this,arguments)}}
+window.addEventListener('pagehide',()=>{try{snap()}catch(e){}});
+setInterval(()=>{try{if(SES)snap()}catch(e){}},60000);
+A['bio-on']=async()=>{try{if(!AVAIL)return toast(tr('Non disponible sur cet appareil (empreinte / visage non configuré, ou navigateur incompatible).','Not available on this device (fingerprint / face not set up, or unsupported browser).'));
+  await enroll();toast(tr('Activé : la prochaine fois, connectez-vous avec l’empreinte ou le visage.','Enabled: next time, sign in with fingerprint or face.'));UI.pop=null;render()}
+  catch(e){try{console.warn('bio-err',e&&e.name,e&&e.message)}catch(x){}toast(tr('Activation annulée.','Activation cancelled.'))}};
+A['bio-off']=()=>{sj(KB,null);sj(KS,null);toast(tr('Connexion biométrique désactivée sur cet appareil.','Biometric sign-in disabled on this device.'));UI.pop=null;render()};
+A['bio-no']=()=>{try{localStorage.setItem(KN,'1')}catch(e){}closeModalSafe()};
+const closeModalSafe=()=>{try{A.mclose&&A.mclose()}catch(e){}};
+A['bio-login']=()=>guard(async c=>{
+  const b=gj(KB),s=gj(KS);if(!b||!s){c.err=tr('Connectez-vous une fois avec votre mot de passe.','Sign in once with your password.');return}
+  try{await navigator.credentials.get({publicKey:{challenge:rnd(32),rpId:location.hostname,allowCredentials:[{type:'public-key',id:unb(b.cred)}],userVerification:'required',timeout:60000}})}
+  catch(e){c.err=tr('Vérification annulée ou refusée.','Verification cancelled or refused.');return}
+  SES=s;let ok=false;try{ok=await refresh()}catch(e){c.err=OFFLINE_MSG(e);SES=null;return}
+  if(!ok){sj(KS,null);c.err=tr('Session expirée : entrez votre mot de passe une fois, puis réactivez l’empreinte.','Session expired: enter your password once, then re-enable fingerprint.');return}
+  ls(K.last,b.email||s.email||'');await afterAuth()});
+window.__bioOffer=function(){try{if(!AVAIL||enabled()||localStorage.getItem(KN))return;
+  openModal('confirm',{msg:tr('Voulez-vous vous connecter plus vite sur cet appareil avec votre empreinte digitale ou la reconnaissance faciale ?','Do you want to sign in faster on this device with your fingerprint or face recognition?'),ok:()=>{setTimeout(()=>A['bio-on'](),60)}});
+  const ft=document.querySelector('.dlg .dft,.dlg footer');}catch(e){}};
+{const l1=loginHtml;loginHtml=function(){let h=l1.apply(this,arguments);try{if(ready()&&(!CL().view||CL().view==='login'))h=h.replace('</form><a href="#" data-a="cl-view" data-v="forgot"','</form><button class="btn" type="button" data-a="bio-login" style="display:flex;align-items:center;justify-content:center;gap:8px">🔐 '+tr('Empreinte / reconnaissance faciale','Fingerprint / face recognition')+'</button><a href="#" data-a="cl-view" data-v="forgot"')}catch(e){}return h}}
+{const p1=popoverHtml;popoverHtml=function(){let h=p1();if(UI.pop!=='user'||!AVAIL)return h;return h.replace('<button data-a="lock">','<button data-a="'+(enabled()?'bio-off':'bio-on')+'">🔐 '+(enabled()?tr('Désactiver l’empreinte / le visage','Disable fingerprint / face'):tr('Activer l’empreinte / le visage','Enable fingerprint / face'))+'</button><button data-a="lock">')}}
+}
 })();
