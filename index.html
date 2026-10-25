@@ -13,9 +13,40 @@ if(!window.claude){window.claude={use:async function(n){if(n!=='downloads')retur
 /* Demande au navigateur de protéger les données contre l'effacement automatique */
 try{if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(function(){})}}catch(e){}
 /* Nouvelle version : on vide les anciens caches et on recharge une seule fois */
-(function(){var B='2026-10-25-v51',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
+(function(){var B='2026-10-25-v52',k='velume.build';try{if(localStorage.getItem(k)!==B){localStorage.setItem(k,B);var p=[];if(window.caches&&caches.keys)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(x){return caches.delete(x)}))}));if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));Promise.all(p).catch(function(){}).then(function(){if(!sessionStorage.getItem('velume.reloaded')){sessionStorage.setItem('velume.reloaded','1');location.reload()}})}}catch(e){}})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
-</script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+</script><style id="vsplash-css">
+#vsplash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;text-align:center;color:#F2EBDC;background:radial-gradient(ellipse at 50% 42%,#3a2a18 0%,#1d150d 55%,#110c07 100%);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;transition:opacity .7s ease,visibility .7s;cursor:pointer;overflow:hidden}
+#vsplash.out{opacity:0;visibility:hidden}
+#vsplash .cup{width:74px;height:74px;margin-bottom:22px;opacity:0;animation:vs-in .8s .15s ease forwards}
+#vsplash .stm{stroke:#E8C47A;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-dasharray:22;stroke-dashoffset:22;opacity:0;animation:vs-steam 2.2s ease-in-out infinite}
+#vsplash .stm:nth-child(2){animation-delay:.35s}#vsplash .stm:nth-child(3){animation-delay:.7s}
+#vsplash .s1{font-size:clamp(.8rem,2.6vw,1.05rem);letter-spacing:.42em;color:#D7A94E;margin-bottom:14px;white-space:nowrap}
+#vsplash .s2,#vsplash .s4{font-size:clamp(1.9rem,8.2vw,3.9rem);font-weight:600;letter-spacing:.12em;line-height:1.1;white-space:nowrap}
+#vsplash .s4{font-size:clamp(1.4rem,6vw,2.9rem);color:#E8C47A;letter-spacing:.2em}
+#vsplash .s3{display:flex;align-items:center;gap:12px;margin:16px 0}
+#vsplash .s3 i{display:block;height:1px;width:0;background:linear-gradient(90deg,transparent,#D7A94E,transparent);animation:vs-line 1.1s 1.5s ease forwards}
+#vsplash .s3 b{width:9px;height:9px;background:#D7A94E;transform:rotate(45deg) scale(0);animation:vs-dia .6s 1.4s cubic-bezier(.2,1.6,.4,1) forwards}
+#vsplash .l{display:inline-block;opacity:0;transform:translateY(.55em);filter:blur(5px);animation:vs-l .7s ease forwards}
+#vsplash .sk{position:absolute;bottom:22px;font:12px system-ui,sans-serif;letter-spacing:.1em;color:rgba(242,235,220,.45);opacity:0;animation:vs-in .6s 1.6s forwards}
+@keyframes vs-in{to{opacity:1}}
+@keyframes vs-l{to{opacity:1;transform:none;filter:none}}
+@keyframes vs-line{to{width:min(28vw,150px)}}
+@keyframes vs-dia{to{transform:rotate(45deg) scale(1)}}
+@keyframes vs-steam{0%{stroke-dashoffset:22;opacity:0;transform:translateY(4px)}40%{opacity:.9}100%{stroke-dashoffset:-22;opacity:0;transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){#vsplash *{animation-duration:.01s!important;animation-delay:0s!important}}
+</style>
+<script id="vsplash-js">
+(function(){try{if(sessionStorage.getItem('velume.splash'))return}catch(e){}
+var d=document,r=d.documentElement,s=d.createElement('div');s.id='vsplash';s.setAttribute('role','presentation');
+var n=0;function sp(t,st){return t.split('').map(function(c){if(c===' ')return '<span class="l" style="animation:none;opacity:1;width:.3em">&nbsp;</span>';return '<span class="l" style="animation-delay:'+(st+(n++)*0.045).toFixed(2)+'s">'+c+'</span>'}).join('')}
+var fr=(d.documentElement.lang||'fr').slice(0,2)!=='en';
+s.innerHTML='<svg class="cup" viewBox="0 0 64 64" aria-hidden="true"><path class="stm" d="M24 20c-3-3 3-6 0-10"/><path class="stm" d="M32 20c-3-3 3-6 0-10"/><path class="stm" d="M40 20c-3-3 3-6 0-10"/><path d="M14 26h32v10a14 14 0 0 1-14 14h-4a14 14 0 0 1-14-14z" fill="none" stroke="#E8C47A" stroke-width="2.6" stroke-linejoin="round"/><path d="M46 29h3a6 6 0 0 1 0 12h-4" fill="none" stroke="#E8C47A" stroke-width="2.6" stroke-linecap="round"/><path d="M12 56h36" stroke="#D7A94E" stroke-width="2.6" stroke-linecap="round"/></svg>'+
+'<div class="s1">'+sp(fr?'BIENVENUE SUR':'WELCOME TO',.5)+'</div><div class="s2">'+sp('VÉLUME COFFEE',.9)+'</div><div class="s3"><i></i><b></b><i></i></div><div class="s4">'+sp('VÉLUME STUDIOS',1.5)+'</div><div class="sk">'+(fr?'Touchez pour continuer':'Tap to continue')+'</div>';
+r.appendChild(s);var gone=false;function bye(){if(gone)return;gone=true;try{sessionStorage.setItem('velume.splash','1')}catch(e){}s.classList.add('out');setTimeout(function(){s.remove();var c=d.getElementById('vsplash-css'),j=d.getElementById('vsplash-js');c&&c.remove();j&&j.remove()},800)}
+s.addEventListener('click',bye);d.addEventListener('keydown',bye,{once:true});setTimeout(bye,4800)})();
+</script>
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>VÉLUME</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
@@ -6656,7 +6687,7 @@ const guardA=(k,c)=>{const f=A[k];if(!f)return;A[k]=function(){if(!can(c))return
 {const e0=exportCSV;exportCSV=function(){if(!can('export'))return deny();return e0.apply(this,arguments)}}
 
 /* menus et accès HR / config / rapports */
-const HRM=new Set(['contract','payslip','contracttpl']);
+const HRM=new Set(['contract','payslip','contracttpl','paybatch','leavealloc']);
 const menuAct=m=>{const a=m.act&&ACT[m.act];return a?a.model:null};
 const blocked=m=>{
   if(m.ch)return false;
@@ -6829,7 +6860,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v51';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v52';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VÉLUME '+BUILD}catch(err){}return x}}
 })();
@@ -6950,7 +6981,7 @@ function empOf(u,create){if(!u)return null;let e=u.emp&&D.get('employee',u.emp);
   return h.replace(/<hr>/,sel+'<hr>')}}
 document.addEventListener('change',ev=>{const el=ev.target;if(!el.dataset||!el.dataset.pfsex)return;const u=meU();if(!u)return;const e=empOf(u,true);if(e){D.write('employee',e.id,{sex:el.value},{silent:true});save();toast(tr('Genre enregistré.','Gender saved.'));try{render()}catch(x){}}})}
 
-/* ---------- v51 : vente à la caisse → déduction automatique du stock (ingrédients de la recette) ---------- */
+/* ---------- v52 : vente à la caisse → déduction automatique du stock (ingrédients de la recette) ---------- */
 {const CONV={g:['m',1],kg:['m',1000],mg:['m',.001],ml:['v',1],cl:['v',10],dl:['v',100],l:['v',1000]};
 function qtyIn(txt,unit){const s=String(txt==null?'':txt).trim().toLowerCase().replace(',','.');const m=s.match(/^(\d+(?:\.\d+)?)\s*([a-zµ]*)\.?$/);if(!m)return null;const n=parseFloat(m[1]),u=m[2];const su=String(unit||'').trim().toLowerCase();
   if(!u||u===su)return n;const a=CONV[u],b=CONV[su];if(a&&b&&a[0]===b[0])return n*a[1]/b[1];return null}
@@ -6963,6 +6994,178 @@ window.__deductStock=function(o){try{if(!o||o.__ded)return;const low=[];
   D.write('posorder',o.id,{__ded:1},{silent:true})}catch(e){try{console.error(e)}catch(x){}}};
 const tv2=A['till-validate'];A['till-validate']=function(){const ids=new Set(D.all('posorder').map(o=>o.id));const r=tv2.apply(this,arguments);
   try{D.all('posorder').filter(o=>!ids.has(o.id)&&o.state!=='cancel').forEach(window.__deductStock);saveNow&&saveNow()}catch(e){}return r}}
+
+
+/* =====================================================================
+   v52 — Paie (inspirée d'Odoo) · Congés liés à la paie · mode de paiement
+   par employé · documents dans l'onglet « Contrats »
+   ===================================================================== */
+{
+const PAYSEL=[['om','Orange Money','Orange Money'],['momo','MTN MoMo','MTN MoMo'],['cash','Espèces','Cash'],['card','Carte bancaire','Bank card'],['bank','Virement bancaire','Bank transfer']];
+const payLbl=k=>{const o=PAYSEL.find(x=>x[0]===k);return o?(LANG==='fr'?o[1]:o[2]):(k||'')};
+const addF=(m,k,t,fr,en,o)=>{if(M[m]&&!M[m].f[k])M[m].f[k]=Object.assign({k:k,t:t,fr:fr,en:en},o||{})};
+const first=iso0=>String(iso0||iso(new Date())).slice(0,8)+'01';
+const monthEnd=ps=>new Date(ps.getFullYear(),ps.getMonth()+1,0);
+const overlap=(a,b,s,e)=>{const x=pd(a),y=pd(b);if(!x||!y)return 0;const lo=x>s?x:s,hi=y<e?y:e;return hi<lo?0:Math.round((hi-lo)/864e5)+1};
+const contractOf=emp=>{const cs=D.all('contract').filter(c=>c.emp===emp);return cs.find(c=>c.state==='run')||cs.sort((a,b)=>b.id-a.id)[0]||null};
+const kLbl=(m,f,v)=>{const o=(M[m].f[f].opts||[]).find(x=>x[0]===v);return o?(LANG==='fr'?o[1]:o[2]):(v||'')};
+
+/* ---------- 1. Employé : mode de paiement du salaire + documents ---------- */
+addF('employee','paymode','sel','Mode de paiement du salaire','Salary payment method',{opts:PAYSEL.map(o=>o.slice()),def:'cash'});
+addF('employee','paynum','char','N° Mobile Money / compte / carte','Mobile Money no. / account / card',{});
+addF('employee','docs','json','Documents','Documents',{hide:1});
+addF('contract','docs','json','Documents','Documents',{hide:1});
+
+/* ---------- 2. Widget « documents » (PDF, photo, scan) ---------- */
+const MAXB=1500000;
+const fsz=n=>n>1048576?(n/1048576).toFixed(1)+' Mo':Math.max(1,Math.round(n/1024))+' Ko';
+function docsHtml(b){const L=b.docs||[];const lock=formLocked();
+  const rows=L.map((d,i)=>'<tr><td>'+ic(/^image\//.test(d.type)?'image':'file')+' <b>'+esc(d.name)+'</b></td><td class="muted">'+esc(d.date||'')+'</td><td class="muted">'+fsz(d.size||0)+'</td><td style="text-align:right;white-space:nowrap"><button class="btn sm ghost" data-a="doc-open" data-i="'+i+'">'+tr('Ouvrir','Open')+'</button>'+(lock?'':'<button class="ib" data-a="doc-del" data-i="'+i+'" aria-label="delete">'+ic('trash')+'</button>')+'</td></tr>').join('');
+  return '<h3 style="margin:18px 0 6px;font-size:.95rem">'+tr('Documents du contrat','Contract documents')+'</h3>'+
+    '<p class="muted" style="margin:0 0 8px;font-size:.85rem">'+tr('Contrat signé, pièce d’identité, diplômes, attestations… (PDF, photo ou scan, 1,5 Mo max par fichier).','Signed contract, ID, diplomas, certificates… (PDF, photo or scan, 1.5 MB max per file).')+'</p>'+
+    (L.length?'<div class="scrollx"><table class="lv lines"><thead><tr><th>'+tr('Document','Document')+'</th><th>'+tr('Ajouté le','Added')+'</th><th>'+tr('Taille','Size')+'</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="muted" style="padding:10px 0">'+tr('Aucun document pour le moment.','No document yet.')+'</div>')+
+    (lock?'':'<button class="btn sec" data-a="doc-add" style="margin-top:8px">'+ic('plus')+tr('Ajouter un document','Add a document')+'</button>')}
+function pushDoc(d){if(!FV)return;FV.buf.docs=(FV.buf.docs||[]).concat([d]);FV.dirty=true;if(!FV.isNew)try{saveForm({quiet:true})}catch(e){}render();toast(tr('Document ajouté','Document added'))}
+function addDoc(file){
+  const isImg=/^image\//.test(file.type);
+  if(!isImg&&file.size>MAXB)return toast(tr('Fichier trop lourd (max 1,5 Mo) : ','File too large (max 1.5 MB): ')+file.name);
+  const rd=new FileReader();
+  rd.onload=()=>{
+    if(!isImg)return pushDoc({id:Date.now()+Math.random(),name:file.name,type:file.type||'application/octet-stream',size:file.size,date:iso(new Date()),data:rd.result});
+    const im=new Image();im.onload=()=>{const s=Math.min(1,1600/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      const u=c.toDataURL('image/jpeg',.82);if(u.length*.75>MAXB*1.4)return toast(tr('Image trop lourde : ','Image too large: ')+file.name);
+      pushDoc({id:Date.now()+Math.random(),name:file.name.replace(/\.[a-z0-9]+$/i,'')+'.jpg',type:'image/jpeg',size:Math.round(u.length*.75),date:iso(new Date()),data:u})};
+    im.onerror=()=>toast(tr('Image illisible : ','Unreadable image: ')+file.name);im.src=rd.result};
+  rd.readAsDataURL(file)}
+A['doc-add']=()=>{let e=document.getElementById('docf');if(!e){e=document.createElement('input');e.type='file';e.id='docf';e.accept='application/pdf,image/*,.doc,.docx,.xls,.xlsx';e.multiple=true;e.hidden=true;document.body.appendChild(e);e.addEventListener('change',()=>{[...e.files].forEach(addDoc);e.value=''})}e.click()};
+A['doc-open']=el=>{const d=((FV&&FV.buf.docs)||[])[+el.dataset.i];if(!d)return;try{const p=d.data.split(',');const bin=atob(p[1]);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);const url=URL.createObjectURL(new Blob([u],{type:d.type}));const w=window.open(url,'_blank');if(!w){const a=document.createElement('a');a.href=url;a.download=d.name;a.click()}setTimeout(()=>URL.revokeObjectURL(url),60000)}catch(e){toast(tr('Ouverture impossible.','Cannot open.'))}};
+A['doc-del']=el=>{if(!FV)return;const i=+el.dataset.i;FV.buf.docs=(FV.buf.docs||[]).filter((x,k)=>k!==i);FV.dirty=true;if(!FV.isNew)try{saveForm({quiet:true})}catch(e){}render()};
+
+/* ---------- 3. Fiche employé : onglets Contrats (+ documents) et Paie ---------- */
+function empContracts(b){
+  const cs=b.id&&!FV.isNew?D.all('contract').filter(c=>c.emp===b.id):[];
+  const rows=cs.map(c=>'<tr><td><button class="lnk" data-a="emp-ct" data-id="'+c.id+'">'+esc(c.name)+'</button></td><td>'+esc(kLbl('contract','kind',c.kind))+'</td><td>'+esc(c.start||'')+(c.end?' → '+esc(c.end):'')+'</td><td class="r">'+money(c.wage||0)+'</td><td>'+esc(kLbl('contract','state',c.state))+'</td></tr>').join('');
+  return (cs.length?'<div class="scrollx"><table class="lv lines"><thead><tr><th>'+tr('Contrat','Contract')+'</th><th>'+tr('Type','Type')+'</th><th>'+tr('Période','Period')+'</th><th class="r">'+tr('Salaire','Wage')+'</th><th>'+tr('Statut','Status')+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="muted" style="padding:8px 0">'+tr('Aucun contrat pour cet employé.','No contract for this employee.')+'</div>')+
+    (FV.isNew?'':'<button class="btn sec" data-a="emp-ct-new" style="margin-top:8px">'+ic('plus')+tr('Nouveau contrat','New contract')+'</button>')+
+    (FV.isNew?'<p class="muted">'+tr('Enregistrez l’employé pour ajouter des contrats et des documents.','Save the employee to add contracts and documents.')+'</p>':docsHtml(b))}
+A['emp-ct']=el=>{try{goTo('employees','contracts',+el.dataset.id)}catch(e){}};
+A['emp-ct-new']=()=>{if(!FV||FV.isNew)return;if(FV.dirty&&!saveForm({quiet:true}))return;const r=D.create('contract',{name:tr('Contrat — ','Contract — ')+(FV.buf.name||''),emp:FV.id,kind:'cdd',state:'draft'});save();goTo('employees','contracts',r.id)};
+{const e=ACT.employees;if(e&&e.form){e.form.tabs=[{l:['Contrats','Contracts'],html:empContracts},{l:['Paie','Payroll'],fields:['paymode','paynum']},{l:['Notes','Notes'],fields:['note']}]}}
+{const c=ACT.contracts;if(c&&c.form){c.form.tabs=[{l:['Documents','Documents'],html:b=>docsHtml(b).replace(/^<h3[^>]*>[^<]*<\/h3>/,'')}]}}
+
+/* ---------- 4. Congés : allocations & soldes (comme Odoo) ---------- */
+defModel('leavealloc','Allocations de congés','Time off allocations','emp',{
+  emp:['m2o','Employé','Employee',{rel:'employee'}],
+  kind:['sel','Type de congé','Time off type',{opts:M.leave.f.kind.opts.map(o=>o.slice()),def:'paid'}],
+  year:['int','Année','Year',{def:()=>new Date().getFullYear()}],
+  days:['float','Jours alloués','Allocated days',{def:18,unit:' j'}],
+  taken:['float','Jours pris (approuvés)','Days taken (approved)',{ro:1,unit:' j'}],
+  left:['float','Solde restant','Balance left',{ro:1,unit:' j'}],
+  note:['text','Note','Note']},
+  {chatter:false,rname:r=>D.name('employee',r.emp)+' — '+kLbl('leavealloc','kind',r.kind)+' '+(r.year||''),
+   compute:r=>{r.taken=sum(D.all('leave').filter(l=>l.emp===r.emp&&l.kind===r.kind&&l.state==='ok'&&String(l.from||'').slice(0,4)===String(r.year)),l=>l.days);r.left=(+r.days||0)-r.taken}});
+M.leavealloc.f.emp.req=false;
+function recalcAlloc(){try{D.all('leavealloc').forEach(a=>{const t=sum(D.all('leave').filter(l=>l.emp===a.emp&&l.kind===a.kind&&l.state==='ok'&&String(l.from||'').slice(0,4)===String(a.year)),l=>l.days);if(a.taken!==t||a.left!==(+a.days||0)-t)D.write('leavealloc',a.id,{taken:t,left:(+a.days||0)-t},{silent:true})})}catch(e){}}
+['write','create','unlink'].forEach(fn=>{const o=D[fn];D[fn]=function(m){const r=o.apply(this,arguments);if(m==='leave')recalcAlloc();return r}});
+act('leaveallocs',{model:'leavealloc',l:['Allocations & soldes','Allocations & balances'],icon:'calendar',views:['list','graph'],list:['emp','kind','year','days','taken','left'],sum:['days','taken','left'],search:['emp'],groups:['kind','emp','year'],
+  graph:{measure:'left',by:'emp',type:'bar',measures:[['left',['Solde','Balance']],['taken',['Pris','Taken']],['days',['Alloué','Allocated']]],dims:['emp','kind','year']},
+  form:{title:'emp',cols:[['emp','kind','year','days'],['taken','left','note']],
+    btns:[{l:['Allouer à tous les employés','Allocate to all employees'],pri:1,new:true,fn:b=>{let n=0;D.all('employee').forEach(e=>{if(D.all('leavealloc').some(a=>a.emp===e.id&&a.kind===b.kind&&String(a.year)===String(b.year)))return;D.create('leavealloc',{emp:e.id,kind:b.kind,year:b.year,days:b.days,note:b.note||''},{silent:true});n++});if(!b.emp)try{D.unlink('leavealloc',b.id)}catch(x){}save();toast(n+' '+tr('allocation(s) créée(s)','allocation(s) created'));setTimeout(()=>{FV=null;R.rid=null;render()},0)}}]},ctx:()=>({})});
+/* solde affiché sur la demande de congé */
+addF('leave','bal','float','Solde après cette demande','Balance after this request',{ro:1,unit:' j',hideIf:b=>b.kind!=='paid'||b.bal==null});
+{const lc=M.leave.compute;M.leave.compute=function(r){if(lc)lc.apply(this,arguments);try{r.bal=null;if(r.kind==='paid'&&r.emp&&r.from){const y=String(r.from).slice(0,4);const al=D.all('leavealloc').filter(a=>a.emp===r.emp&&a.kind==='paid'&&String(a.year)===y);if(al.length){const used=sum(D.all('leave').filter(l=>l.emp===r.emp&&l.kind==='paid'&&l.state==='ok'&&l.id!==r.id&&String(l.from||'').slice(0,4)===y),l=>l.days);r.bal=sum(al,a=>a.days)-used-(+r.days||0)}}}catch(e){}}}
+{const l=ACT.leaves;if(l&&l.form)l.form.cols[1].push('bal')}
+
+/* ---------- 5. Paie à la Odoo : fiche, calcul, lots ---------- */
+{const f=M.payslip.f;f.how.opts=PAYSEL.map(o=>o.slice());f.how.def='cash'}
+addF('payslip','contract','m2o','Contrat','Contract',{rel:'contract'});
+addF('payslip','batch','m2o','Lot de paie','Payslip batch',{rel:'paybatch',ro:1});
+addF('payslip','base','money','Salaire de base (contrat)','Base salary (contract)',{def:0});
+addF('payslip','wdays','float','Jours travaillés (sur 30)','Worked days (of 30)',{ro:1,unit:' j'});
+addF('payslip','pl','float','Jours de congé rémunéré','Paid time-off days',{ro:1,unit:' j'});
+addF('payslip','unpaid','float','Jours de congé sans solde','Unpaid time-off days',{ro:1,unit:' j'});
+addF('payslip','ded','money','Retenue congés sans solde','Unpaid leave deduction',{ro:1});
+addF('payslip','bonus','money','Primes / autres entrées','Bonuses / other inputs',{ro:1});
+addF('payslip','inputs','lines','Autres entrées','Other inputs',{cols:[{k:'label',t:'char',fr:'Description (prime, avance, heures sup…)',en:'Description (bonus, advance, overtime…)',w:260},{k:'amt',t:'money',fr:'Montant (+ prime / − retenue)',en:'Amount (+ bonus / − deduction)',w:190}]});
+M.payslip.f.gross.roIf=b=>+b.base>0;
+M.payslip.f.gross.help=['Calculé automatiquement quand un salaire de base est renseigné.','Computed automatically when a base salary is set.'];
+{const pc=M.payslip.compute;M.payslip.compute=function(r){try{
+  r.bonus=Math.round(sum(r.inputs||[],l=>l.amt));
+  const ps=pd(r.period);
+  if(ps&&r.emp){const pe=monthEnd(ps);let un=0,pl=0;D.all('leave').forEach(l=>{if(l.emp!==r.emp||l.state!=='ok')return;const d=overlap(l.from,l.to,ps,pe);if(l.kind==='unpaid')un+=d;else pl+=d});
+    r.unpaid=un;r.pl=pl;r.wdays=Math.max(0,30-un);r.ded=Math.round((+r.base||0)/30*un)}
+  if(+r.base>0)r.gross=Math.round(+r.base+r.bonus-(r.ded||0))}catch(e){}
+  return pc.apply(this,arguments)}}
+function fillSlip(b){const e=D.get('employee',+b.emp);if(!e)return;if(e.paymode)b.how=e.paymode;const c=contractOf(e.id);if(c){b.contract=c.id;b.base=+c.wage||0}}
+{const ab=applyBufValue;applyBufValue=function(el){const r=ab.apply(this,arguments);try{if(r&&FV&&FV.a&&FV.a.model==='payslip'&&el.dataset.fld==='emp')fillSlip(FV.buf)}catch(e){}return r}}
+function salaryTable(b){const row=(l,v,neg,bold)=>'<tr'+(bold?' style="font-weight:700;border-top:2px solid var(--line)"':'')+'><td>'+l+'</td><td class="r">'+(neg&&v?'− ':'')+money(Math.abs(v||0))+'</td></tr>';
+  const ps=(b.inputs||[]).map(l=>row(esc(l.label||tr('Entrée','Input')),+l.amt||0,false)).join('');
+  return '<div class="scrollx"><table class="lv lines"><thead><tr><th>'+tr('Règle salariale','Salary rule')+'</th><th class="r">'+tr('Montant','Amount')+'</th></tr></thead><tbody>'+
+    row(tr('Salaire de base','Base salary'),b.base)+ps+row(tr('Retenue congés sans solde ('+(b.unpaid||0)+' j)','Unpaid leave deduction ('+(b.unpaid||0)+' d)'),b.ded,true)+
+    row(tr('Salaire brut','Gross salary'),b.gross,false,true)+row(tr('Retenue CNPS','CNPS withholding'),b.cnps,true)+row(tr('Autres retenues','Other deductions'),b.other,true)+
+    row(tr('NET À PAYER','NET PAY')+' — '+esc(payLbl(b.how)),b.net,false,true)+'</tbody></table></div>'}
+{const p=ACT.payslips;if(p){
+  p.list=['name','emp','period','how','gross','cnps','other','net','state'];
+  p.form.cols=[['emp','contract','period','batch','how'],['base','bonus','ded','gross','cnps','other','net']];
+  p.form.tabs=[{l:['Jours travaillés','Worked days'],fields:['wdays','pl','unpaid']},{l:['Autres entrées','Other inputs'],lines:'inputs'},{l:['Calcul du salaire','Salary computation'],html:salaryTable},{l:['Notes','Notes'],fields:['note']}];
+  p.form.btns=[{l:['Calculer la fiche','Compute sheet'],icon:'refresh',pri:1,new:true,when:b=>b.state==='draft',fn:b=>{const cur=D.get('payslip',b.id);if(!cur)return;const v={};const c=contractOf(cur.emp),e=D.get('employee',cur.emp);if(c){v.contract=c.id;v.base=+c.wage||0}if(e&&e.paymode)v.how=e.paymode;D.write('payslip',b.id,v);toast(tr('Fiche recalculée (contrat, congés, mode de paiement).','Sheet recomputed (contract, time off, payment method).'))}}].concat(p.form.btns)}}
+/* lots de paie */
+defModel('paybatch','Lots de paie','Payslip batches','name',{
+  name:['char','Nom du lot','Batch name',{req:1,def:()=>tr('Paie ','Payroll ')+iso(new Date()).slice(0,7)}],
+  period:['date','Mois (1er du mois)','Month (1st)',{def:()=>first(),req:1}],
+  state:['sel','Statut','Status',{opts:[['draft','Brouillon','Draft',''],['done','Clôturé','Closed','good']],def:'draft'}],
+  count:['int','Bulletins','Payslips',{ro:1}], total:['money','Net total à payer','Total net pay',{ro:1}]},
+  {status:'state',chatter:false,compute:r=>{const s=D.all('payslip').filter(x=>x.batch===r.id);r.count=s.length;r.total=sum(s,x=>x.net)}});
+function batchSlips(b){const s=b.id&&!FV.isNew?D.all('payslip').filter(x=>x.batch===b.id):[];
+  if(!s.length)return '<div class="muted" style="padding:8px 0">'+tr('Aucun bulletin. Cliquez sur « Générer les bulletins ».','No payslip yet. Click “Generate payslips”.')+'</div>';
+  return '<div class="scrollx"><table class="lv lines"><thead><tr><th>'+tr('Bulletin','Payslip')+'</th><th>'+tr('Employé','Employee')+'</th><th>'+tr('Mode de paiement','Payment method')+'</th><th class="r">'+tr('Net','Net')+'</th><th>'+tr('Statut','Status')+'</th></tr></thead><tbody>'+
+    s.map(x=>'<tr><td>'+esc(x.name||'')+'</td><td>'+esc(D.name('employee',x.emp))+'</td><td>'+esc(payLbl(x.how))+'</td><td class="r">'+money(x.net||0)+'</td><td>'+esc(kLbl('payslip','state',x.state))+'</td></tr>').join('')+'</tbody></table></div>'}
+act('paybatches',{model:'paybatch',l:['Lots de paie','Payslip batches'],icon:'receipt',views:['list'],list:['name','period','count','total','state'],sum:['total'],search:['name'],groups:['state'],
+  form:{status:'state',title:'name',cols:[['period'],['count','total']],tabs:[{l:['Bulletins du lot','Batch payslips'],html:batchSlips}],
+    btns:[{l:['Générer les bulletins','Generate payslips'],pri:1,when:b=>b.state==='draft',fn:b=>{const per=first(b.period);let n=0,sk=0;D.all('employee').forEach(e=>{const c=contractOf(e.id);if(!c||c.state==='expired'){sk++;return}
+        if(D.all('payslip').some(p=>p.emp===e.id&&p.period===per))return;
+        D.create('payslip',{emp:e.id,period:per,batch:b.id,contract:c.id,base:+c.wage||0,how:e.paymode||'cash',inputs:[],state:'draft'},{silent:true});n++});
+        save();toast(n+' '+tr('bulletin(s) généré(s)','payslip(s) generated')+(sk?' · '+sk+' '+tr('employé(s) sans contrat en cours ignoré(s)','employee(s) without active contract skipped'):''))}},
+      {l:['Clôturer le lot','Close batch'],when:b=>b.state==='draft',set:{state:'done'}},{l:['Rouvrir','Reopen'],when:b=>b.state==='done',set:{state:'draft'}}]},ctx:()=>({})});
+/* menus */
+{const pa=APPS.find(a=>a.id==='payroll');if(pa&&!pa.menus.some(m=>m.id==='pa_b')){const i=pa.menus.findIndex(m=>m.id==='pa_m');pa.menus.splice(i+1,0,M_('pa_b',['Lots de paie','Payslip batches'],'paybatches'),M_('pa_ct',['Contrats','Contracts'],'contracts'))}}
+{const to=APPS.find(a=>a.id==='timeoff');if(to&&!to.menus.some(m=>m.id==='to_al')){const i=to.menus.findIndex(m=>m.id==='to_l');to.menus.splice(i+1,0,M_('to_al',['Allocations & soldes','Allocations & balances'],'leaveallocs'))}}
+/* l'application Congés est installée par défaut (une seule fois) */
+{const pb=window.__pro4Boot;window.__pro4Boot=function(){try{if(ST.set&&!ST.set.v52){ST.set.v52=1;ST.installed=ST.installed||{};ST.installed.timeoff=true;save()}}catch(e){}return pb&&pb.apply(this,arguments)}}
+
+/* ---------- v52b : Vue d'ensemble RH (tableau de bord simple) ---------- */
+{const todayS=()=>iso(new Date());
+A['hr-go']=el=>{try{goTo(el.dataset.app,el.dataset.act)}catch(e){}};
+const btn=(app,act,label,pri)=>'<button class="btn '+(pri?'pri':'sec')+'" data-a="hr-go" data-app="'+app+'" data-act="'+act+'">'+label+'</button>';
+CUSTOM.hrdash=function(){
+  const per=first(todayS()),emps=D.all('employee'),today=todayS();
+  const sl=D.all('payslip').filter(s=>s.period===per);
+  const toPay=sl.filter(s=>s.state==='ok'),draft=sl.filter(s=>s.state==='draft'),paid=sl.filter(s=>s.state==='paid');
+  const lv=D.all('leave'),pend=lv.filter(l=>l.state==='sub');
+  const off=lv.filter(l=>l.state==='ok'&&l.from<=today&&l.to>=today);
+  const in30=iso(addDays(new Date(),30));
+  const endSoon=D.all('contract').filter(c=>c.state!=='expired'&&c.end&&c.end>=today&&c.end<=in30);
+  const noCt=emps.filter(e=>!contractOf(e.id));
+  const by={};PAYSEL.forEach(o=>by[o[0]]={n:0,net:0});
+  emps.forEach(e=>{const k=by[e.paymode]?e.paymode:'cash';by[k].n++});
+  sl.forEach(s=>{const k=by[s.how]?s.how:'cash';by[k].net+=(+s.net||0)});
+  const kp=(l,v,c)=>'<div class="kpi"><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
+  const row=(a,b)=>'<div style="display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+a+'</span><b>'+b+'</b></div>';
+  const todo=[];
+  if(pend.length)todo.push(row('🌴 '+pend.length+' '+tr('demande(s) de congé à approuver','time-off request(s) to approve'),btn('timeoff','leaves',tr('Voir','Open'))));
+  if(draft.length)todo.push(row('📝 '+draft.length+' '+tr('bulletin(s) à valider','payslip(s) to validate'),btn('payroll','payslips',tr('Voir','Open'))));
+  if(toPay.length)todo.push(row('💸 '+toPay.length+' '+tr('bulletin(s) à payer','payslip(s) to pay')+' · '+money(sum(toPay,s=>s.net)),btn('payroll','payslips',tr('Payer','Pay'))));
+  if(endSoon.length)todo.push(row('📄 '+endSoon.length+' '+tr('contrat(s) se termine(nt) sous 30 jours','contract(s) ending within 30 days'),btn('employees','contracts',tr('Voir','Open'))));
+  if(noCt.length)todo.push(row('⚠️ '+noCt.length+' '+tr('employé(s) sans contrat','employee(s) without contract'),btn('employees','contracts',tr('Créer','Create'))));
+  if(!sl.length&&emps.length)todo.push(row('🗓️ '+tr('Aucun bulletin ce mois-ci','No payslip this month'),btn('payroll','paybatches',tr('Générer la paie','Run payroll'),1)));
+  return pageHead(tr('Ressources humaines — vue d’ensemble','Human resources — overview'),btn('employees','employees',tr('Employés','Employees'))+btn('payroll','paybatches',tr('Lancer la paie','Run payroll'),1))+
+  '<div class="va gut"><div class="kpis">'+kp(tr('Employés','Employees'),emps.length)+kp(tr('En congé aujourd’hui','On leave today'),off.length)+kp(tr('Congés à approuver','Leave to approve'),pend.length,pend.length?'var(--warn)':'')+kp(tr('Masse salariale du mois','Payroll this month'),money(sum(sl,s=>s.gross)))+kp(tr('Net à payer','Net to pay'),money(sum(toPay.concat(draft),s=>s.net)))+kp(tr('Déjà payé','Already paid'),money(sum(paid,s=>s.net)),'var(--good)')+'</div>'+
+  '<div class="grid2"><div class="card"><h3>'+tr('À faire','To do')+'</h3>'+(todo.length?todo.join(''):'<p class="muted">'+tr('Rien en attente. Tout est à jour 👍','Nothing pending. All up to date 👍')+'</p>')+'</div>'+
+  '<div class="card"><h3>'+tr('Paiement des salaires par mode','Salary payment by method')+'</h3>'+PAYSEL.map(o=>row(esc(payLbl(o[0]))+' <span class="muted">· '+by[o[0]].n+' '+tr('employé(s)','employee(s)')+'</span>',by[o[0]].net?money(by[o[0]].net):'—')).join('')+'<p class="muted" style="margin:8px 0 0;font-size:.85rem">'+tr('Le mode se choisit sur la fiche de chaque employé, onglet « Paie ».','Choose the method on each employee, “Payroll” tab.')+'</p></div></div>'+
+  '<div class="card" style="margin-top:12px"><h3>'+tr('Accès rapides','Quick links')+'</h3><div style="display:flex;flex-wrap:wrap;gap:8px">'+btn('employees','employees',tr('👥 Employés','👥 Employees'))+btn('employees','contracts',tr('📄 Contrats & documents','📄 Contracts & documents'))+btn('timeoff','leaves',tr('🌴 Demandes de congé','🌴 Time off requests'))+btn('timeoff','leaveallocs',tr('📊 Soldes de congés','📊 Leave balances'))+btn('payroll','payslips',tr('🧾 Bulletins de paie','🧾 Payslips'))+btn('payroll','paybatches',tr('🗂️ Lots de paie','🗂️ Payslip batches'))+'</div></div></div>'};
+[['payroll','pa_m','pa_dash'],['employees','e_main','e_dash'],['timeoff','to_m','to_dash']].forEach(x=>{const a=APPS.find(z=>z.id===x[0]);if(a&&!a.menus.some(m=>m.id===x[2]))a.menus.unshift(M_(x[2],['Vue d’ensemble','Overview'],null,{cus:'hrdash'}))});
+}
+}
 
 /* ===== VÉLUME CLOUD 8 — Supabase : comptes, rôles, synchronisation entre appareils, hors connexion ===== */
 (function(){
