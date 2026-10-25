@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v49';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v51';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
@@ -87,8 +87,9 @@ window.__recipesToPos=function(){try{
     const v={name:r.name,price:+r.price||0,cat:pcatFor(r.cat),reg:'bar',kind:'consu',pos:true,active:true,rec:r.id};
     if(!p)D.create('product',v,{silent:true});
     else if(p.name!==v.name||p.price!==v.price||p.cat!==v.cat||p.active===false||p.pos===false)D.write('product',p.id,v,{silent:true})});
-  D.all('product').filter(p=>p.rec&&!seen[p.rec]&&!D.get('recipe',p.rec)).forEach(p=>{});
+  D.all('product').filter(p=>p.rec&&!D.get('recipe',p.rec)).forEach(p=>{try{D.unlink('product',p.id)}catch(e){try{D.write('product',p.id,{active:false,pos:false},{silent:true})}catch(x){}}});
   saveNow()}catch(e){try{console.error(e)}catch(x){}}};
+try{const ul=D.unlink;if(ul&&!D.__ulR){D.__ulR=1;D.unlink=function(m,id){const r=ul.apply(this,arguments);if(m==='recipe')try{window.__recipesToPos()}catch(e){}return r}}}catch(e){}
 {const ot=openTill;openTill=function(id){try{window.__recipesToPos()}catch(e){}return ot.apply(this,arguments)}}
 {const fs=A.fsave;A.fsave=function(){const isR=FV&&FV.a&&FV.a.model==='recipe';const r=fs.apply(this,arguments);if(isR)try{window.__recipesToPos()}catch(e){}return r}}
 }
@@ -177,3 +178,17 @@ function empOf(u,create){if(!u)return null;let e=u.emp&&D.get('employee',u.emp);
   const sel='<div class="lf"><label>'+tr('Genre (pour l’intitulé de votre poste)','Gender (for your job title)')+'</label><select data-pfsex="1"><option value=""></option><option value="m"'+(sx==='m'?' selected':'')+'>'+tr('Homme','Male')+'</option><option value="f"'+(sx==='f'?' selected':'')+'>'+tr('Femme','Female')+'</option></select></div>';
   return h.replace(/<hr>/,sel+'<hr>')}}
 document.addEventListener('change',ev=>{const el=ev.target;if(!el.dataset||!el.dataset.pfsex)return;const u=meU();if(!u)return;const e=empOf(u,true);if(e){D.write('employee',e.id,{sex:el.value},{silent:true});save();toast(tr('Genre enregistré.','Gender saved.'));try{render()}catch(x){}}})}
+
+/* ---------- v51 : vente à la caisse → déduction automatique du stock (ingrédients de la recette) ---------- */
+{const CONV={g:['m',1],kg:['m',1000],mg:['m',.001],ml:['v',1],cl:['v',10],dl:['v',100],l:['v',1000]};
+function qtyIn(txt,unit){const s=String(txt==null?'':txt).trim().toLowerCase().replace(',','.');const m=s.match(/^(\d+(?:\.\d+)?)\s*([a-zµ]*)\.?$/);if(!m)return null;const n=parseFloat(m[1]),u=m[2];const su=String(unit||'').trim().toLowerCase();
+  if(!u||u===su)return n;const a=CONV[u],b=CONV[su];if(a&&b&&a[0]===b[0])return n*a[1]/b[1];return null}
+window.__deductStock=function(o){try{if(!o||o.__ded)return;const low=[];
+  (o.lines||[]).forEach(l=>{const pr=D.get('product',l.product);if(!pr||!pr.rec)return;const r=D.get('recipe',pr.rec);if(!r)return;
+    (r.lines||[]).forEach(g=>{const it=g.item&&D.get('stockitem',+g.item);if(!it)return;const q=qtyIn(g.qty,it.unit);if(q==null||!(q>0))return;const tot=q*(+l.qty||1);
+      const nq=Math.max(0,Math.round(((+it.qty||0)-tot)*1000)/1000);D.write('stockitem',it.id,{qty:nq},{silent:true});
+      D.create('stockmove',{item:it.id,kind:'out',qty:tot,ref:o.ref||o.name||'POS',note:tr('Vente caisse : ','POS sale: ')+tx(r.name)},{silent:true});
+      if(nq<=(+it.min||0)&&!low.includes(it.id)){low.push(it.id);try{postBot&&postBot(tr('Stock bas : ','Low stock: ')+tx(it.name)+' ('+nq+' '+(it.unit||'')+')')}catch(e){}}})});
+  D.write('posorder',o.id,{__ded:1},{silent:true})}catch(e){try{console.error(e)}catch(x){}}};
+const tv2=A['till-validate'];A['till-validate']=function(){const ids=new Set(D.all('posorder').map(o=>o.id));const r=tv2.apply(this,arguments);
+  try{D.all('posorder').filter(o=>!ids.has(o.id)&&o.state!=='cancel').forEach(window.__deductStock);saveNow&&saveNow()}catch(e){}return r}}
