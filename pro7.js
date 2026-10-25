@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v44';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v45';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
@@ -158,3 +158,10 @@ function receiptText(o,pr){
     D.all('posprinter').filter(p=>p.receipt).forEach(async p=>{try{const bytes=serialBytes(receiptText(o,p),p);for(let i=0;i<Math.max(1,p.copies||1);i++)if(!(await sendBytes(p,bytes)))break}catch(e){toast(tr('Ticket client non imprimé : ','Receipt not printed: ')+(e&&e.message||''))}})}}catch(e){}
   return r}}
 }
+
+/* ---------- v45 : changer directement le rôle d'un administrateur ---------- */
+{const RL=[['manager','Gérant / comptable','Manager / accountant'],['cashier','Caissier / serveur','Cashier / waiter'],['studio','Studio / production','Studio / production'],['kitchen','Cuisine / bar','Kitchen / bar'],['user','Utilisateur interne','Internal user']];
+const ah=window.__adminsHtml;window.__adminsHtml=function(){const h=ah?ah():'';
+  return h.replace(/<button class="btn sm" data-a="adm-rm" data-id="(\d+)">/g,function(m,id){return '<select class="st3i" data-adr2="'+id+'" style="max-width:180px">'+RL.map(r=>'<option value="'+r[0]+'">'+esc(tr(r[1],r[2]))+'</option>').join('')+'</select><button class="btn pri sm" data-a="adm-role" data-id="'+id+'">'+tr('Changer le rôle','Change role')+'</button>'+m})};
+A['adm-role']=el=>{const id=+el.dataset.id,u=D.get('user',id),sel=document.querySelector('[data-adr2="'+id+'"]');if(!u||!sel)return;const rn=sel.options[sel.selectedIndex].text;
+  openModal('confirm',{msg:tr('Retirer les droits d’administrateur à '+(u.name||u.login)+' et lui donner le rôle « '+rn+' » ?','Remove administrator rights from '+(u.name||u.login)+' and give them the role “'+rn+'”?'),ok:()=>{D.write('user',id,{group:sel.value});save();toast(tr('Rôle modifié.','Role changed.'));render()}})}}
