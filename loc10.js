@@ -6,19 +6,77 @@
    ===================================================================== */
 {
 const addF=(m,k,t,fr,en,o)=>{if(M[m]&&!M[m].f[k])M[m].f[k]=Object.assign({k:k,t:t,fr:fr,en:en},o||{})};
-const STUD={photo:['Studio photo','Photo studio'],podcast:['Studio podcast','Podcast studio'],video:['Studio vidéo','Video studio']};
-const REGN={bar:['Vélume Coffee','Vélume Coffee'],podcast:['Vélume Studios — Podcast','Vélume Studios — Podcast'],shoot:['Vélume Studios — Photo / Shooting','Vélume Studios — Photo / Shoots']};
-const rl=k=>(REGN[k]||[k,k])[LANG==='fr'?0:1];
+const NAMES={photo:'Vélume Studio Photo',podcast:'Vélume Studio Podcast',video:'Vélume Studio Vidéo Créateurs'};
+const STUD={photo:[NAMES.photo,NAMES.photo],podcast:[NAMES.podcast,NAMES.podcast],video:[NAMES.video,NAMES.video]};
+const REGN={bar:['Vélume Coffee','Vélume Coffee'],photo:STUD.photo,podcast:STUD.podcast,video:STUD.video};
+const rl=k=>(REGN[k==='shoot'?'photo':k]||[k,k])[LANG==='fr'?0:1];
 const sl=k=>(STUD[k]||[k,k])[LANG==='fr'?0:1];
-const regOf=p=>p&&p.studio==='podcast'?'podcast':'shoot';
+const STK=['photo','podcast','video'];
+const regOf=p=>{const k=p&&(p.sreg||p.studio||p.reg);return STK.includes(k)?k:'photo'};
+window.__regNames=NAMES;
+/* libellés des trois studios partout */
+{const lab=k=>[k,NAMES[k],NAMES[k]];
+ Object.keys(M).forEach(m=>{const f=M[m].f&&M[m].f.studio;if(f&&f.t==='sel'&&f.opts&&f.opts.some(o=>o[0]==='podcast')&&f.opts.some(o=>o[0]==='video')){f.opts=f.opts.map(o=>STK.includes(o[0])?[o[0],NAMES[o[0]],NAMES[o[0]],o[3]||'']:o)}});
+ const pl=M.place&&0;
+ /* liste « Point de vente » : Coffee + les trois studios */
+ const ropts=[['bar',REGN.bar[0],REGN.bar[1]]].concat(STK.map(k=>[k,NAMES[k],NAMES[k]]));
+ if(M.product.f.reg)M.product.f.reg.opts=ropts;
+ if(M.posorder.f.reg){M.posorder.f.reg.opts=ropts;M.posorder.f.reg.fr='Point de vente';M.posorder.f.reg.en='Point of sale'}
+}
+/* catégories de location = les trois studios (noms officiels) */
+function rcatKey(c){const n=(tx(c&&c.name)||'').toLowerCase();return /podcast/.test(n)?'podcast':/vid[eé]o/.test(n)?'video':/photo|shoot/.test(n)?'photo':null}
+function ensureRcats(){
+  const out={};
+  STK.forEach(k=>{
+    const all=D.all('rentcat').filter(c=>rcatKey(c)===k);
+    let c=all[0];
+    if(!c)c=D.create('rentcat',{name:NAMES[k]},{silent:true});
+    else if(tx(c.name)!==NAMES[k])D.write('rentcat',c.id,{name:NAMES[k]},{silent:true});
+    out[k]=c.id;
+    /* doublons : on rattache leurs produits à la catégorie officielle */
+    all.slice(1).forEach(d=>{D.all('product').filter(p=>p.rcat===d.id).forEach(p=>D.write('product',p.id,{rcat:c.id},{silent:true}))});
+  });
+  return out}
+const rcatOfKey=k=>{const m=ensureRcatsCache();return m[k]||null};
+let _rc=null;function ensureRcatsCache(){const ok=_rc&&STK.every(k=>D.get('rentcat',_rc[k]));if(!ok)_rc=ensureRcats();return _rc}
+const keyOfRcat=id=>{const c=id&&D.get('rentcat',+id);return c?rcatKey(c):null};
 
-/* 1. produits de location → bonne caisse, visibles à la caisse */
-{const pc=M.product.compute;M.product.compute=function(r){if(pc)pc.apply(this,arguments);try{if(r.kind==='rental'){r.reg=regOf(r);if(r.pos==null)r.pos=true}}catch(e){}}}
-function fixRentalProducts(){try{D.all('product').filter(p=>p.kind==='rental'&&(p.reg!==regOf(p)||p.pos===false&&false)).forEach(p=>D.write('product',p.id,{reg:regOf(p)},{silent:true}))}catch(e){}}
+/* 1. produits de location → caisse de leur catégorie, visibles à la caisse */
+addF('product','sreg','sel','Point de vente','Point of sale',{opts:STK.map(k=>[k,NAMES[k],NAMES[k]]),req:1});
+{const pc=M.product.compute;M.product.compute=function(r){if(pc)pc.apply(this,arguments);try{
+  if(r.reg==='shoot')r.reg='photo';
+  if(r.kind==='rental'){
+    let k=STK.includes(r.sreg)?r.sreg:(keyOfRcat(r.rcat)||(STK.includes(r.studio)?r.studio:'photo'));
+    r.sreg=k;r.reg=k;r.studio=k;r.rcat=r.rcat&&keyOfRcat(r.rcat)===k?r.rcat:rcatOfKey(k);
+    if(r.pos==null)r.pos=true}
+}catch(e){}}}
+function fixRentalProducts(){try{
+  ensureRcats();
+  D.all('product').forEach(p=>{
+    if(p.kind==='rental'||p.reg==='shoot'||STK.includes(p.reg)&&p.kind==='rental'){
+      if(p.kind==='rental'){const k=STK.includes(p.studio)?p.studio:(keyOfRcat(p.rcat)||'photo');
+        if(p.reg!==k||p.sreg!==k||p.studio!==k||keyOfRcat(p.rcat)!==k)D.write('product',p.id,{reg:k,sreg:k,studio:k,rcat:rcatOfKey(k)},{silent:true})}
+      else if(p.reg==='shoot')D.write('product',p.id,{reg:p.studio==='video'?'video':'photo'},{silent:true})}});
+  D.all('posorder').forEach(o=>{if(o.reg==='shoot'){const rt=o.rental&&D.get('rental',o.rental);let k=rt&&STK.includes(rt.studio)?rt.studio:null;
+     if(!k){const ln=(o.lines||[])[0];const pr=ln&&D.get('product',+ln.product);k=pr&&STK.includes(pr.reg)?pr.reg:'photo'}
+     D.write('posorder',o.id,{reg:k},{silent:true})}});
+  D.all('poscfg').forEach(c=>{if(c.reg==='studios'&&tx(c.name)==='Vélume Studios'){}});
+}catch(e){try{console.error(e)}catch(x){}}}
 {const pb=window.__pro4Boot;window.__pro4Boot=function(){try{fixRentalProducts()}catch(e){}return pb&&pb.apply(this,arguments)};setTimeout(fixRentalProducts,2800)}
-{addF('product','reg','sel','Caisse (point de vente)','Register (point of sale)',{});
- const rp=ACT.rent_products;if(rp&&rp.form&&rp.form.cols&&rp.form.cols[1]&&!rp.form.cols[1].includes('reg')){rp.form.cols[1].splice(1,0,'reg')}
- if(M.product.f.reg){M.product.f.reg.ro=true}}
+{const rp=ACT.rent_products;
+ if(rp&&rp.form&&rp.form.cols){
+  rp.form.cols=[['rcat','sreg','unit','dur'],['price','kind','active']];
+ }
+ if(rp&&rp.list){rp.list=rp.list.map(k=>k==='studio'?'sreg':k)}
+ if(rp&&rp.groups)rp.groups=rp.groups.map(k=>k==='studio'?'sreg':k);
+ if(rp&&rp.filters)rp.filters=rp.filters.filter(f=>!/studio/i.test(String(f[0])));
+}
+/* choisir la catégorie ⇄ choisir le point de vente : les deux restent liés */
+{const ab=applyBufValue;applyBufValue=function(el){const r=ab.apply(this,arguments);
+  try{if(r&&FV&&FV.a&&FV.a.model==='product'){const k=el.dataset.fld;
+    if(k==='rcat'){const s=keyOfRcat(FV.buf.rcat);if(s){FV.buf.sreg=s;FV.buf.reg=s;FV.buf.studio=s}}
+    else if(k==='sreg'&&STK.includes(FV.buf.sreg)){FV.buf.rcat=rcatOfKey(FV.buf.sreg);FV.buf.reg=FV.buf.sreg;FV.buf.studio=FV.buf.sreg}}}catch(e){}
+  return r}}
 
 /* 2. champs « payé » sur la location, lien commande */
 addF('rental','paid','bool','Payée à la caisse','Paid at register',{def:false,ro:1});
@@ -37,7 +95,7 @@ function payRental(id){
   const cfg=pickCfg();if(!cfg)return toast(tr('Aucun point de vente configuré.','No point of sale configured.'));
   UI.modal=null;openTill(cfg.id);
   const t=UI.till;if(!t)return;
-  t.cart=lines.map(l=>({p:+l.product,q:+l.qty||1}));t.reg=regOf(D.get('product',+lines[0].product));t.partner=r.partner||null;t.rental=r.id;t.showord=true;t.cat='all';t.q='';
+  t.cart=lines.map(l=>({p:+l.product,q:+l.qty||1}));t.reg=(D.get('product',+lines[0].product)||{}).reg||'photo';t.partner=r.partner||null;t.rental=r.id;t.showord=true;t.cat='all';t.q='';
   const diff=lines.some(l=>(+l.price||0)!==(D.get('product',+l.product).price||0));
   render();toast(tr('Location chargée à la caisse : ','Rental loaded at the register: ')+(r.ref||'')+(diff?' · '+tr('tarif du catalogue appliqué','catalogue price applied'):''))}
 window.__payRental=payRental;
@@ -63,8 +121,8 @@ A['loc-till']=el=>{const c=pickCfg();if(!c)return;openTill(c.id);if(UI.till){UI.
 /* 4. ticket du service choisi (écran) */
 {const m=MODALS.report;if(m&&!m.__loc){m.__loc=1;const b0=m.body;m.body=function(p){let h=b0.apply(this,arguments);
   try{if(p&&p.kind==='posorder'){const o=D.get('posorder',p.id);const rt=o&&o.rental&&D.get('rental',o.rental);
-    if(o&&(rt||o.reg==='podcast'||o.reg==='shoot')){
-      const x='<div style="text-align:center;margin:6px 0 10px"><span class="badge gold" style="font-size:.9rem">'+esc(rl(o.reg||'shoot'))+'</span>'+(rt?'<div class="muted" style="margin-top:6px">'+esc(rt.ref||'')+' · '+esc(sl(rt.studio))+'<br>'+esc(fmtDT(rt.start))+' → '+esc((rt.stop||'').slice(11,16))+'</div>':'')+'</div>';
+    if(o&&(rt||STK.includes(o.reg))){
+      const x='<div style="text-align:center;margin:6px 0 10px"><span class="badge gold" style="font-size:.9rem">'+esc(rl(o.reg||'photo'))+'</span>'+(rt?'<div class="muted" style="margin-top:6px">'+esc(rt.ref||'')+' · '+esc(sl(rt.studio))+'<br>'+esc(fmtDT(rt.start))+' → '+esc((rt.stop||'').slice(11,16))+'</div>':'')+'</div>';
       h=h.replace(/(<h2 style="margin:10px 0 2px">[\s\S]*?<\/p><\/div>)/,'$1'+x)}}}catch(e){}
   return h}}}
 
@@ -80,9 +138,9 @@ CUSTOM.studiodash=function(){
   const kp=(l,v,c)=>'<div class="kpi"><span>'+l+'</span><b'+(c?' style="color:'+c+'"':'')+'>'+v+'</b></div>';
   const row=r=>'<tr><td><b>'+esc((r.start||'').slice(11,16))+'</b>–'+esc((r.stop||'').slice(11,16))+'<div class="muted" style="font-size:.8rem">'+esc((r.start||'').slice(5,10).split('-').reverse().join('/'))+'</div></td><td>'+esc(D.name('partner',r.partner)||'—')+'<div class="muted" style="font-size:.82rem">'+esc(sl(r.studio))+' · '+esc(r.ref||'')+'</div></td><td class="r">'+money(r.amount||0)+'</td><td>'+(r.paid?'<span class="badge good">'+tr('Payé','Paid')+'</span>':'<span class="badge warn">'+tr('À encaisser','To collect')+'</span>')+'</td><td style="text-align:right;white-space:nowrap">'+(r.paid&&r.order?'<button class="btn sm" data-a="loc-ticket" data-id="'+r.order+'">'+tr('Ticket','Receipt')+'</button>':(r.state==='cancel'?'':'<button class="btn pri sm" data-a="loc-pay" data-id="'+r.id+'">'+tr('Encaisser','Pay')+'</button>'))+'</td></tr>';
   const tbl=l=>l.length?'<div class="scrollx"><table class="lv lines"><tbody>'+l.map(row).join('')+'</tbody></table></div>':'<p class="muted">'+tr('Aucune réservation.','No booking.')+'</p>';
-  const regs=['bar','podcast','shoot'];
-  const recent=os.filter(o=>o.reg==='podcast'||o.reg==='shoot'||o.rental).sort((a,b)=>a.date<b.date?1:-1).slice(0,8);
-  return pageHead(tr('Studios — vue d’ensemble','Studios — overview'),'<button class="btn" data-a="loc-till" data-r="podcast">🎙️ '+tr('Caisse Podcast','Podcast register')+'</button><button class="btn" data-a="loc-till" data-r="shoot">📷 '+tr('Caisse Shooting','Shoot register')+'</button><button class="btn pri" data-a="loc-new">'+ic('plus')+tr('Nouvelle réservation','New booking')+'</button>')+
+  const regs=['bar','photo','podcast','video'];
+  const recent=os.filter(o=>STK.includes(o.reg)||o.rental).sort((a,b)=>a.date<b.date?1:-1).slice(0,8);
+  return pageHead(tr('Studios — vue d’ensemble','Studios — overview'),''+STK.map(k=>'<button class="btn" data-a="loc-till" data-r="'+k+'">'+({photo:'📷 ',podcast:'🎙️ ',video:'🎬 '})[k]+esc(sl(k))+'</button>').join('')+'<button class="btn pri" data-a="loc-new">'+ic('plus')+tr('Nouvelle réservation','New booking')+'</button>')+
   '<div class="va gut"><div class="kpis">'+kp(tr('Réservations aujourd’hui','Bookings today'),todayR.length)+kp(tr('À encaisser (7 j)','To collect (7 d)'),money(sum(due,r=>r.amount)),due.length?'var(--warn)':'')+regs.map(k=>kp(rl(k)+' · '+tr('aujourd’hui','today'),money(sumReg(k,d=>d===today)))).join('')+kp(tr('Studios — ce mois','Studios — this month'),money(sumReg('podcast',d=>d.slice(0,7)===mon)+sumReg('shoot',d=>d.slice(0,7)===mon)),'var(--good)')+'</div>'+
   '<div class="grid2"><div class="card"><h3>'+tr('Aujourd’hui','Today')+'</h3>'+tbl(todayR)+'</div><div class="card"><h3>'+tr('7 prochains jours','Next 7 days')+'</h3>'+tbl(next)+'</div></div>'+
   '<div class="grid2" style="margin-top:12px"><div class="card"><h3>'+tr('Ventes par caisse — ce mois','Sales by register — this month')+'</h3>'+regs.map(k=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)"><span>'+esc(rl(k))+'</span><b>'+money(sumReg(k,d=>d.slice(0,7)===mon))+'</b></div>').join('')+'<p class="muted" style="margin:8px 0 0;font-size:.85rem">'+tr('Chaque paiement à la caisse alimente ce tableau et le tableau de bord du point de vente.','Every register payment feeds this page and the point-of-sale dashboard.')+'</p></div>'+

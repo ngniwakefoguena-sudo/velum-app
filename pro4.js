@@ -44,12 +44,12 @@ const hsh=s=>{let h=5381;const t=String(s)+'|velume';for(let i=0;i<t.length;i++)
 window.__hsh=hsh;
 const curUser=()=>D.all('user').find(u=>u.id===ST.uid);
 const role=()=>{const u=curUser();return u?u.group:(ST.pro&&ST.pro.setup?'portal':'admin')};
-const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['cashier','Caissier / Caissière','Cashier'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
+const ROLES=[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)'],['barista','Barista','Barista'],['waiter','Serveur / Serveuse','Waiter / waitress'],['kitchen','Cuisinier / Cuisinière','Cook'],['photo','Photographe','Photographer'],['sound','Technicien / Technicienne son','Sound technician'],['user','Utilisateur interne','Internal user']];
 window.__ROLES=ROLES;
-const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],cashier:['Caissier','Caissière'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
+const GENDERED={manager:['Chef de salle (administrateur secondaire)','Cheffe de salle (administratrice secondaire)'],waiter:['Serveur','Serveuse'],kitchen:['Cuisinier','Cuisinière'],sound:['Technicien son','Technicienne son']};
 const BASEAPPS=['discuss','todo','calendar','timeoff','attendance'];
 const DEFAPPS={
- /* Chef de salle : tout sauf Paramètres, Apps, Paie et Recrutement */
+ /* Chef de salle : tout sauf Paramètres, Apps, Paie, Employés, Recrutement et Facturation */
  manager:null,
  /* Caissier / Caissière : encaisse (café ET studios), clôture la caisse, fidélité, réservations studio en lecture */
  cashier:['pos','cashbook','loyalty','contacts','rental','appointments','kitchen']
@@ -69,16 +69,16 @@ const DEFAPPS={
  user:['discuss','todo','calendar','knowledge','timeoff','attendance']};
 window.__DEFAPPS=DEFAPPS;
 const ALLAPPS=()=>APPS.filter(a=>a.id!=='config'&&a.id!=='apps'&&(a.core||ST.installed[a.id]!==false)).map(a=>a.id);
-const roleApps=r=>{const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment'].includes(i)):(DEFAPPS[r]||[])};
+const roleApps=r=>{if(r==='cashier')r='barista';const o=ST.set.roleApps&&ST.set.roleApps[r];if(o)return o;return r==='manager'?ALLAPPS().filter(i=>!['payroll','recruitment','employees','billing'].includes(i)):(DEFAPPS[r]||[])};
 const canApp=id=>{const r=role();if(r==='admin')return true;if(id==='config'||id==='apps')return false;if(r==='portal')return false;return roleApps(r).includes(id)};
 window.__canApp=canApp;
 const empSex=u=>{try{const e=(u&&u.emp&&D.get('employee',u.emp))||D.all('employee').find(x=>u&&u.login&&String(x.email||'').toLowerCase()===String(u.login).toLowerCase());return e&&e.sex||''}catch(x){return ''}};
-const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
+const ROLELBL=(r,u)=>{if(r==='admin')return u&&u.owner?tr('Administrateur principal','Main administrator'):tr('Administrateur','Administrator');const x=ROLES.find(z=>z[0]===r);if(!x)return r==='studio'?tr('Studio (ancien rôle)','Studio (old role)'):r==='cashier'?tr('Caissier (ancien rôle)','Cashier (old role)'):r;const g=GENDERED[r];const sx=empSex(u);if(g&&sx==='m')return tr(g[0],x[2]);if(g&&sx==='f')return tr(g[1],x[2]);return tr(x[1],x[2])};
 window.__roleLabel=ROLELBL;
 function ensureEmp(u){let e=u.emp&&D.get('employee',u.emp);if(!e)e=D.all('employee').find(x=>String(x.email||'').toLowerCase()===String(u.login||'').toLowerCase()&&u.login);if(!e){e=D.create('employee',{name:u.name,email:u.login},{silent:true});D.write('user',u.id,{emp:e.id},{silent:true})}return e.id}
 
 /* groupes d'accès + champ code */
-{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['cashier','Caissier / Caissière','Cashier','info'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
+{const g=M.user.f.group;[['manager','Chef / Cheffe de salle (administrateur secondaire)','Floor manager (secondary administrator)','gold'],['barista','Barista','Barista','info'],['waiter','Serveur / Serveuse','Waiter / waitress','info'],['kitchen','Cuisinier / Cuisinière','Cook','info'],['photo','Photographe','Photographer','info'],['sound','Technicien / Technicienne son','Sound technician','info']].reverse().forEach(o=>g.opts.splice(1,0,o));
  M.user.f.pending={k:'pending',t:'bool',fr:'En attente de validation',en:'Pending approval'};
  M.user.f.owner={k:'owner',t:'bool',fr:'Administrateur principal',en:'Main administrator'};
  M.user.f.newcode={k:'newcode',t:'char',fr:'Nouveau mot de passe / code',en:'New password / code'};
@@ -193,9 +193,9 @@ A['wz-done']=()=>{
   const emp=D.create('employee',{name:w.name.trim(),email:w.email.trim().toLowerCase()},{silent:true});
   const u=D.create('user',{name:w.name.trim(),login:w.email.trim().toLowerCase(),code:hsh(w.code),group:'admin',owner:true,lang:LANG,active:true,emp:emp.id},{silent:true});
   if(!w.demo){
-    const cats=[];if(w.cafe)cats.push('Boissons chaudes','Boissons froides','Pâtisserie','Plats');if(w.studio)cats.push('Studio photo','Studio podcast','Studio vidéo');
+    const cats=[];if(w.cafe)cats.push('Boissons chaudes','Boissons froides','Pâtisserie','Plats');if(w.studio)cats.push('Vélume Studio Photo','Vélume Studio Podcast','Vélume Studio Vidéo Créateurs');
     cats.forEach((n,i)=>D.create('pcat',{name:n,seq:i*10},{silent:true}));
-    if(w.studio)['Studio photo','Studio podcast','Studio vidéo'].forEach(n=>D.create('rentcat',{name:n},{silent:true}));
+    if(w.studio)['Vélume Studio Photo','Vélume Studio Podcast','Vélume Studio Vidéo Créateurs'].forEach(n=>D.create('rentcat',{name:n},{silent:true}));
     const ch=(ST.db.channel||[])[0];if(ch)ch.members=[emp.id];
     const pc=ST.db.poscfg[0];if(pc)pc.name=w.company.trim()+' · '+tr('Caisse','Register');
   }
@@ -218,8 +218,8 @@ A['st3-invite']=()=>{
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))return toast(tr('Adresse e-mail invalide.','Invalid email address.'));
   if(D.all('user').some(u=>(u.login||'').toLowerCase()===e))return toast(tr('Cet utilisateur existe déjà.','This user already exists.'));
   const code=String(Math.floor(100000+Math.random()*900000));
-  const u=D.create('user',{name:e.split('@')[0],login:e,code:hsh(code),group:'cashier',lang:LANG,active:true},{silent:true});ensureEmp(u);
-  UI.sinv='';save();openModal('newacct',{login:e,code:code,group:'cashier'});
+  const u=D.create('user',{name:e.split('@')[0],login:e,code:hsh(code),group:'barista',lang:LANG,active:true},{silent:true});ensureEmp(u);
+  UI.sinv='';save();openModal('newacct',{login:e,code:code,group:'barista'});
 };
 
 /* ---------- inscription libre des employés ---------- */

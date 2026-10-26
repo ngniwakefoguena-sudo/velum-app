@@ -58,7 +58,7 @@ A.soc=el=>{UI.su={name:'',id:'',code:'',code2:'',err:'',prov:el.dataset.p};openM
 `;document.head.appendChild(c)}
 
 /* ---------- numéro de version visible (pour vérifier que la bonne version est chargée) ---------- */
-const BUILD='2026-10-25 · v54';window.__BUILD=BUILD;
+const BUILD='2026-10-25 · v55';window.__BUILD=BUILD;
 {const st=document.createElement('style');st.textContent='#vbuild{position:fixed;left:50%;bottom:2px;transform:translateX(-50%);font-size:.66rem;opacity:.55;pointer-events:none;z-index:5;color:var(--ink-2,#666)}@media print{#vbuild{display:none}}';document.head.appendChild(st);
  const r0=render;render=function(){const x=r0.apply(this,arguments);try{let e=document.getElementById('vbuild');if(!e){e=document.createElement('div');e.id='vbuild';document.body.appendChild(e)}e.textContent='VELUME '+BUILD}catch(err){}return x}}
 })();
@@ -150,7 +150,7 @@ function receiptText(o,pr){
   const pm=PAYOPT.find(x=>x[0]===o.pay);
   const L=['='.repeat(w),ctr(String((ST.set&&ST.set.company)||'VÉLUME').toUpperCase()),'='.repeat(w),ln(o.ref||'',(o.date||'').slice(0,10)+' '+(o.date||'').slice(11,16)),ln(tr('Client','Customer'),p),'-'.repeat(w)];
   {const rid=o.rental||(UI.till&&UI.till.rental),rt=rid&&D.get('rental',rid);
-   if(rt||o.reg==='podcast'||o.reg==='shoot'){L.push(ctr(o.reg==='podcast'?'VÉLUME STUDIOS - PODCAST':'VÉLUME STUDIOS - PHOTO / SHOOTING'));
+   if(rt||['photo','podcast','video','shoot'].includes(o.reg)){L.push(ctr(({podcast:'VÉLUME STUDIO PODCAST',video:'VÉLUME STUDIO VIDÉO CRÉATEURS'})[o.reg]||'VÉLUME STUDIO PHOTO'));
      if(rt){L.push(ln(tr('Réservation','Booking'),rt.ref||''));L.push(ln(tr('Séance','Session'),(rt.start||'').slice(8,10)+'/'+(rt.start||'').slice(5,7)+' '+(rt.start||'').slice(11,16)+'-'+(rt.stop||'').slice(11,16)))}L.push('-'.repeat(w))}}
   (o.lines||[]).forEach(l=>{const nm=tx(D.name('product',l.product));L.push(ln((+l.qty||1)+' x '+nm,money0((+l.qty||1)*(+l.price||0))))});
   const ht=htOf(o.total||0);
@@ -182,7 +182,7 @@ function empOf(u,create){if(!u)return null;let e=u.emp&&D.get('employee',u.emp);
   return h.replace(/<hr>/,sel+'<hr>')}}
 document.addEventListener('change',ev=>{const el=ev.target;if(!el.dataset||!el.dataset.pfsex)return;const u=meU();if(!u)return;const e=empOf(u,true);if(e){D.write('employee',e.id,{sex:el.value},{silent:true});save();toast(tr('Genre enregistré.','Gender saved.'));try{render()}catch(x){}}})}
 
-/* ---------- v54 : vente à la caisse → déduction automatique du stock (ingrédients de la recette) ---------- */
+/* ---------- v55 : vente à la caisse → déduction automatique du stock (ingrédients de la recette) ---------- */
 {const CONV={g:['m',1],kg:['m',1000],mg:['m',.001],ml:['v',1],cl:['v',10],dl:['v',100],l:['v',1000]};
 function qtyIn(txt,unit){const s=String(txt==null?'':txt).trim().toLowerCase().replace(',','.');const m=s.match(/^(\d+(?:\.\d+)?)\s*([a-zµ]*)\.?$/);if(!m)return null;const n=parseFloat(m[1]),u=m[2];const su=String(unit||'').trim().toLowerCase();
   if(!u||u===su)return n;const a=CONV[u],b=CONV[su];if(a&&b&&a[0]===b[0])return n*a[1]/b[1];return null}
