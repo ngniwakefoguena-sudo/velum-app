@@ -179,7 +179,7 @@ function hardResetLocal(){const chat={};Object.keys(ST.db).forEach(k=>{if(k.inde
 async function enter(p,opt){opt=opt||{};PROFILE=p;sj(K.prof,p);const c=CL();if(!opt.resume){c.view='boot';c.info=tr('Chargement de vos données…','Loading your data…');render()}
   READY=false;
   const joiner=!opt.owner&&!lg(K.joined);
-  if(joiner&&ST.pro&&ST.pro.setup&&D.all('user').some(u=>u.owner&&!u.sb)){c.view='login';c.err=tr('Cet appareil contient une entreprise qui n’est pas encore sur le serveur. Utilisez d’abord « Activer le serveur avec les données de cet appareil » avec le compte administrateur.','This device holds a business that is not on the server yet. First use “Enable the server with this device’s data” with the administrator account.');saveSes(null);render();return}
+  if(joiner&&ST.pro&&ST.pro.setup&&D.all('user').some(u=>u.owner&&!u.sb)){c.wipe=true;c.view='login';c.err=tr('Cet appareil contient une entreprise qui n’est pas encore sur le serveur. Utilisez d’abord « Activer le serveur avec les données de cet appareil » avec le compte administrateur.','This device holds a business that is not on the server yet. First use “Enable the server with this device’s data” with the administrator account.');saveSes(null);render();return}
   if(joiner){hardResetLocal();ADOPT=true}
   try{
     await pullProfiles().catch(e=>{throw e});if(!PROFILE)return;
@@ -436,6 +436,7 @@ function snap(){if(enabled()&&SES&&SES.refresh_token)sj(KS,SES)}
 {const co=A['cl-out'];A['cl-out']=function(){try{snap()}catch(e){}return co.apply(this,arguments)}}
 window.addEventListener('pagehide',()=>{try{snap()}catch(e){}});
 setInterval(()=>{try{if(SES)snap()}catch(e){}},60000);
+A['cl-wipe']=()=>openModal('confirm',{msg:tr('Les données locales de cet appareil seront effacées, puis remplacées par celles du serveur (votre entreprise en ligne). Continuer ?','This device’s local data will be erased and replaced by the server data (your online business). Continue?'),ok:()=>{hardResetLocal();const c=CL();c.wipe=false;c.err='';save();render();setTimeout(()=>A['cl-login'](),80)}});
 A['bio-on']=async()=>{try{if(!AVAIL)return toast(tr('Non disponible sur cet appareil (empreinte / visage non configuré, ou navigateur incompatible).','Not available on this device (fingerprint / face not set up, or unsupported browser).'));
   await enroll();toast(tr('Activé : la prochaine fois, connectez-vous avec l’empreinte ou le visage.','Enabled: next time, sign in with fingerprint or face.'));UI.pop=null;render()}
   catch(e){try{console.warn('bio-err',e&&e.name,e&&e.message)}catch(x){}toast(tr('Activation annulée.','Activation cancelled.'))}};
@@ -452,7 +453,7 @@ A['bio-login']=()=>guard(async c=>{
 window.__bioOffer=function(){try{if(!AVAIL||enabled()||localStorage.getItem(KN))return;
   openModal('confirm',{msg:tr('Voulez-vous vous connecter plus vite sur cet appareil avec votre empreinte digitale ou la reconnaissance faciale ?','Do you want to sign in faster on this device with your fingerprint or face recognition?'),ok:()=>{setTimeout(()=>A['bio-on'](),60)}});
   const ft=document.querySelector('.dlg .dft,.dlg footer');}catch(e){}};
-{const l1=loginHtml;loginHtml=function(){let h=l1.apply(this,arguments);try{if(ready()&&(!CL().view||CL().view==='login'))h=h.replace('</form><a href="#" data-a="cl-view" data-v="forgot"','</form><button class="btn" type="button" data-a="bio-login" style="display:flex;align-items:center;justify-content:center;gap:8px">🔐 '+tr('Empreinte / reconnaissance faciale','Fingerprint / face recognition')+'</button><a href="#" data-a="cl-view" data-v="forgot"')}catch(e){}return h}}
+{const l1=loginHtml;loginHtml=function(){let h=l1.apply(this,arguments);try{if(CL().wipe&&(!CL().view||CL().view==='login'))h=h.replace('<button class="btn pri" type="submit"','<button class="btn" type="button" data-a="cl-wipe">'+tr('Cet appareil ne contient rien d’important : le vider et me connecter','Nothing important on this device: clear it and sign in')+'</button><button class="btn pri" type="submit"');if(ready()&&(!CL().view||CL().view==='login'))h=h.replace('</form><a href="#" data-a="cl-view" data-v="forgot"','</form><button class="btn" type="button" data-a="bio-login" style="display:flex;align-items:center;justify-content:center;gap:8px">🔐 '+tr('Empreinte / reconnaissance faciale','Fingerprint / face recognition')+'</button><a href="#" data-a="cl-view" data-v="forgot"')}catch(e){}return h}}
 {const p1=popoverHtml;popoverHtml=function(){let h=p1();if(UI.pop!=='user'||!AVAIL)return h;return h.replace('<button data-a="lock">','<button data-a="'+(enabled()?'bio-off':'bio-on')+'">🔐 '+(enabled()?tr('Désactiver l’empreinte / le visage','Disable fingerprint / face'):tr('Activer l’empreinte / le visage','Enable fingerprint / face'))+'</button><button data-a="lock">')}}
 }
 })();

@@ -44,7 +44,7 @@ Remplacez `index.html` par la nouvelle version et envoyez sur GitHub : Vercel re
 ## Fond d'écran animé
 Mettez vos photos dans un dossier `fonds/` puis listez-les dans `fond.js` (variable IMAGES).
 
-## Serveur (Supabase) — v53
+## Serveur (Supabase) — v54
 - `velume-schema.sql` : à coller UNE fois dans Supabase > SQL Editor (peut être relancé sans risque).
 - Projet Supabase existant : exécutez aussi `velume-mise-a-jour-comptes.sql` pour ajouter les nouveaux rôles et fonctions.
 - `cloud8.js` : copie de référence du module serveur (déjà inclus dans index.html).
